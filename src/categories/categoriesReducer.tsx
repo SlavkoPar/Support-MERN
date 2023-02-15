@@ -1,4 +1,4 @@
-import { ActionTypes, ICategoriesState2, ICategory } from "./types";
+import { ActionTypes, ICategoriesState, ICategory } from "./types";
 import { Schema } from 'mongoose';
 import { AxiosError } from "axios";
 
@@ -35,7 +35,7 @@ type CategoriesPayload = {
   };
   [ActionTypes.CLOSE_ADDING_FORM]: {
   };
-  
+
   [ActionTypes.REFRESH_ADDED_CATEGORY]: {
     category: ICategory;
   };
@@ -51,7 +51,7 @@ type CategoriesPayload = {
 export type CategoriesActions = ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];
 
 
-export const categoriesReducer = (state: ICategoriesState2, action: CategoriesActions) => {
+export const categoriesReducer = (state: ICategoriesState, action: CategoriesActions) => {
   switch (action.type) {
     case ActionTypes.SET_LOADING:
       return {
@@ -61,7 +61,7 @@ export const categoriesReducer = (state: ICategoriesState2, action: CategoriesAc
     case ActionTypes.SET_CATEGORIES: {
       return {
         ...state,
-        categories: state.store.categories.concat(action.payload.categories),
+        categories: state.categories.concat(action.payload.categories),
         loading: false
       };
     }

@@ -37,8 +37,8 @@ const TreeView = ({ parentCategory, level }) => {
                     }
                 </tbody>
             </Table>
-            {/* {store.loading && "Loading"}
-            {store.error && store.error} */}
+            {store.loading && "Loading"}
+            {store.error && store.error}
         </div>
     );
 };

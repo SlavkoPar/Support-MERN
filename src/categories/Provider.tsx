@@ -1,6 +1,5 @@
-import { ReactNode, createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
+import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Schema } from 'mongoose';
-import { ROLES } from '../globalTypes'
 import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesState2 } from './types';
 import { categoriesReducer } from './categoriesReducer';
 import axios, { AxiosError } from "axios";
