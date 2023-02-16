@@ -1,5 +1,5 @@
 import { ActionTypes, ICategoriesState, ICategory } from "./types";
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 import { AxiosError } from "axios";
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -29,7 +29,7 @@ type CategoriesPayload = {
     category: ICategory;
   };
   [ActionTypes.DELETE]: {
-    _id: Schema.Types.ObjectId;
+    _id: Types.ObjectId;
   };
   [ActionTypes.CLOSE_EDITING_FORM]: {
   };
@@ -72,7 +72,7 @@ export const categoriesReducer = (state: ICategoriesState, action: CategoriesAct
   }
 };
 
-function markForClean(categories: ICategory[], parent_id: Schema.Types.ObjectId) {
+function markForClean(categories: ICategory[], parent_id: Types.ObjectId) {
   let arr = categories
     .filter(category => category.parentCategory === parent_id)
 

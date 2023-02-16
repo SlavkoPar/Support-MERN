@@ -29,7 +29,6 @@ const Add = ({ category, inLine }) => {
                     initialValues={formValues}
                     isEdit={false}
                     onSubmit={onSubmit}
-                    enableReinitialize
                 >
                     Create
                 </InLineCategoryForm>
@@ -38,7 +37,6 @@ const Add = ({ category, inLine }) => {
                     initialValues={formValues}
                     isEdit={false}
                     onSubmit={onSubmit}
-                    enableReinitialize
                 >
                     Create Category
                 </CategoryForm >

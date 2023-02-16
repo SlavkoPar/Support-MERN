@@ -1,9 +1,14 @@
 import React from "react";
 import { Field } from "formik";
 import { FormGroup, Container, Row, Col } from "react-bootstrap";
+import { formatDate } from './utilities'
 
 
-export const CreatedModifiedForm = ({ modified }) => {
+export const CreatedModifiedForm = (props: { created?: Date, modified?: Date }) => {
+  
+  const created = formatDate(props.created);
+  const modified = formatDate(props.modified);
+
   return (
     <Container className="my-1">
       <Row>

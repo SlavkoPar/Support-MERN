@@ -4,21 +4,17 @@ import { useCategoryContext } from '../Provider'
 import { useGlobalStore } from '../../GlobalStoreProvider'
 
 import CategoryForm from "./CategoryForm";
+import { ICategory } from "../types";
 
 const Edit = () => {
     const globalStore = useGlobalStore();
     const { store, updateCategory } = useCategoryContext();
+    const { category } = store;
 
-    const [formValues, setFormValues] = useState({
-        name: "",
-        created: "",
-        modified: "",
-        createdBy_userName: "",
-        modifiedBy_userName: ""
-    });
+    const [formValues, setFormValues] = useState<ICategory>(category!);
 
-    const onSubmit = (categoryObject) => {
-        const object = {
+    const onSubmit = (categoryObject: ICategory) => {
+        const object: ICategory = {
             ...categoryObject,
             modified: new Date(),
             modifiedBy: globalStore.user.userId
@@ -26,24 +22,18 @@ const Edit = () => {
         updateCategory(object)
     };
 
-    const formatDate = (date) => date
-        ? new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString()
-        : "";
+  
 
     useEffect(() => {
-        const { category } = store;
-        category.created = formatDate(category.created);
-        category.modified = formatDate(category.modified);
-        category.modifiedBy_userName = category.modifiedBy_user.userName;
-        setFormValues(category);
-    }, [store]);
+        //category.modifiedBy_userName = category.modifiedBy_user.userName;
+        setFormValues(category!);
+    }, [category]);
 
     return (
         <CategoryForm
             initialValues={formValues}
             isEdit={true}
             onSubmit={onSubmit}
-            enableReinitialize
         >
             Update Category
         </CategoryForm>

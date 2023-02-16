@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
-import { Schema } from 'mongoose';
-import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesState2 } from './types';
+import { Schema, Types } from 'mongoose';
+import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext } from './types';
 import { categoriesReducer } from './categoriesReducer';
 import axios, { AxiosError } from "axios";
 
@@ -11,13 +11,13 @@ const initialState: ICategoriesState = {
   categories: []
 }
 
-const CategoryContext = createContext<ICategoriesState2>({
+const CategoryContext = createContext<ICategoriesContext>({
   store: {...initialState},
-  getCategories: ({parentCategory, level}: { parentCategory: Schema.Types.ObjectId, level: number }) => {}, 
+  getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => {}, 
   createCategory: (category: ICategory) => {},
-	editCategory: (_id: Schema.Types.ObjectId) => {},
+	editCategory: (_id: Types.ObjectId) => {},
 	updateCategory:  (category: ICategory) => {},
-	deleteCategory: (_id: Schema.Types.ObjectId) => {}
+	deleteCategory: (_id: Types.ObjectId) => {}
 });
 
 const CategoryDispatchContext = createContext<Dispatch<any>>(() => null);
@@ -35,7 +35,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const [store, dispatch] = useReducer(categoriesReducer, initialState);
 
-  const getCategories = useCallback(({parentCategory, level}: { parentCategory: Schema.Types.ObjectId, level: number }) => {
+  const getCategories = useCallback(({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
     const urlCategories = `${hostPort}/categories/${parentCategory}`
     console.log('FETCHING --->>> getCategories', level, parentCategory)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
@@ -73,7 +73,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  const editCategory = useCallback((_id: Schema.Types.ObjectId) => {
+  const editCategory = useCallback((_id: Types.ObjectId) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
@@ -116,7 +116,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  const deleteCategory = (_id: Schema.Types.ObjectId) => {
+  const deleteCategory = (_id: Types.ObjectId) => {
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .delete(`${hostPort}/categories/delete-category/${_id}`)

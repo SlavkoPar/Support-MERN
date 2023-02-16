@@ -1,5 +1,5 @@
 import { IOption } from '../common/types';
-import { Schema } from 'mongoose';
+import { Schema, Types } from 'mongoose';
 /*
 import { IAuth } from "../types";
 
@@ -166,16 +166,18 @@ export const FORM_MODES = {
 
 
 export interface ICategory {
-	_id?: Schema.Types.ObjectId,
+	_id?: Types.ObjectId,
 	name: string,
 	level: number,
 	// questions: IQuestion[],
-	parentCategory: Schema.Types.ObjectId  // TODO proveri moze da bidne null !!!
+	parentCategory: Types.ObjectId  // TODO proveri moze da bidne null !!!
 	isExpanded?: boolean,
 	created?: Date,
-	createdBy?: Schema.Types.ObjectId,
+	createdBy?: Types.ObjectId,
 	modified?: Date,
-	modifiedBy?: Schema.Types.ObjectId
+	modifiedBy?: Types.ObjectId
+	inEditing?: boolean,
+	inAdding?: boolean
 }
 
 export interface ICategoriesState {
@@ -186,14 +188,21 @@ export interface ICategoriesState {
 	error?: any
 }
 
-export interface ICategoriesState2 {
+export interface ICategoriesContext {
 	store: ICategoriesState,
-	getCategories: ({parentCategory, level}: { parentCategory: Schema.Types.ObjectId, level: number }) => void,
+	getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
 	createCategory: (category: ICategory) => void,
-	editCategory: (_id: Schema.Types.ObjectId) => void,
+	editCategory: (_id: Types.ObjectId) => void,
 	updateCategory:  (category: ICategory) => void,
-	deleteCategory: (_id: Schema.Types.ObjectId) => void
+	deleteCategory: (_id: Types.ObjectId) => void
 }
+
+export interface ICategoryFormProps {
+	initialValues: ICategory;
+	isEdit: boolean;
+	onSubmit: (category: ICategory) => void,
+	children: string
+  }
 
 
 export enum ActionTypes  {

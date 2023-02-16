@@ -1,14 +1,14 @@
 import { useEffect, useRef } from "react";
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Form, Field, ErrorMessage, useFormik } from "formik";
 import { FormGroup, CloseButton } from "react-bootstrap";
 import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
 import { FormButtons } from "../../common/FormButtons"
-import { FORM_MODES, ActionTypes } from "../types";
+import { ActionTypes, ICategoryFormProps } from "../types";
 
 import { useCategoryDispatch } from "../Provider";
 
-const CategoryForm = (props) => {
+const CategoryForm = (props: ICategoryFormProps) => {
 
   const dispatch = useCategoryDispatch();
 
@@ -20,28 +20,38 @@ const CategoryForm = (props) => {
     dispatch({ type: props.isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
   }
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Required"),
-    // email: Yup.string()
-    //   .email("You have enter an invalid email address")
-    //   .required("Required"),
-    // rollno: Yup.number()
-    //   .positive("Invalid roll number")
-    //   .integer("Invalid roll number")
-    //   .required("Required"),
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: props.initialValues,
+    validationSchema: Yup.object().shape({
+      name: Yup.string().required("Required"),
+      // email: Yup.string()
+      //   .email("You have enter an invalid email address")
+      //   .required("Required"),
+      // rollno: Yup.number()
+      //   .positive("Invalid roll number")
+      //   .integer("Invalid roll number")
+      //   .required("Required"),
+    }),
+    onSubmit: values => {
+      // alert(JSON.stringify(values, null, 2));
+      props.onSubmit(values)
+      //props.handleClose(false);
+    }
   });
 
   console.log(props);
-  const formRef = useRef();
-  const nameRef = useRef();
+  // eslint-disable-next-line no-self-compare
+  const nameRef =  useRef<HTMLInputElement | null>(null);
+
   useEffect(()=> {
-    nameRef.current.focus()
-  }, [])
+    nameRef.current!.focus()
+  }, [nameRef])
 
   return (
     <div className="form-wrapper">
       <CloseButton onClick={closeForm}  className="float-end" />
-      <Formik {...props} validationSchema={validationSchema} innerRef={formRef}>
+      {/* <Formik {...props} validationSchema={validationSchema} innerRef={formRef}> */}
         <Form>
           <FormGroup>
             <label className="form-label" htmlFor="name">Name</label>
@@ -53,12 +63,12 @@ const CategoryForm = (props) => {
             />
           </FormGroup>
 
-          {props.isEdit && <CreatedModifiedForm modified={props.initialValues.modified} /> }
+          {props.isEdit && <CreatedModifiedForm created={props.initialValues.created} modified={props.initialValues.modified} /> }
           <FormButtons 
             cancelForm={cancelForm}
-            handleSubmit={() => formRef.current.handleSubmit()} title={props.children} />
+            handleSubmit={() => formik.handleSubmit()} title={props.children} />
         </Form>
-      </Formik>
+      {/* </Formik> */}
     </div>
   );
 };

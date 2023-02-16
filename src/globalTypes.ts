@@ -1,7 +1,8 @@
 // Define the Global State
+import { Schema, Types } from 'mongoose';
 
 export interface IAuthUser {
-	userId: string, // fiktivni _id
+	userId: Types.ObjectId, // fiktivni _id
 	color?: string,
 	userName?: string,
 	role: ROLES,

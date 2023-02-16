@@ -17,7 +17,7 @@ const Providered = () => {
 
     return (
         <>
-            <Button variant="secondary" size="sm" block="block" type="button"
+            <Button variant="secondary" size="sm" type="button"
                 onClick={() => dispatch({ 
                         type: ActionTypes.ADD,
                         category: {

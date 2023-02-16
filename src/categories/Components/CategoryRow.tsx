@@ -5,13 +5,16 @@ import { faWindowClose, faEdit, faCaretRight, faCaretDown, faPlus } from '@forta
 import { Button } from "react-bootstrap";
 
 import { useGlobalStore } from '../../GlobalStoreProvider'
-import { FORM_MODES, ActionTypes } from "../types";
-import { hostPort, useCategoryContext, useCategoryDispatch } from '../Provider'
+import { ActionTypes } from "../types";
+import { useCategoryContext, useCategoryDispatch } from '../Provider'
 import TreeView from "./TreeView";
 import Add from "./Add";
 import Edit from "./Edit";
+import { Schema, Types } from "mongoose";
 
-const CategoryRow = ({ category }) => {
+import { ICategory } from '../types'
+
+const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, name, level, inEditing, inAdding } = category;
 
     const globalStore = useGlobalStore();
@@ -21,7 +24,7 @@ const CategoryRow = ({ category }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const del = () => {
-        deleteCategory(_id);
+        deleteCategory(_id!);
     };
 
     const expand = () => {
@@ -31,7 +34,7 @@ const CategoryRow = ({ category }) => {
             dispatch({ type: ActionTypes.CLEAN_SUB_TREE, category })
     }
 
-    const edit = (_id) => {
+    const edit = (_id: Types.ObjectId) => {
         // Load data from server and reinitialize category
         editCategory(_id);
     }
@@ -50,13 +53,13 @@ const CategoryRow = ({ category }) => {
                                 onClick={expand}
                             />
                         </td>
-                        <td title={_id} >{name}</td>
+                        <td title={_id!.toString()} >{name}</td>
                         {/* <td>{level} </td> */}
                         <td>
                             <div className="my-0 py-0" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <Button size="sm" className="ms-2"
                                     //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                    onClick={() => edit(_id)}
+                                    onClick={() => edit(_id!)}
                                 >
                                     Edit
                                 </Button>
@@ -94,7 +97,7 @@ const CategoryRow = ({ category }) => {
                             </div>
                         )
                             : (
-                                <TreeView level={level + 1} parentCategory={_id} />
+                                <TreeView level={level + 1} parentCategory={_id!} />
                             )}
                     </td>
                 </tr>

@@ -1,5 +1,7 @@
 
 import React, { createContext, useContext, useReducer, Dispatch } from "react";
+import { Schema, Types } from 'mongoose';
+
 import { globalReducer, GlobalActions } from "./globalReducer";
 
 import { IGlobalState, ROLES } from './globalTypes'
@@ -7,7 +9,7 @@ import { IGlobalState, ROLES } from './globalTypes'
 const initialState: IGlobalState = {
   isAuthenticated: false,
   user: {
-    userId: '63e0c6f6ad5c8d505b8d8399', // fiktivni _id
+    userId: new Types.ObjectId(), // fiktivni _id
     color: 'blue',
     userName: undefined,
     role: ROLES.FIRST_REGISTERED_USER_IS_OWNER,
