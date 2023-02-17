@@ -78,7 +78,7 @@ const pipeline = [
   {
     $project:
     {
-      name: 1,
+      title: 1,
       createdBy_userName: "$userName", // moze $fromUsers.userName
       role: 1,
       created: 1,

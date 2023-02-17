@@ -8,6 +8,7 @@ import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
 import TreeView from "./Components/TreeView";
 // import Add from "./Components/Add";
 import Edit from "./Components/Edit";
+import { initialCategory } from "./categoriesReducer";
 
 const Providered = () => {
 
@@ -20,11 +21,10 @@ const Providered = () => {
             <Button variant="secondary" size="sm" type="button"
                 onClick={() => dispatch({ 
                         type: ActionTypes.ADD,
-                        category: {
-                            _id: null,
-                            level: 0
-                        }, 
-                        createdBy: globalStore.user.userId 
+                        payload: {
+                            parentCategory: null,
+                            category: initialCategory
+                        }
                     })
                 }
             >

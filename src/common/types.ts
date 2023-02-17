@@ -7,3 +7,4 @@ export type IOption<T extends OptionValue> = {
     color?: string;
     checked?: boolean;
 };
+

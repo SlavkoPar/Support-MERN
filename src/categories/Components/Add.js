@@ -12,12 +12,18 @@ const Add = ({ category, inLine }) => {
 
     const { store, createCategory } = useCategoryContext();
 
-    const onSubmit = categoryObject => {
+    const submitForm = categoryObject => {
         delete categoryObject._id;
+        delete categoryObject.inAdding;
         const object = {
             ...categoryObject,
-            created: new Date(),
-            createdBy: globalStore.user.userId
+            created: {
+                date: new Date(),
+                by: {
+                    userId: globalStore.authUser.userId
+                }
+            }
+
         }
         createCategory(object);
     }
@@ -28,7 +34,7 @@ const Add = ({ category, inLine }) => {
                 <InLineCategoryForm
                     initialValues={formValues}
                     isEdit={false}
-                    onSubmit={onSubmit}
+                    submitForm={submitForm}
                 >
                     Create
                 </InLineCategoryForm>
@@ -36,7 +42,7 @@ const Add = ({ category, inLine }) => {
                 <CategoryForm
                     initialValues={formValues}
                     isEdit={false}
-                    onSubmit={onSubmit}
+                    submitForm={submitForm}
                 >
                     Create Category
                 </CategoryForm >

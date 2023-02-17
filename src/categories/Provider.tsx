@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
-import { Schema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext } from './types';
+import { IUser } from '../users/types'
 import { categoriesReducer } from './categoriesReducer';
 import axios, { AxiosError } from "axios";
 
@@ -35,6 +36,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const [store, dispatch] = useReducer(categoriesReducer, initialState);
 
+  
+
   const getCategories = useCallback(({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
     const urlCategories = `${hostPort}/categories/${parentCategory}`
     console.log('FETCHING --->>> getCategories', level, parentCategory)
@@ -58,14 +61,19 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Category successfully created')
-          dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, payload: data });
+          dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, payload: { category: data } });
           dispatch({ type: ActionTypes.CLOSE_ADDING_FORM, payload: {} })
         }
         else {
           console.log('Status is not 200', status)
-          dispatch({ type: ActionTypes.SET_ERROR, payload: { error: new Error('Status is not 200' +  status) } });
-          // { code: '', message: ''}
-        }
+          dispatch({ type: ActionTypes.SET_ERROR, payload: { 
+                error: {
+                  message: 'Status is not 200',
+                  code: status
+                }
+              }
+            })
+          }
       })
       .catch((error) => {
         console.log(error);
@@ -166,17 +174,4 @@ export function useCategoryContext() {
 export const useCategoryDispatch = () => {
   return useContext(CategoryDispatchContext)
 };
-
-
-
-export const initialCategory = {
-  _id: 'for_list_key_mongo_given', // just for list key, real _id will given by the MongoDB 
-  name: '',
-  level: 0,
-  created: null,
-  createdBy: null,
-  modified: null,
-  modifiedBy: null,
-  parentCategory: null
-}
 

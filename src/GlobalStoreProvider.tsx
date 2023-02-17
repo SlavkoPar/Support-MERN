@@ -1,19 +1,19 @@
 
 import React, { createContext, useContext, useReducer, Dispatch } from "react";
-import { Schema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { globalReducer, GlobalActions } from "./globalReducer";
 
 import { IGlobalState, ROLES } from './globalTypes'
 
 const initialState: IGlobalState = {
-  isAuthenticated: false,
-  user: {
-    userId: new Types.ObjectId(), // fiktivni _id
+  isAuthenticated: true,
+  authUser: {
+    userId: new Types.ObjectId('63ef5e1813d8ce86929c61be'), 
     color: 'blue',
-    userName: undefined,
-    role: ROLES.FIRST_REGISTERED_USER_IS_OWNER,
-    canEdit: false,
+    userName: 'Slavko',
+    role: ROLES.OWNER,
+    canEdit: true,
     darkMode: true
   },
 }

@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const ObjectId = Schema.Types.ObjectId
+const DateBy = require('./schemas')
+
+const { Schema } = mongoose;
+const { ObjectId } = Schema.Types;
+
 
 let userSchema = new Schema({
     userName: {
@@ -16,16 +19,11 @@ let userSchema = new Schema({
         type: String
     },
     created: {
-        type: Date
+        type: DateBy,
+        required: true
     },
     modified: {
-        type: Date
-    },
-    createdBy: {
-        type: ObjectId
-    },
-    modifiedBy: {
-        type: ObjectId
+        type: DateBy
     },
 }, {
     collection: 'users'

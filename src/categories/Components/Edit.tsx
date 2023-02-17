@@ -13,16 +13,14 @@ const Edit = () => {
 
     const [formValues, setFormValues] = useState<ICategory>(category!);
 
-    const onSubmit = (categoryObject: ICategory) => {
+    const submitForm = (categoryObject: ICategory) => {
         const object: ICategory = {
-            ...categoryObject,
-            modified: new Date(),
-            modifiedBy: globalStore.user.userId
+            ...categoryObject
+            //modified: new Date(),
+            //modifiedBy: globalStore.user.userId
         }
         updateCategory(object)
     };
-
-  
 
     useEffect(() => {
         //category.modifiedBy_userName = category.modifiedBy_user.userName;
@@ -33,7 +31,7 @@ const Edit = () => {
         <CategoryForm
             initialValues={formValues}
             isEdit={true}
-            onSubmit={onSubmit}
+            submitForm={submitForm}
         >
             Update Category
         </CategoryForm>

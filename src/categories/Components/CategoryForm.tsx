@@ -1,30 +1,30 @@
 import { useEffect, useRef } from "react";
 import * as Yup from "yup";
-import { Form, Field, ErrorMessage, useFormik } from "formik";
-import { FormGroup, CloseButton } from "react-bootstrap";
+import { useFormik } from "formik";
+import { Form, FormGroup, CloseButton } from "react-bootstrap";
 import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
 import { FormButtons } from "../../common/FormButtons"
 import { ActionTypes, ICategoryFormProps } from "../types";
 
 import { useCategoryDispatch } from "../Provider";
 
-const CategoryForm = (props: ICategoryFormProps) => {
+const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategoryFormProps) => {
 
   const dispatch = useCategoryDispatch();
 
   const closeForm = () => {
-    dispatch({ type: props.isEdit ? ActionTypes.CLOSE_EDITING_FORM : ActionTypes.CLOSE_ADDING_FORM })
+    dispatch({ type: isEdit ? ActionTypes.CLOSE_EDITING_FORM : ActionTypes.CLOSE_ADDING_FORM })
   }
 
   const cancelForm = () => {
-    dispatch({ type: props.isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
+    dispatch({ type: isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
   }
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: props.initialValues,
+    initialValues,
     validationSchema: Yup.object().shape({
-      name: Yup.string().required("Required"),
+      title: Yup.string().required("Required"),
       // email: Yup.string()
       //   .email("You have enter an invalid email address")
       //   .required("Required"),
@@ -34,42 +34,60 @@ const CategoryForm = (props: ICategoryFormProps) => {
       //   .required("Required"),
     }),
     onSubmit: values => {
-      // alert(JSON.stringify(values, null, 2));
-      props.onSubmit(values)
+      //alert(JSON.stringify(values, null, 2));
+      console.log('CategoryForm.onSubmit', JSON.stringify(values, null, 2))
+      submitForm(values)
       //props.handleClose(false);
     }
   });
 
-  console.log(props);
+  console.log(initialValues);
   // eslint-disable-next-line no-self-compare
-  const nameRef =  useRef<HTMLInputElement | null>(null);
+  // const nameRef = useRef<HTMLAreaElement | null>(null);
+  const nameRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(()=> {
+  useEffect(() => {
     nameRef.current!.focus()
   }, [nameRef])
 
   return (
     <div className="form-wrapper">
-      <CloseButton onClick={closeForm}  className="float-end" />
-      {/* <Formik {...props} validationSchema={validationSchema} innerRef={formRef}> */}
-        <Form>
-          <FormGroup>
-            <label className="form-label" htmlFor="name">Name</label>
-            <Field name="name" type="text" className="form-control" innerRef={nameRef} /> {/*form-control-sm*/}
-            <ErrorMessage
-              name="name"
-              className="d-block invalid-feedback"
-              component="span"
-            />
-          </FormGroup>
+      <CloseButton onClick={closeForm} className="float-end" />
+      <Form onSubmit={formik.handleSubmit}>
+        <Form.Group controlId="title">
+          <Form.Label>Title</Form.Label>
+          <Form.Control
+            as="textarea"
+            name="title"
+            ref={nameRef}
+            onChange={formik.handleChange}
+            //onBlur={formik.handleBlur}
+            // onBlur={(e: React.FocusEvent<HTMLTextAreaElement>): void => {
+            //   if (isEdit && formik.initialValues.title !== formik.values.title)
+            //     formik.submitForm();
+            // }}
+            value={formik.values.title}
+            style={{ width: '100%' }}
+            rows={2}
+            placeholder={'New Category'}
+          />
+          <Form.Text className="text-danger">
+            {formik.touched.title && formik.errors.title ? (
+              <div className="text-danger">{formik.errors.title}</div>
+            ) : null}
+          </Form.Text>
+        </Form.Group>
 
-          {props.isEdit && <CreatedModifiedForm created={props.initialValues.created} modified={props.initialValues.modified} /> }
-          <FormButtons 
-            cancelForm={cancelForm}
-            handleSubmit={() => formik.handleSubmit()} title={props.children} />
-        </Form>
-      {/* </Formik> */}
-    </div>
+        {isEdit && 
+          <CreatedModifiedForm created={initialValues.created} modified={initialValues.modified} />
+        }
+        <FormButtons
+          cancelForm={cancelForm}
+          handleSubmit={formik.handleSubmit}
+          title={children}
+        />
+      </Form>
+    </div >
   );
 };
 

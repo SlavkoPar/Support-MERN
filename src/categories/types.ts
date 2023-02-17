@@ -1,6 +1,72 @@
+import { Types } from 'mongoose';
+
+import { IDateAndBy } from '../globalTypes';
 import { IOption } from '../common/types';
-import { Schema, Types } from 'mongoose';
-/*
+
+export const FORM_MODES = {
+	UNDEFINED: undefined,
+	NULL: null,
+	ADD: 'ADD',
+	EDIT: 'EDIT',
+	DELETE: 'DELETE'
+}
+
+export interface ICategory {
+	_id?: Types.ObjectId,
+	title: string,
+	level: number,
+	// questions: IQuestion[],
+	parentCategory: Types.ObjectId | null,
+	isExpanded?: boolean,
+	created?: IDateAndBy,
+	modified?: IDateAndBy,
+	inEditing?: boolean,
+	inAdding?: boolean
+}
+
+export interface ICategoriesState {
+	mode: string | null,
+	category: ICategory | null,
+	loading: boolean,
+	categories: ICategory[],
+	error?: any
+}
+
+export interface ICategoriesContext {
+	store: ICategoriesState,
+	getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	createCategory: (category: ICategory) => void,
+	editCategory: (_id: Types.ObjectId) => void,
+	updateCategory:  (category: ICategory) => void,
+	deleteCategory: (_id: Types.ObjectId) => void
+}
+
+export interface ICategoryFormProps {
+	initialValues: ICategory;
+	isEdit: boolean;
+	submitForm: (category: ICategory) => void,
+	children: string
+  }
+
+
+export enum ActionTypes  {
+	SET_LOADING = 'SET_LOADING',
+	SET_CATEGORIES = 'SET_CATEGORIES',
+	CLEAN_SUB_TREE = 'CLEAN_SUB_TREE',
+	SET_ERROR = 'SET_ERROR',
+	ADD = 'ADD',
+	REFRESH_ADDED_CATEGORY = 'REFRESH_ADDED_CATEGORY',
+	REFRESH_UPDATED_CATEGORY = 'REFRESH_UPDATED_CATEGORY',
+	EDIT = 'EDIT',
+	DELETE = 'DELETE',
+	CLOSE_ADDING_FORM = 'CLOSE_ADDING_FORM',
+	CANCEL_ADDING_FORM = 'CANCEL_ADDING_FORM',
+	CLOSE_EDITING_FORM = 'CLOSE_EDITING_FORM',
+	CANCEL_EDITING_FORM = 'CANCEL_EDITING_FORM'
+  }
+
+
+  /*
 import { IAuth } from "../types";
 
 // Define the Question type
@@ -155,69 +221,3 @@ export interface IQuestionFormProps {
   }
 
  */
-
-export const FORM_MODES = {
-	UNDEFINED: undefined,
-	NULL: null,
-	ADD: 'ADD',
-	EDIT: 'EDIT',
-	DELETE: 'DELETE'
-}
-
-
-export interface ICategory {
-	_id?: Types.ObjectId,
-	name: string,
-	level: number,
-	// questions: IQuestion[],
-	parentCategory: Types.ObjectId  // TODO proveri moze da bidne null !!!
-	isExpanded?: boolean,
-	created?: Date,
-	createdBy?: Types.ObjectId,
-	modified?: Date,
-	modifiedBy?: Types.ObjectId
-	inEditing?: boolean,
-	inAdding?: boolean
-}
-
-export interface ICategoriesState {
-	mode: string | null,
-	category: ICategory | null,
-	loading: boolean,
-	categories: ICategory[],
-	error?: any
-}
-
-export interface ICategoriesContext {
-	store: ICategoriesState,
-	getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
-	createCategory: (category: ICategory) => void,
-	editCategory: (_id: Types.ObjectId) => void,
-	updateCategory:  (category: ICategory) => void,
-	deleteCategory: (_id: Types.ObjectId) => void
-}
-
-export interface ICategoryFormProps {
-	initialValues: ICategory;
-	isEdit: boolean;
-	onSubmit: (category: ICategory) => void,
-	children: string
-  }
-
-
-export enum ActionTypes  {
-	SET_LOADING = 'SET_LOADING',
-	SET_CATEGORIES = 'SET_CATEGORIES',
-	CLEAN_SUB_TREE = 'CLEAN_SUB_TREE',
-	SET_ERROR = 'SET_ERROR',
-	ADD = 'ADD',
-	REFRESH_ADDED_CATEGORY = 'REFRESH_ADDED_CATEGORY',
-	REFRESH_UPDATED_CATEGORY = 'REFRESH_UPDATED_CATEGORY',
-	EDIT = 'EDIT',
-	DELETE = 'DELETE',
-	CLOSE_ADDING_FORM = 'CLOSE_ADDING_FORM',
-	CANCEL_ADDING_FORM = 'CANCEL_ADDING_FORM',
-	CLOSE_EDITING_FORM = 'CLOSE_EDITING_FORM',
-	CANCEL_EDITING_FORM = 'CANCEL_EDITING_FORM'
-  }
-

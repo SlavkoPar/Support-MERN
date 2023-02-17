@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Schema, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 import { Table, Button } from "react-bootstrap";
 import CategoryRow from "./CategoryRow";
@@ -20,7 +20,7 @@ const TreeView = ({ parentCategory, level }: { parentCategory: Types.ObjectId | 
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Name</th>
+                            <th>Title</th>
                             {/* <th>Level</th> */}
                             <th>Action</th>
                         </tr>
@@ -32,8 +32,8 @@ const TreeView = ({ parentCategory, level }: { parentCategory: Types.ObjectId | 
                             .filter(category => 
                                 category.parentCategory === parentCategory
                             )
-                            .map(category => 
-                                <CategoryRow category={category} key={category._id!.toString()} /> 
+                            .map((category, index) => 
+                                <CategoryRow category={category} key={index} /> 
                             )
                     }
                 </tbody>

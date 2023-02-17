@@ -8,11 +8,11 @@ let userSchema = require("../models/User");
 
 // CREATE User
 router.post("/create-user", (req, res, next) => {
-    const { role } = req.body;
-    if (role === 'FIRST_REGISTERED_USER_IS_OWNER') {
-        req.body.role = 'OWNER';
-        // TODO set CreatedBy = _id for OWNER
-    }
+    // const { role } = req.body;
+    // if (role === 'FIRST_REGISTERED_USER_IS_OWNER') {
+    //     req.body.role = 'OWNER';
+    //     // TODO set CreatedBy = _id for OWNER
+    // }
     userSchema.create(req.body, (error, data) => {
         if (error) {
             return next(error);

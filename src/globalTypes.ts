@@ -1,5 +1,14 @@
 // Define the Global State
-import { Schema, Types } from 'mongoose';
+import { Types } from 'mongoose';
+
+interface IBy {
+	userId: Types.ObjectId,
+	userName?: string
+}
+export interface IDateAndBy {
+	date: Date,
+	by: IBy
+}
 
 export interface IAuthUser {
 	userId: Types.ObjectId, // fiktivni _id
@@ -17,7 +26,6 @@ export enum ROLES {
 	ADMIN = 'ADMIN',
 	EDITOR = 'EDITOR',
 	VIEWER = 'VIEWER',
-	FIRST_REGISTERED_USER_IS_OWNER = 'FIRST_REGISTERED_USER_IS_OWNER'
 }
 
 export interface ILogin {
@@ -28,6 +36,6 @@ export interface ILogin {
 export interface IGlobalState {
 	isAuthenticated: boolean | null;
 	authError?: string;
-	user: IAuthUser;
+	authUser: IAuthUser;
 }
 

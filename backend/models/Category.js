@@ -1,30 +1,28 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const ObjectId = Schema.Types.ObjectId
+const DateBy = require('./schemas')
+
+const { Schema } = mongoose;
+const { ObjectId } = Schema.Types;
 
 let categorySchema = new Schema({
-    name: {
-        type: String
+    title: {
+        type: String,
+        required: true
     },
     created: {
-        type: Date
-    },
-    createdBy: {
-        type: ObjectId
+        type: DateBy,
+        required: true
     },
     modified: {
-        type: Date
-    },
-    modifiedBy: {
-        type: ObjectId
+        type: DateBy
     },
     level: {
-        type: Number
+        type: Number,
+        required: true
     },
     parentCategory: {
         type: ObjectId
     }
-
 }, {
     collection: 'categories'
 })

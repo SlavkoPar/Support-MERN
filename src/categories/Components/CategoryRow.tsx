@@ -10,12 +10,12 @@ import { useCategoryContext, useCategoryDispatch } from '../Provider'
 import TreeView from "./TreeView";
 import Add from "./Add";
 import Edit from "./Edit";
-import { Schema, Types } from "mongoose";
+import { Types } from "mongoose";
 
 import { ICategory } from '../types'
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
-    const { _id, name, level, inEditing, inAdding } = category;
+    const { _id, title, level, inEditing, inAdding } = category;
 
     const globalStore = useGlobalStore();
     const { store, editCategory, deleteCategory } = useCategoryContext();
@@ -53,7 +53,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                 onClick={expand}
                             />
                         </td>
-                        <td title={_id!.toString()} >{name}</td>
+                        <td title={_id!.toString()}>{title}</td>
                         {/* <td>{level} </td> */}
                         <td>
                             <div className="my-0 py-0" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -73,8 +73,10 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                         onClick={() => {
                                             dispatch({
                                                 type: ActionTypes.ADD,
-                                                category,
-                                                createdBy: globalStore.user.userId
+                                                payload: {
+                                                    parentCategory: _id,
+                                                    category
+                                                }
                                             })
                                             if (!isExpanded)
                                                 setIsExpanded(true)

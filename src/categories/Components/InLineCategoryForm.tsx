@@ -1,30 +1,30 @@
-import { useEffect, useRef } from "react";
+import { FormEvent, useEffect, useRef } from "react";
 import * as Yup from "yup";
-import { Form, Field, ErrorMessage, useFormik } from "formik";
-import { FormGroup } from "react-bootstrap";
+import { useFormik } from "formik";
+import { Form, FormGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 
 import { FormButtons } from "../../common/FormButtons"
 
-import { ActionTypes, ICategory } from "../types";
+import { ActionTypes, ICategoryFormProps } from "../types";
 
 import { useCategoryDispatch } from "../Provider";
 
-const InLineCategoryForm = (props: any) => {
-  const { _id, level } = props.initialValues;
+const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategoryFormProps) => {
+  const { _id, level } = initialValues;
 
   const dispatch = useCategoryDispatch();
 
   const cancelForm = () => {
-    dispatch({ type: props.isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
+    dispatch({ type: isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
   }
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: props.initialValues,
+    initialValues,
     validationSchema: Yup.object().shape({
-      name: Yup.string().required("Required"),
+      title: Yup.string().required("Required"),
       // email: Yup.string()
       //   .email("You have enter an invalid email address")
       //   .required("Required"),
@@ -34,51 +34,66 @@ const InLineCategoryForm = (props: any) => {
       //   .required("Required"),
     }),
     onSubmit: values => {
-      // alert(JSON.stringify(values, null, 2));
-      props.onSubmit(values)
+      //alert(JSON.stringify(values, null, 2));
+      console.log('InLineCategoryForm.onSubmit', JSON.stringify(values, null, 2))
+      submitForm(values)
       //props.handleClose(false);
     }
   });
 
-
-
-  console.log(props);
-  const nameRef = useRef<HTMLInputElement | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const titleRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    nameRef.current!.focus()
-  }, [])
+    titleRef.current!.focus()
+  }, [titleRef])
+
+
 
   return (
-    // <div className="form-wrapper">
     // <CloseButton onClick={closeForm} />
 
     <tr>
       <td>
         <FontAwesomeIcon color='orange' size='lg' icon={faCaretRight} />
       </td>
-      <td title={_id}>
-        <Form >
-          <FormGroup>
-            <Field name="name" type="text" className="form-control" innerRef={nameRef} />
-            <ErrorMessage
-              name="name"
-              className="d-block invalid-feedback"
-              component="span"
+      <td title={_id!.toString()}>
+        <Form onSubmit={formik.handleSubmit} ref={formRef}>
+          <Form.Group controlId="title">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              as="textarea"
+              name="title"
+              ref={titleRef}
+              onChange={formik.handleChange}
+              //onBlur={formik.handleBlur}
+              //onBlur={(e: React.FocusEvent<HTMLTextAreaElement>): void => {
+              // if (isEdit && formik.initialValues.title !== formik.values.title)
+              // formik.submitForm();
+              //}}
+
+              value={formik.values.title}
+              style={{ width: '100%' }}
+              rows={2}
+              placeholder={'New Category'}
             />
-          </FormGroup>
+            <Form.Text className="text-danger">
+              {formik.touched.title && formik.errors.title ? (
+                <div className="text-danger">{formik.errors.title}</div>
+              ) : null}
+            </Form.Text>
+          </Form.Group>
         </Form>
       </td>
       <td>
         <FormButtons
-          title={props.children}
           cancelForm={cancelForm}
-          handleSubmit={() => formik.handleSubmit()}
+          handleSubmit={formik.handleSubmit}
+          title={children}
         />
       </td>
     </tr >
 
-    // </div>
   );
 };
 
