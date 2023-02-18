@@ -60,7 +60,7 @@ const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICa
       <td title={_id!.toString()}>
         <Form onSubmit={formik.handleSubmit} ref={formRef}>
           <Form.Group controlId="title">
-            <Form.Label>Title</Form.Label>
+            {/* <Form.Label>Title</Form.Label> */}
             <Form.Control
               as="textarea"
               name="title"

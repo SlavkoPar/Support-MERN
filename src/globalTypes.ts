@@ -1,13 +1,12 @@
 // Define the Global State
 import { Types } from 'mongoose';
 
-interface IBy {
-	userId: Types.ObjectId,
-	userName?: string
-}
 export interface IDateAndBy {
 	date: Date,
-	by: IBy
+	by: {
+		userId: Types.ObjectId,
+		userName?: string
+	}
 }
 
 export interface IAuthUser {

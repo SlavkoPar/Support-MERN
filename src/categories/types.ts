@@ -19,7 +19,9 @@ export interface ICategory {
 	parentCategory: Types.ObjectId | null,
 	isExpanded?: boolean,
 	created?: IDateAndBy,
+	createdBy?: string,
 	modified?: IDateAndBy,
+	modifiedBy?: string,
 	inEditing?: boolean,
 	inAdding?: boolean
 }

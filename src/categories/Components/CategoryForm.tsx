@@ -79,7 +79,12 @@ const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategory
         </Form.Group>
 
         {isEdit && 
-          <CreatedModifiedForm created={initialValues.created} modified={initialValues.modified} />
+          <CreatedModifiedForm 
+            created={initialValues.created}
+            createdBy={initialValues.createdBy}
+            modified={initialValues.modified} 
+            modifiedBy={initialValues.modifiedBy}
+          />
         }
         <FormButtons
           cancelForm={cancelForm}

@@ -15,9 +15,13 @@ const Edit = () => {
 
     const submitForm = (categoryObject: ICategory) => {
         const object: ICategory = {
-            ...categoryObject
-            //modified: new Date(),
-            //modifiedBy: globalStore.user.userId
+            ...categoryObject,
+            modified: {
+                date: new Date(),
+                by: {
+                    userId: globalStore.authUser.userId
+                }
+            }
         }
         updateCategory(object)
     };

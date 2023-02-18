@@ -1,9 +1,9 @@
 import React from "react";
 import { Form, FormGroup, Container, Row, Col } from "react-bootstrap";
 import { formatDate } from './utilities'
-import { IDateAndBy } from '../globalTypes'
+import { ICreatedModifiedProps } from './types'
 
-export const CreatedModifiedForm = ({ created, modified }: { created?: IDateAndBy, modified?: IDateAndBy }) => {
+export const CreatedModifiedForm = ({ created, createdBy, modified, modifiedBy }: ICreatedModifiedProps) => {
   return (
     <Container className="my-1">
       <Row>
@@ -15,11 +15,11 @@ export const CreatedModifiedForm = ({ created, modified }: { created?: IDateAndB
               <fieldset style={{ border: '1px solid silver', borderRadius: '5px', padding: '5px' }}>
                 <Form.Group controlId="created_By_userName">
                   <Form.Label className="id">Created By</Form.Label>
-                  <input name="created_By_userName" type="text" defaultValue={created.by.userName} className="form-control form-control-sm" disabled />
+                  <input name="createdBy" type="text" defaultValue={createdBy} className="form-control form-control-sm" disabled />
                 </Form.Group>
 
                 <Form.Group controlId="created">
-                  <Form.Label className="id">Created:</Form.Label>
+                  {/* <Form.Label className="id">Date:</Form.Label> */}
                   <input type="text" defaultValue={formatDate(created.date)} className="form-control form-control-sm" disabled />
                 </Form.Group>
               </fieldset>
@@ -31,16 +31,15 @@ export const CreatedModifiedForm = ({ created, modified }: { created?: IDateAndB
               {/* <legend style={{ margin: '0px' }}>Modified</legend> */}
               < fieldset style={{ border: '1px solid silver', borderRadius: '5px', padding: '5px' }}>
                 <FormGroup>
-                  <label htmlFor="modified_By_userName" className="form-label">Modified By</label>
+                  <label htmlFor="modifiedBy" className="form-label">Modified By</label>
                   {/* <Field name="modifiedBy_userName" type="text" className="form-control form-control-sm" disabled /> */}
-                  <input name="modified_By_userName" defaultValue={modified.by.userName} type="text" className="form-control form-control-sm" disabled />
-
+                  <input name="modifiedBy" defaultValue={modifiedBy} type="text" className="form-control form-control-sm" disabled />
                 </FormGroup>
 
-                <FormGroup>
-                  {/* <label htmlFor="modified" className="form-label">Date</label> */}
-                  {/* <Field name="modified" type="text" className="form-control form-control-sm" disabled /> */}
-                </FormGroup>
+                <Form.Group controlId="modified">
+                  {/* <Form.Label className="id">Date:</Form.Label> */}
+                  <input type="text" defaultValue={formatDate(modified.date)} className="form-control form-control-sm" disabled />
+                </Form.Group>
               </fieldset>
             </>
           }

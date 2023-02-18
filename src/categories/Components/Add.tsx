@@ -4,15 +4,16 @@ import { useGlobalStore } from '../../GlobalStoreProvider'
 
 import CategoryForm from "./CategoryForm";
 import InLineCategoryForm from "./InLineCategoryForm";
+import { ICategory } from "../types";
 
-const Add = ({ category, inLine }) => {
+const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
     const globalStore = useGlobalStore();
 
     const [formValues, setFormValues] = useState(category)
 
     const { store, createCategory } = useCategoryContext();
 
-    const submitForm = categoryObject => {
+    const submitForm = (categoryObject: ICategory) => {
         delete categoryObject._id;
         delete categoryObject.inAdding;
         const object = {
@@ -23,7 +24,6 @@ const Add = ({ category, inLine }) => {
                     userId: globalStore.authUser.userId
                 }
             }
-
         }
         createCategory(object);
     }

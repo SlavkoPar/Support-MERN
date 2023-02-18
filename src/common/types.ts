@@ -1,3 +1,4 @@
+import { IDateAndBy } from '../globalTypes'
 
 export type OptionValue = string | number;
 
@@ -8,3 +9,9 @@ export type IOption<T extends OptionValue> = {
     checked?: boolean;
 };
 
+export type ICreatedModifiedProps = { 
+    created?: IDateAndBy, 
+    createdBy?: string,
+    modified?: IDateAndBy,
+    modifiedBy?: string
+  }

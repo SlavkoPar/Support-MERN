@@ -18,23 +18,114 @@ router.post("/create-category", (req, res, next) => {
   });
 });
 
-// CREATE SubCategory
-router.post("/create-subcategory", (req, res, next) => {
-  categorySchema.create(req.body, (error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      console.log(data);
-      res.json(data);
-    }
-  });
-});
-
-const pipeline = [
+const pipeline =[
   {
     $lookup: {
       from: "users",
-      localField: "createdBy",
+      let: {
+        searchId: {
+          $toObjectId: "$created.by.userId",
+        },
+      },
+      //search query with our [searchId] value
+      pipeline: [
+        //searching [searchId] value equals your field [_id]
+        {
+          $match: {
+            $expr: [
+              {
+                _id: "$$searchId",
+              },
+            ],
+          },
+        },
+        //projecting only fields you reaaly need, otherwise you will store all - huge data loads
+        {
+          $project: {
+            createdBy: "$userName",
+          },
+        },
+      ],
+      as: "fromUsers",
+    },
+  },
+  {
+    $lookup: {
+      from: "users",
+      //setting variable [searchId] where your string converted to ObjectId
+      let: {
+        searchId: {
+          $toObjectId: "$modified.by.userId",
+        },
+      },
+      //search query with our [searchId] value
+      pipeline: [
+        //searching [searchId] value equals your field [_id]
+        {
+          $match: {
+            $expr: [
+              {
+                _id: "$$searchId",
+              },
+            ],
+          },
+        },
+        //projecting only fields you reaaly need, otherwise you will store all - huge data loads
+        {
+          $project: {
+            modifiedBy: "$userName",
+          },
+        },
+      ],
+      as: "fromUsers2",
+    },
+  },
+  {
+    $replaceRoot: {
+      newRoot: {
+        $mergeObjects: [
+          {
+            $arrayElemAt: ["$fromUsers", 0],
+          },
+          {
+            $cond: [
+              {
+                $gt: [
+                  {
+                    $size: "$fromUsers2",
+                  },
+                  0,
+                ],
+              },
+              {
+                $arrayElemAt: ["$fromUsers2", 0],
+              },
+              null,
+            ],
+          },
+          "$$ROOT",
+        ],
+      },
+    },
+  },
+  {
+    $project: {
+      title: 1,
+      level: 1,
+      parentCategory: 1,
+      created: 1,
+      createdBy: 1,
+      modified: 1,
+      modifiedBy: 1,
+    },
+  },
+]
+
+const pipelineWas = [
+  {
+    $lookup: {
+      from: "users",
+      localField: "created.by.userId",
       foreignField: "_id",
       as: "fromUsers",
     },
@@ -42,7 +133,7 @@ const pipeline = [
   {
     $lookup: {
       from: "users",
-      localField: "modifiedBy",
+      localField: "modified.by.userId",
       foreignField: "_id",
       as: "fromUsers2",
     },
