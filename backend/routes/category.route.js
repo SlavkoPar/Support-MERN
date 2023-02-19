@@ -8,6 +8,7 @@ let categorySchema = require("../models/Category");
 
 // CREATE Category
 router.post("/create-category", (req, res, next) => {
+  req.body.modified = null; // to ease the lookup to users
   categorySchema.create(req.body, (error, data) => {
     if (error) {
       return next(error);
@@ -52,15 +53,20 @@ const pipeline =[
   {
     $lookup: {
       from: "users",
-      //setting variable [searchId] where your string converted to ObjectId
       let: {
         searchId: {
-          $toObjectId: "$modified.by.userId",
+          $toObjectId: {
+            $cond: [
+              {
+                $ne: ["$modified", null],
+              },
+              "$modified.by.userId",
+              null,
+            ],
+          },
         },
       },
-      //search query with our [searchId] value
       pipeline: [
-        //searching [searchId] value equals your field [_id]
         {
           $match: {
             $expr: [
@@ -70,10 +76,17 @@ const pipeline =[
             ],
           },
         },
-        //projecting only fields you reaaly need, otherwise you will store all - huge data loads
         {
           $project: {
-            modifiedBy: "$userName",
+            modifiedBy: {
+              $cond: [
+                {
+                  $ne: ["$$searchId", null],
+                },
+                "$userName",
+                "Unspecfied",
+              ],
+            },
           },
         },
       ],
@@ -100,7 +113,9 @@ const pipeline =[
               {
                 $arrayElemAt: ["$fromUsers2", 0],
               },
-              null,
+              {
+                modifiedBy: "Unspec",
+              },
             ],
           },
           "$$ROOT",

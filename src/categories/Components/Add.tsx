@@ -16,7 +16,7 @@ const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => 
     const submitForm = (categoryObject: ICategory) => {
         delete categoryObject._id;
         delete categoryObject.inAdding;
-        const object = {
+        const object: ICategory = {
             ...categoryObject,
             created: {
                 date: new Date(),
