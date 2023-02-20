@@ -12,7 +12,7 @@ export const CreatedModifiedForm = ({ created, createdBy, modified, modifiedBy }
           {created &&
             <>
               {/* <legend style={{ margin: '0px' }}>Created</legend> */}
-              <fieldset style={{ border: '1px solid silver', borderRadius: '5px', padding: '5px' }}>
+              <fieldset className="fieldsets">
                 <Form.Group controlId="created_By_userName">
                   <Form.Label className="id">Created By</Form.Label>
                   <input name="createdBy" type="text" defaultValue={createdBy} className="form-control form-control-sm" disabled />
@@ -29,10 +29,9 @@ export const CreatedModifiedForm = ({ created, createdBy, modified, modifiedBy }
           {modified &&
             <>
               {/* <legend style={{ margin: '0px' }}>Modified</legend> */}
-              < fieldset style={{ border: '1px solid silver', borderRadius: '5px', padding: '5px' }}>
+              < fieldset className="fieldsets">
                 <FormGroup>
                   <label htmlFor="modifiedBy" className="form-label">Modified By</label>
-                  {/* <Field name="modifiedBy_userName" type="text" className="form-control form-control-sm" disabled /> */}
                   <input name="modifiedBy" defaultValue={modifiedBy} type="text" className="form-control form-control-sm" disabled />
                 </FormGroup>
 

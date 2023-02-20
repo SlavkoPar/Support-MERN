@@ -14,8 +14,6 @@ export interface IAuthUser {
 	color?: string,
 	userName?: string,
 	role: ROLES,
-	canEdit: boolean,
-	darkMode: boolean;
 	registered?: Date,
 	visited?: Date
 }
@@ -36,5 +34,7 @@ export interface IGlobalState {
 	isAuthenticated: boolean | null;
 	authError?: string;
 	authUser: IAuthUser;
+	canEdit: boolean,
+	darkMode: boolean;
 }
 

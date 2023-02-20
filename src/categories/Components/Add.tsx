@@ -10,7 +10,7 @@ import { initialCategory } from "../categoriesReducer";
 const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
     const globalStore = useGlobalStore();
 
-    const [formValues, setFormValues] = useState(category)
+    const [formValues] = useState(category)
 
     const { store, createCategory } = useCategoryContext();
 

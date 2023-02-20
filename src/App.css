@@ -89,3 +89,15 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.row-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: 'center';
+}
+
+.fieldsets { 
+  border: '1px solid silver';
+  border-radius: '5px';
+  padding: '5px'
+}

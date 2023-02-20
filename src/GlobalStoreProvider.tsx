@@ -9,13 +9,14 @@ import { IGlobalState, ROLES } from './globalTypes'
 const initialState: IGlobalState = {
   isAuthenticated: true,
   authUser: {
-    userId: new Types.ObjectId('63ef5e1813d8ce86929c61be'), 
+    userId: new Types.ObjectId('63ef5e1813d8ce86929c61be'),
     color: 'blue',
     userName: 'Slavko',
     role: ROLES.OWNER,
-    canEdit: true,
-    darkMode: true
   },
+  canEdit: true,
+  darkMode: true
+
 }
 
 const GlobalStoreContext = createContext<IGlobalState>(initialState);

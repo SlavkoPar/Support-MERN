@@ -11,13 +11,14 @@ import TreeView from "./TreeView";
 import Add from "./Add";
 import Edit from "./Edit";
 import { Types } from "mongoose";
+import { useHover } from '../../common/components/useHover';
 
 import { ICategory } from '../types'
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inEditing, inAdding } = category;
 
-    const globalStore = useGlobalStore();
+    const { canEdit } = useGlobalStore();
     const { store, editCategory, deleteCategory } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
@@ -31,7 +32,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
         const refresh = isExpanded;
         setIsExpanded(!isExpanded);
         if (refresh)
-            dispatch({ type: ActionTypes.CLEAN_SUB_TREE, category })
+            dispatch({ type: ActionTypes.CLEAN_SUB_TREE, payload: { category } })
     }
 
     const edit = (_id: Types.ObjectId) => {
@@ -39,6 +40,9 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
         editCategory(_id);
     }
     // console.log({ inEditing, isExpanded, inAdding })
+    const [hoverRef, hoverProps] = useHover();
+
+    console.log({canEdit})
 
     return (
         <>
@@ -56,33 +60,37 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                         <td title={_id!.toString()}>{title}</td>
                         {/* <td>{level} </td> */}
                         <td>
-                            <div className="my-0 py-0" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                <Button size="sm" className="ms-2"
-                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                    onClick={() => edit(_id!)}
-                                >
-                                    Edit
-                                </Button>
-                                <Button
-                                    onClick={del} size="sm" className="ms-2" variant="danger"
-                                >
-                                    Delete
-                                </Button>
-                                <Button size="sm" className="ms-2" title="Add SubCategory" >
-                                    <FontAwesomeIcon icon={faPlus} color='orange' size='sm'
-                                        onClick={() => {
-                                            dispatch({
-                                                type: ActionTypes.ADD,
-                                                payload: { 
-                                                    parentCategory: category._id,
-                                                    level: category.level
-                                                }
-                                            })
-                                            if (!isExpanded)
-                                                setIsExpanded(true)
-                                        }}
-                                    />
-                                </Button>
+                            <div className="my-0 py-0 row-buttons d-flex justify-content-start align-items-center" ref={hoverRef}>
+                                {canEdit && hoverProps.isHovered &&
+                                    <>
+                                        <Button variant='link' size="sm" className="ms-2 py-0 px-1"
+                                            //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
+                                            onClick={() => edit(_id!)}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button variant='link' size="sm" className="ms-2 py-0 mx-1"
+                                            onClick={del}
+                                        >
+                                            Delete
+                                        </Button>
+                                        <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
+                                            <FontAwesomeIcon icon={faPlus} color='orange' size='sm'
+                                                onClick={() => {
+                                                    dispatch({
+                                                        type: ActionTypes.ADD,
+                                                        payload: {
+                                                            parentCategory: category._id,
+                                                            level: category.level
+                                                        }
+                                                    })
+                                                    if (!isExpanded)
+                                                        setIsExpanded(true)
+                                                }}
+                                            />
+                                        </Button>
+                                    </>
+                                }
                             </div>
                         </td>
                     </tr>
