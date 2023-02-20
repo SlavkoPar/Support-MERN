@@ -41,7 +41,6 @@ const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategory
     }
   });
 
-  console.log(initialValues);
   // eslint-disable-next-line no-self-compare
   // const nameRef = useRef<HTMLAreaElement | null>(null);
   const nameRef = useRef<HTMLTextAreaElement>(null);

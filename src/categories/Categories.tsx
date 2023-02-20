@@ -22,8 +22,8 @@ const Providered = () => {
                 onClick={() => dispatch({ 
                         type: ActionTypes.ADD,
                         payload: {
-                            parentCategory: null,
-                            category: initialCategory
+                             parentCategory: null,
+                             level: 0 
                         }
                     })
                 }

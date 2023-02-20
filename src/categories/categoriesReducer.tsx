@@ -1,15 +1,15 @@
-import { FORM_MODES, ActionTypes, ICategoriesState, ICategory } from "./types";
+import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo } from "./types";
 import { Types } from 'mongoose';
 import { AxiosError } from "axios";
 
 export const initialCategory: ICategory = {
-  // to be used as CategoryRow key in list,
-  // _id will be removed from submitForm
-  // real _id will given by the MongoDB 
+  // temp _id for inAdding, to server as list key
+  // it will be removed on submitForm
+  // real _id will be given by the MongoDB 
   _id: new Types.ObjectId('000000000000000000000000'),
   title: '',
   level: 0,
-  parentCategory: null,
+  parentCategory: null
 }
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -41,10 +41,7 @@ type CategoriesPayload = {
   [ActionTypes.CLOSE_EDITING_FORM]: {
   };
 
-  [ActionTypes.ADD]: {
-    parentCategory: Types.ObjectId,
-    category: ICategory
-  };
+  [ActionTypes.ADD]: IParentInfo;
 
   [ActionTypes.EDIT]: {
     category: ICategory;
@@ -118,13 +115,13 @@ export const categoriesReducer = (state: ICategoriesState, action: CategoriesAct
     }
 
     case ActionTypes.ADD: {
-      const { parentCategory, category } = action.payload;
+      const { parentCategory, level } = action.payload;
       const categories: ICategory[] = [
         {
-          ...category,
-          level: category.level + 1,
+          ...initialCategory,
+          title: '',
+          level: level + 1,
           parentCategory,
-          created: category.created,
           inAdding: true
         },
         ...state.categories

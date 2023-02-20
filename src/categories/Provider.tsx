@@ -7,7 +7,7 @@ import axios, { AxiosError } from "axios";
 
 const initialState: ICategoriesState = {
   mode: FORM_MODES.NULL,
-  category: null,
+  // category: null,
   loading: false,
   categories: []
 }

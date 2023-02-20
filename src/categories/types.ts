@@ -26,9 +26,13 @@ export interface ICategory {
 	inAdding?: boolean
 }
 
+export interface IParentInfo {
+    parentCategory: Types.ObjectId | null,
+    level: number
+  }
+
 export interface ICategoriesState {
 	mode: string | null,
-	category: ICategory | null,
 	loading: boolean,
 	categories: ICategory[],
 	error?: any

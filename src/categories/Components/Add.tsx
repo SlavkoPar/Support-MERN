@@ -5,6 +5,7 @@ import { useGlobalStore } from '../../GlobalStoreProvider'
 import CategoryForm from "./CategoryForm";
 import InLineCategoryForm from "./InLineCategoryForm";
 import { ICategory } from "../types";
+import { initialCategory } from "../categoriesReducer";
 
 const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
     const globalStore = useGlobalStore();
@@ -14,10 +15,10 @@ const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => 
     const { store, createCategory } = useCategoryContext();
 
     const submitForm = (categoryObject: ICategory) => {
-        delete categoryObject._id;
         delete categoryObject.inAdding;
         const object: ICategory = {
             ...categoryObject,
+            _id: undefined,
             created: {
                 date: new Date(),
                 by: {

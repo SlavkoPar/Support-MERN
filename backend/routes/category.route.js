@@ -8,7 +8,7 @@ let categorySchema = require("../models/Category");
 
 // CREATE Category
 router.post("/create-category", (req, res, next) => {
-  req.body.modified = null; // to ease the lookup to users
+  req.body.modified = null; // to be more readable, mongo treats undefineds as nulls
   categorySchema.create(req.body, (error, data) => {
     if (error) {
       return next(error);

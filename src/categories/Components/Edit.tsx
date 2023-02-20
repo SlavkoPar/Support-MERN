@@ -9,7 +9,7 @@ import { ICategory } from "../types";
 const Edit = () => {
     const globalStore = useGlobalStore();
     const { store, updateCategory } = useCategoryContext();
-    const { category } = store;
+    const category = store.categories.find(c=>c.inEditing);
 
     const [formValues, setFormValues] = useState<ICategory>(category!);
 

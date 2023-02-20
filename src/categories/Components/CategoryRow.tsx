@@ -73,9 +73,9 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                         onClick={() => {
                                             dispatch({
                                                 type: ActionTypes.ADD,
-                                                payload: {
-                                                    parentCategory: _id,
-                                                    category
+                                                payload: { 
+                                                    parentCategory: category._id,
+                                                    level: category.level
                                                 }
                                             })
                                             if (!isExpanded)

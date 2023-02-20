@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Types } from 'mongoose';
 
-import { Table, Button } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import CategoryRow from "./CategoryRow";
-import { FORM_MODES, ActionTypes } from "../types";
-import { useCategoryContext, useCategoryDispatch } from "../Provider";
+import { IParentInfo } from "../types";
+import { useCategoryContext } from "../Provider";
 
-const TreeView = ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => {
+const TreeView = ({ parentCategory, level }: IParentInfo) => {
     const { store, getCategories } = useCategoryContext();
     useEffect(() => {
         console.log('Zovem getCategories', level, parentCategory)
@@ -32,8 +32,8 @@ const TreeView = ({ parentCategory, level }: { parentCategory: Types.ObjectId | 
                             .filter(category => 
                                 category.parentCategory === parentCategory
                             )
-                            .map((category, index) => 
-                                <CategoryRow category={category} key={index} /> 
+                            .map((category) => // inAdding category has no _id
+                                <CategoryRow category={category} key={category._id!.toString()} /> 
                             )
                     }
                 </tbody>
