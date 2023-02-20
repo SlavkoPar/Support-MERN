@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faEdit, faCaretRight, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
 
-import { Button } from "react-bootstrap";
+import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalStore } from '../../GlobalStoreProvider'
 import { ActionTypes } from "../types";
@@ -42,7 +42,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     // console.log({ inEditing, isExpanded, inAdding })
     const [hoverRef, hoverProps] = useHover();
 
-    console.log({canEdit})
+    console.log({ canEdit })
 
     return (
         <>
@@ -50,67 +50,81 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 <Add category={category} inLine={true} />
             )
                 : (
-                    <tr>
-                        <td>
-                            <FontAwesomeIcon color='orange' size='lg'
-                                icon={isExpanded ? faCaretDown : faCaretRight}
+                    <ListGroup.Item
+                        variant={'dark'}
+                        className="py-0 px-1"
+                        as="li"
+                    >
+                        <div ref={hoverRef} className="d-flex justify-content-start align-items-center" title={_id!.toString()}>
+                            <Button
+                                variant='link'
+                                size="sm"
+                                className="py-0 px-1"
                                 onClick={expand}
-                            />
-                        </td>
-                        <td title={_id!.toString()}>{title}</td>
-                        {/* <td>{level} </td> */}
-                        <td>
-                            <div className="my-0 py-0 row-buttons d-flex justify-content-start align-items-center" ref={hoverRef}>
-                                {canEdit && hoverProps.isHovered &&
-                                    <>
-                                        <Button variant='link' size="sm" className="ms-2 py-0 px-1"
-                                            //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                            onClick={() => edit(_id!)}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button variant='link' size="sm" className="ms-2 py-0 mx-1"
-                                            onClick={del}
-                                        >
-                                            Delete
-                                        </Button>
-                                        <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
-                                            <FontAwesomeIcon icon={faPlus} color='orange' size='sm'
-                                                onClick={() => {
-                                                    dispatch({
-                                                        type: ActionTypes.ADD,
-                                                        payload: {
-                                                            parentCategory: category._id,
-                                                            level: category.level
-                                                        }
-                                                    })
-                                                    if (!isExpanded)
-                                                        setIsExpanded(true)
-                                                }}
-                                            />
-                                        </Button>
-                                    </>
-                                }
-                            </div>
-                        </td>
-                    </tr>
+                                title="Expand"
+                            >
+                                <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} color='orange' size='lg' />
+                            </Button>
+                            <Button
+                                variant='link'
+                                size="sm"
+                                className="py-0 mx-1 text-decoration-none"
+                            // onClick={() => onSelectCategory(categoryId)}
+                            >
+                                {title}
+                            </Button>
+                            <Badge bg="primary" pill>
+                                {11}
+                            </Badge>
+                            <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
+                                <FontAwesomeIcon icon={faPlus} color='orange' size='sm'
+                                    onClick={() => {
+                                        dispatch({
+                                            type: ActionTypes.ADD,
+                                            payload: {
+                                                parentCategory: category._id,
+                                                level: category.level
+                                            }
+                                        })
+                                        if (!isExpanded)
+                                            setIsExpanded(true)
+                                    }}
+                                />
+                            </Button>
+
+                            {canEdit && hoverProps.isHovered &&
+                                <Button variant='link' size="sm" className="ms-2 py-0 px-1"
+                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
+                                    onClick={() => edit(_id!)}
+                                >
+                                    Edit
+                                </Button>
+                            }
+
+                            {canEdit && hoverProps.isHovered &&
+                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1"
+                                    onClick={del}
+                                >
+                                    Delete
+                                </Button>
+                            }
+                        </div>
+                    </ListGroup.Item>
                 )
             }
 
             {(isExpanded || inEditing) && !inAdding &&
-                <tr>
-                    <td colSpan={4} className="px-0 py-0">
-                        {inEditing ? ( // store.mode === FORM_MODES.EDIT &&
-                            // <div class="d-lg-none">hide on lg and wider screens</div>
-                            <div className="mx-3 d-md-none">
-                                <Edit />
-                            </div>
-                        )
-                            : (
-                                <TreeView level={level + 1} parentCategory={_id!} />
-                            )}
-                    </td>
-                </tr>
+                <ListGroup.Item className="py-0 px-0" variant={'dark'}>
+                    {inEditing ? ( // store.mode === FORM_MODES.EDIT &&
+                        // <div class="d-lg-none">hide on lg and wider screens</div>
+                        <div className="mx-3 d-md-none">
+                            <Edit />
+                        </div>
+                    )
+                        : (
+                            <TreeView level={level + 1} parentCategory={_id!} />
+                        )}
+                </ListGroup.Item>
             }
         </>
     );
