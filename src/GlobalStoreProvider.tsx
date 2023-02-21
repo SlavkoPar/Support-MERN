@@ -12,11 +12,12 @@ const initialState: IGlobalState = {
     userId: new Types.ObjectId('63ef5e1813d8ce86929c61be'),
     color: 'blue',
     userName: 'Slavko',
-    role: ROLES.OWNER,
+    roleId: ROLES.OWNER,
   },
   canEdit: true,
-  darkMode: true
-
+  isDarkMode: true,
+  variant: 'dark',
+  bg: 'dark'
 }
 
 const GlobalStoreContext = createContext<IGlobalState>(initialState);

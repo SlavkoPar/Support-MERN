@@ -4,6 +4,8 @@ import { Nav, Navbar, Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 
+import { SideBar } from './SideBar'
+
 import './App.css';
 
 import { IUser } from './users/types';
@@ -51,42 +53,31 @@ function App() {
   }, [])
 
   return (
-    <Router>
-      <div className="App">
-        <header className="App-header">
-          <Navbar bg="dark" variant="dark">
-            <Container>
-              <Nav className="justify-content-end">
-                <Nav>
-                  <Link to={"/categories"} className="nav-link">
-                    Categories
-                  </Link>
-                </Nav>
-                <Nav>
-                  <Link to={"/users"} className="nav-link">
-                    Users
-                  </Link>
-                </Nav>
-              </Nav>
-            </Container>
-          </Navbar>
-        </header>
+    <Container fluid className="App">
 
-        <Container>
-          <Row>
-            <Col md={12}>
-              <div className="wrapper">
-                <Routes>
-                  <Route path="/" element={<Categories />} />
-                  <Route path="/categories" element={<Categories />} />
-                  {/* <Route path="/users" element={<Users />} /> */}
-                </Routes>
-              </div>
-            </Col>
-          </Row>
+      <Router>
+        <Container fluid className="App">
+          <header className="App-header">
+          <SideBar />
+          </header>
+
+          <Container>
+            <Row>
+              <Col md={12}>
+                <div className="wrapper">
+                  <Routes>
+                    <Route path="/" element={<Categories />} />
+                    <Route path="/categories" element={<Categories />} />
+                    {/* <Route path="/users" element={<Users />} /> */}
+                  </Routes>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+          
         </Container>
-      </div>
-    </Router>
+      </Router>
+    </Container>
   );
 }
 

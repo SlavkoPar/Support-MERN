@@ -1,3 +1,4 @@
+import React from 'react'
 import { IGlobalState } from "./globalTypes";
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -13,8 +14,8 @@ type ActionMap<M extends { [index: string]: any }> = {
 
 export enum ActionTypes {
     Authenticate = "AUTHENTICATE",
-    Delete = "DELETE_CATEGORY",
-    Add = "ADD_CATEGORY"
+    DARK_MODE = "DARK_MODE",
+    LIGHT_MODE = "LIGHT_MODE"
 }
 
 type GlobalPayload = {
@@ -23,24 +24,29 @@ type GlobalPayload = {
         name: string;
         price: number;
     };
-    [ActionTypes.Delete]: {
-        id: number;
+    [ActionTypes.LIGHT_MODE]: {
+    };
+    [ActionTypes.DARK_MODE]: {
     };
 };
 
 export type GlobalActions = ActionMap<GlobalPayload>[keyof ActionMap<GlobalPayload>];
 
-export const globalReducer = (state: IGlobalState, action: GlobalActions) => {
+export const globalReducer: React.Reducer<IGlobalState, GlobalActions> = (state, action) => {
+    const s = action.type;
     switch (action.type) {
-          case ActionTypes.Authenticate:
+        case ActionTypes.Authenticate:
             return {
-              ...state,
-              isAuthenticated: true
+                ...state,
+                isAuthenticated: true
             };
-        //   case Types.Delete:
-        //     return [...state.filter(product => product.id !== action.payload.id)];
-        default:
-            return state;
+        case ActionTypes.LIGHT_MODE:
+            return { ...state, isDarkMode: false, variant: 'light', bg: 'light' };
+        case ActionTypes.DARK_MODE:
+            return { ...state, isDarkMode: true, variant: 'dark', bg: 'dark' };
+        default: {
+            throw Error('Unknown action: ' + s);
+        }
     }
 };
 

@@ -13,7 +13,7 @@ export interface IAuthUser {
 	userId: Types.ObjectId, // fiktivni _id
 	color?: string,
 	userName?: string,
-	role: ROLES,
+	roleId: ROLES,
 	registered?: Date,
 	visited?: Date
 }
@@ -35,6 +35,8 @@ export interface IGlobalState {
 	authError?: string;
 	authUser: IAuthUser;
 	canEdit: boolean,
-	darkMode: boolean;
+	isDarkMode: boolean;
+	variant: string,
+	bg: string
 }
 

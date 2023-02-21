@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindowClose, faEdit, faCaretRight, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
@@ -18,7 +18,8 @@ import { ICategory } from '../types'
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inEditing, inAdding } = category;
 
-    const { canEdit } = useGlobalStore();
+    const { canEdit, isDarkMode: darkMode, variant, bg } = useGlobalStore();
+
     const { store, editCategory, deleteCategory } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
@@ -51,8 +52,8 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
             )
                 : (
                     <ListGroup.Item
-                        variant={'dark'}
-                        className="py-0 px-1"
+                        variant={variant}
+                        className="py-1 px-1"
                         as="li"
                     >
                         <div ref={hoverRef} className="d-flex justify-content-start align-items-center" title={_id!.toString()}>
@@ -76,36 +77,39 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                             <Badge bg="primary" pill>
                                 {11}
                             </Badge>
-                            <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
-                                <FontAwesomeIcon icon={faPlus} color='orange' size='sm'
-                                    onClick={() => {
-                                        dispatch({
-                                            type: ActionTypes.ADD,
-                                            payload: {
-                                                parentCategory: category._id,
-                                                level: category.level
-                                            }
-                                        })
-                                        if (!isExpanded)
-                                            setIsExpanded(true)
-                                    }}
-                                />
-                            </Button>
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 px-1"
-                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                    onClick={() => edit(_id!)}
-                                >
-                                    Edit
+                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
+                                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
+                                        onClick={() => {
+                                            dispatch({
+                                                type: ActionTypes.ADD,
+                                                payload: {
+                                                    parentCategory: category._id,
+                                                    level: category.level
+                                                }
+                                            })
+                                            if (!isExpanded)
+                                                setIsExpanded(true)
+                                        }}
+                                    />
                                 </Button>
                             }
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1"
+                                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
+                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
+                                    onClick={() => edit(_id!)}
+                                >
+                                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
+                                </Button>
+                            }
+
+                            {canEdit && hoverProps.isHovered &&
+                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
                                     onClick={del}
                                 >
-                                    Delete
+                                    <FontAwesomeIcon icon={faRemove} color='maroon' size='lg' />
                                 </Button>
                             }
                         </div>
@@ -114,7 +118,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
             }
 
             {(isExpanded || inEditing) && !inAdding &&
-                <ListGroup.Item className="py-0 px-0" variant={'dark'}>
+                <ListGroup.Item className="py-0 px-0" variant={variant}>
                     {inEditing ? ( // store.mode === FORM_MODES.EDIT &&
                         // <div class="d-lg-none">hide on lg and wider screens</div>
                         <div className="mx-3 d-md-none">
