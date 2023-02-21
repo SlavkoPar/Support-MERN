@@ -1,11 +1,13 @@
 import { FormEvent, useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Form, FormGroup } from "react-bootstrap";
+import { Form, ListGroup, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 
 import { FormButtons } from "../../common/FormButtons"
+
+import { useGlobalStore } from '../../GlobalStoreProvider'
 
 import { ActionTypes, ICategoryFormProps } from "../types";
 
@@ -15,6 +17,7 @@ const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICa
   const { _id, level } = initialValues;
 
   const dispatch = useCategoryDispatch();
+  const { authUser, isAuthenticated, variant, bg } = useGlobalStore();
 
   const cancelForm = () => {
     dispatch({ type: isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
@@ -53,11 +56,22 @@ const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICa
   return (
     // <CloseButton onClick={closeForm} />
 
-    <tr>
-      <td>
-        <FontAwesomeIcon color='orange' size='lg' icon={faCaretRight} />
-      </td>
-      <td title={_id!.toString()}>
+
+    <ListGroup.Item
+      variant={variant}
+      className="py-1 px-1"
+      as="li"
+    >
+      <div className="d-flex justify-content-start align-items-center">  {/* title={_id!.toString()} */}
+        {/* <Button
+          variant='link'
+          size="sm"
+          className="py-0 px-1"
+          title="Expand"
+          disabled
+        >
+          <FontAwesomeIcon icon={faCaretRight} color='orange' size='lg' />
+        </Button> */}
         <Form onSubmit={formik.handleSubmit} ref={formRef}>
           <Form.Group controlId="title">
             {/* <Form.Label>Title</Form.Label> */}
@@ -84,16 +98,14 @@ const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICa
             </Form.Text>
           </Form.Group>
         </Form>
-      </td>
-      <td>
+
         <FormButtons
           cancelForm={cancelForm}
           handleSubmit={formik.handleSubmit}
           title={children}
         />
-      </td>
-    </tr >
-
+      </div>
+    </ListGroup.Item>
   );
 };
 

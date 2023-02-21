@@ -56,7 +56,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                         className="py-1 px-1"
                         as="li"
                     >
-                        <div ref={hoverRef} className="d-flex justify-content-start align-items-center" title={_id!.toString()}>
+                        <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
                             <Button
                                 variant='link'
                                 size="sm"
@@ -70,6 +70,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                 variant='link'
                                 size="sm"
                                 className="py-0 mx-1 text-decoration-none"
+                                title={_id!.toString()}
                             // onClick={() => onSelectCategory(categoryId)}
                             >
                                 {title}
@@ -106,10 +107,10 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                             }
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
+                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{border: '1px solid maroon'}}
                                     onClick={del}
                                 >
-                                    <FontAwesomeIcon icon={faRemove} color='maroon' size='lg' />
+                                    <FontAwesomeIcon icon={faRemove} color='maroon' size='sm' />
                                 </Button>
                             }
                         </div>

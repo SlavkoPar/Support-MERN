@@ -1,6 +1,4 @@
 import { useContext, useState } from "react";
-
-
 import { useNavigate } from "react-router-dom";
 
 // import logo from './logo.svg'
@@ -27,7 +25,7 @@ export function SideBar(props: ISideBarProps) {
   //   signOut,
   // } = props;
 
-  const { authUser, isAuthenticated, isDarkMode: darkMode, variant, bg } = useGlobalStore();
+  const { authUser, isAuthenticated, isDarkMode, variant, bg } = useGlobalStore();
   const { userName, roleId } = authUser;
 
   const dispatch = useGlobalStoreDispatch();
@@ -52,7 +50,7 @@ export function SideBar(props: ISideBarProps) {
           placement="end"
           className={`text-bg-${bg}`}
         >
-          {darkMode ? (
+          {isDarkMode ? (
             <Offcanvas.Header closeButton closeVariant="white">
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>Support</Offcanvas.Title>
             </Offcanvas.Header>
