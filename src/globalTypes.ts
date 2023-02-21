@@ -40,3 +40,14 @@ export interface IGlobalState {
 	bg: string
 }
 
+export enum GlobalActionTypes {
+    AUTHENTICATE = "AUTHENTICATE",
+    DARK_MODE = "DARK_MODE",
+    LIGHT_MODE = "LIGHT_MODE"
+}
+
+export interface ILoginUser {
+    userName: string;
+    email: string;
+    password: string;
+}

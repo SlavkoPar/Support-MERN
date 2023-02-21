@@ -107,10 +107,10 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                             }
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{border: '1px solid maroon'}}
+                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{border: '1px solid orange'}}
                                     onClick={del}
                                 >
-                                    <FontAwesomeIcon icon={faRemove} color='maroon' size='sm' />
+                                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
                                 </Button>
                             }
                         </div>

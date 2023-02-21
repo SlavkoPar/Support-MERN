@@ -81,24 +81,24 @@ export function SideBar(props: ISideBarProps) {
               }}
             >
               {isAuthenticated &&
-                <Nav.Link href="#/supporter/promo" onClick={() => {
+                <Nav.Link href="/supporter/promo" onClick={() => {
                   //closeQuestionForm();
                 }}>
                   <FontAwesomeIcon icon={faSurprise} color='lightblue' />{' '}Supporter
                 </Nav.Link>
               }
               {isAuthenticated &&
-                <Nav.Link href="#/questions">
+                <Nav.Link href="/categories">
                   <FontAwesomeIcon icon={faQuestion} color='lightblue' />{' '}Questions
                 </Nav.Link>
               }
               {isAuthenticated &&
-                <Nav.Link href="#/answers/pera">
+                <Nav.Link href="/answers/pera">
                   <FontAwesomeIcon icon={faAnchor} color='lightblue' />{' '}Answers
                 </Nav.Link>
               }
               {isAuthenticated && roleId === ROLES.OWNER &&
-                <Nav.Link href="#/users/2">
+                <Nav.Link href="/users/2">
                   <FontAwesomeIcon icon={faUserFriends} color='lightblue' />{' '}Users
                 </Nav.Link>
               }
@@ -109,7 +109,7 @@ export function SideBar(props: ISideBarProps) {
                 </Nav.Link>
               }
               {!isAuthenticated &&
-                <Nav.Link href="#/About">
+                <Nav.Link href="/About">
                   About
                 </Nav.Link>
               }
@@ -122,12 +122,12 @@ export function SideBar(props: ISideBarProps) {
               </NavDropdown> */}
 
               {!isAuthenticated &&
-                <Nav.Link href="#/Register">
+                <Nav.Link href="/Register">
                   Register
                 </Nav.Link>
               }
               {!isAuthenticated &&
-                <Nav.Link href="#/sign-in ">
+                <Nav.Link href="/sign-in ">
                   Sign In
                 </Nav.Link>
               }

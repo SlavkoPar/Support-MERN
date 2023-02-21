@@ -11,6 +11,8 @@ import './App.css';
 import { IUser } from './users/types';
 
 import Categories from "./categories/Categories"
+import LoginForm from './LoginForm';
+import Landing from './Landing';
 //import Users from "./users/Users"
 
 const configHost: string | undefined = process.env.REACT_APP_HOST;
@@ -58,7 +60,7 @@ function App() {
       <Router>
         <Container fluid className="App">
           <header className="App-header">
-          <SideBar />
+            <SideBar />
           </header>
 
           <Container>
@@ -66,7 +68,10 @@ function App() {
               <Col md={12}>
                 <div className="wrapper">
                   <Routes>
-                    <Route path="/" element={<Categories />} />
+                    {/* <Landing /> */}
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/sign-in" element={ <LoginForm isRegister={false} /> } />
+                    <Route path="/register" element={ <LoginForm isRegister={true} /> } />
                     <Route path="/categories" element={<Categories />} />
                     {/* <Route path="/users" element={<Users />} /> */}
                   </Routes>
@@ -74,7 +79,7 @@ function App() {
               </Col>
             </Row>
           </Container>
-          
+
         </Container>
       </Router>
     </Container>

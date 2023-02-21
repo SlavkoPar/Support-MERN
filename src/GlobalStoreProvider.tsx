@@ -7,14 +7,14 @@ import { globalReducer, GlobalActions } from "./globalReducer";
 import { IGlobalState, ROLES } from './globalTypes'
 
 const initialState: IGlobalState = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   authUser: {
     userId: new Types.ObjectId('63ef5e1813d8ce86929c61be'),
     color: 'blue',
-    userName: 'Slavko',
-    roleId: ROLES.OWNER,
+    userName: '',
+    roleId: ROLES.VIEWER,
   },
-  canEdit: true,
+  canEdit: false,
   isDarkMode: true,
   variant: 'dark',
   bg: 'dark'
