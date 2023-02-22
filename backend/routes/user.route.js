@@ -6,6 +6,23 @@ const ObjectId = mongoose.Types.ObjectId
 
 let userSchema = require("../models/User");
 
+// REGISTER User
+router.post("/register-user", (req, res, next) => {
+    // const { role } = req.body;
+    // if (role === 'FIRST_REGISTERED_USER_IS_OWNER') {
+    //     req.body.role = 'OWNER';
+    //     // TODO set CreatedBy = _id for OWNER
+    // }
+    userSchema.create(req.body, (error, data) => {
+        if (error) {
+            return next(error);
+        } else {
+            console.log(data);
+            res.json(data);
+        }
+    });
+});
+
 // CREATE User
 router.post("/create-user", (req, res, next) => {
     // const { role } = req.body;

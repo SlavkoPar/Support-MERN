@@ -7,7 +7,8 @@ const { ObjectId } = Schema.Types;
 let categorySchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        index: { unique: true }
     },
     level: {
         type: Number,
