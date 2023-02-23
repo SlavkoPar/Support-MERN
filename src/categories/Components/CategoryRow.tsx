@@ -4,7 +4,7 @@ import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus } fr
 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
-import { useGlobalStore } from '../../GlobalStoreProvider'
+import { useGlobalState } from '../../global/GlobalProvider'
 import { ActionTypes } from "../types";
 import { useCategoryContext, useCategoryDispatch } from '../Provider'
 import TreeView from "./TreeView";
@@ -18,7 +18,7 @@ import { ICategory } from '../types'
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inEditing, inAdding } = category;
 
-    const { canEdit, isDarkMode: darkMode, variant, bg } = useGlobalStore();
+    const { canEdit, isDarkMode: darkMode, variant, bg } = useGlobalState();
 
     const { store, editCategory, deleteCategory } = useCategoryContext();
     const dispatch = useCategoryDispatch();

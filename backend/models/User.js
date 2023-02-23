@@ -7,7 +7,6 @@ const DateBy = require('./DateBy')
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-
 let userSchema = new Schema({
     userName: { type: String, required: true, index: { unique: true } },
     email: {    type: String, required: true, index: { unique: true } },

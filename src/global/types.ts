@@ -1,4 +1,5 @@
 // Define the Global State
+import { AxiosError } from 'axios';
 import { Types } from 'mongoose';
 
 export interface IDateAndBy {
@@ -13,7 +14,7 @@ export interface IAuthUser {
 	userId: Types.ObjectId, // fiktivni _id
 	color?: string,
 	userName?: string,
-	roleId: ROLES,
+	role: ROLES,
 	registered?: Date,
 	visited?: Date
 }
@@ -25,11 +26,6 @@ export enum ROLES {
 	VIEWER = 'VIEWER',
 }
 
-export interface ILogin {
-	userName: string;
-	pwd: string;
-}
-
 export interface IGlobalState {
 	isAuthenticated: boolean | null;
 	authError?: string;
@@ -37,17 +33,28 @@ export interface IGlobalState {
 	canEdit: boolean,
 	isDarkMode: boolean;
 	variant: string,
-	bg: string
+	bg: string,
+	loading: boolean;
+	error?: AxiosError;
+}
+
+export interface IGlobalContext {
+	globalState: IGlobalState,
+	registerUser: (loginUser: ILoginUser) => void,
+	signInUser: (loginUser: ILoginUser) => void
 }
 
 export enum GlobalActionTypes {
-    AUTHENTICATE = "AUTHENTICATE",
+	SET_LOADING = 'SET_LOADING',
+	AUTHENTICATE = "AUTHENTICATE",
+	SET_ERROR = 'SET_ERROR',
     DARK_MODE = "DARK_MODE",
     LIGHT_MODE = "LIGHT_MODE"
 }
 
 export interface ILoginUser {
     userName: string;
-    email: string;
+    email?: string;
     password: string;
+	date?: Date;
 }

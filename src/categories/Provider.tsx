@@ -12,13 +12,13 @@ const initialState: ICategoriesState = {
   categories: []
 }
 
-const CategoryContext = createContext<ICategoriesContext>({
-  store: {...initialState},
-  getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => {}, 
-  createCategory: (category: ICategory) => {},
-	editCategory: (_id: Types.ObjectId) => {},
-	updateCategory:  (category: ICategory) => {},
-	deleteCategory: (_id: Types.ObjectId) => {}
+const CategoriesContext = createContext<ICategoriesContext>({
+  store: { ...initialState },
+  getCategories: ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => { },
+  createCategory: (category: ICategory) => { },
+  editCategory: (_id: Types.ObjectId) => { },
+  updateCategory: (category: ICategory) => { },
+  deleteCategory: (_id: Types.ObjectId) => { }
 });
 
 const CategoryDispatchContext = createContext<Dispatch<any>>(() => null);
@@ -26,7 +26,7 @@ const CategoryDispatchContext = createContext<Dispatch<any>>(() => null);
 const configHost: string | undefined = process.env.REACT_APP_HOST;
 const configPort: string | undefined = process.env.REACT_APP_PORT;
 export const hostPort = `${configHost!}:${configPort!}`
-console.log({hostPort})
+console.log({ hostPort })
 
 type Props = {
   children: React.ReactNode
@@ -36,9 +36,9 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const [store, dispatch] = useReducer(categoriesReducer, initialState);
 
-  
 
-  const getCategories = useCallback(({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
+
+  const getCategories = useCallback(({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => {
     const urlCategories = `${hostPort}/categories/${parentCategory}`
     console.log('FETCHING --->>> getCategories', level, parentCategory)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
@@ -46,7 +46,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .get(urlCategories)
       .then(({ data }) => {
         console.log(data)
-        dispatch({ type: ActionTypes.SET_CATEGORIES, payload: { categories: data} });
+        dispatch({ type: ActionTypes.SET_CATEGORIES, payload: { categories: data } });
       })
       .catch((error) => {
         console.log(error);
@@ -66,14 +66,13 @@ export const Provider: React.FC<Props> = ({ children }) => {
         }
         else {
           console.log('Status is not 200', status)
-          dispatch({ type: ActionTypes.SET_ERROR, payload: { 
-                error: {
-                  message: 'Status is not 200',
-                  code: status
-                }
-              }
-            })
-          }
+          dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: {
+              error: new AxiosError('Status is not 200 status:' + status)
+            }
+          })
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -107,14 +106,14 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data: category }) => {
         if (status === 200) {
           console.log("Category successfully updated");
-          dispatch({ type: ActionTypes.REFRESH_UPDATED_CATEGORY, payload: { category }});
-          dispatch({ type: ActionTypes.CLOSE_EDITING_FORM, payload: {}   })
+          dispatch({ type: ActionTypes.REFRESH_UPDATED_CATEGORY, payload: { category } });
+          dispatch({ type: ActionTypes.CLOSE_EDITING_FORM, payload: {} })
         }
         else {
           console.log('Status is not 200', status)
-          dispatch({ 
+          dispatch({
             type: ActionTypes.SET_ERROR,
-            payload: { error: new Error() }
+            payload: { error: new AxiosError('Status is not 200 status:' + status) }
           });
         }
       })
@@ -131,7 +130,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(res => {
         if (res.status === 200) {
           console.log("Category successfully deleted");
-          dispatch({ type: ActionTypes.DELETE, payload: {_id} });
+          dispatch({ type: ActionTypes.DELETE, payload: { _id } });
         }
       })
       .catch((error) => {
@@ -159,16 +158,16 @@ export const Provider: React.FC<Props> = ({ children }) => {
   */
 
   return (
-    <CategoryContext.Provider value={{ store, getCategories, createCategory, editCategory, updateCategory, deleteCategory }}>
+    <CategoriesContext.Provider value={{ store, getCategories, createCategory, editCategory, updateCategory, deleteCategory }}>
       <CategoryDispatchContext.Provider value={dispatch}>
         {children}
       </CategoryDispatchContext.Provider>
-    </CategoryContext.Provider>
+    </CategoriesContext.Provider>
   );
 }
 
 export function useCategoryContext() {
-  return useContext(CategoryContext);
+  return useContext(CategoriesContext);
 }
 
 export const useCategoryDispatch = () => {

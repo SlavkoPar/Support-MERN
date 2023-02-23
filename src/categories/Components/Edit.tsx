@@ -1,13 +1,13 @@
 //import { useParams } from 'react-router-dom'
 import React, { useState, useEffect } from "react";
 import { useCategoryContext } from '../Provider'
-import { useGlobalStore } from '../../GlobalStoreProvider'
+import { useGlobalState } from '../../global/GlobalProvider'
 
 import CategoryForm from "./CategoryForm";
 import { ICategory } from "../types";
 
 const Edit = () => {
-    const globalStore = useGlobalStore();
+    const globalState = useGlobalState();
     const { store, updateCategory } = useCategoryContext();
     const category = store.categories.find(c=>c.inEditing);
 
@@ -19,7 +19,7 @@ const Edit = () => {
             modified: {
                 date: new Date(),
                 by: {
-                    userId: globalStore.authUser.userId
+                    userId: globalState.authUser.userId
                 }
             }
         }

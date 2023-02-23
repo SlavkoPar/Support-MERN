@@ -14,8 +14,8 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import { Modal } from "react-bootstrap";
 
-import { useGlobalStore, useGlobalStoreDispatch } from './GlobalStoreProvider'
-import { ROLES } from "./globalTypes";
+import { useGlobalContext, useGlobalDispatch } from './global/GlobalProvider'
+import { ROLES } from "./global/types";
 
 interface ISideBarProps {
 }
@@ -25,10 +25,11 @@ export function SideBar(props: ISideBarProps) {
   //   signOut,
   // } = props;
 
-  const { authUser, isAuthenticated, isDarkMode, variant, bg } = useGlobalStore();
-  const { userName, roleId } = authUser;
+  const { globalState } = useGlobalContext();
+  const { authUser, isAuthenticated, isDarkMode, variant, bg } = globalState;
+  const { userName, role } = authUser;
 
-  const dispatch = useGlobalStoreDispatch();
+  const dispatch = useGlobalDispatch();
 
   let navigate = useNavigate();
 
@@ -97,14 +98,14 @@ export function SideBar(props: ISideBarProps) {
                   <FontAwesomeIcon icon={faAnchor} color='lightblue' />{' '}Answers
                 </Nav.Link>
               }
-              {isAuthenticated && roleId === ROLES.OWNER &&
+              {isAuthenticated && role === ROLES.OWNER &&
                 <Nav.Link href="/users/2">
                   <FontAwesomeIcon icon={faUserFriends} color='lightblue' />{' '}Users
                 </Nav.Link>
               }
 
               {!isAuthenticated &&
-                <Nav.Link href="#/landing">
+                <Nav.Link href="/landing">
                   Landing
                 </Nav.Link>
               }

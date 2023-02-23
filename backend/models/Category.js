@@ -15,7 +15,8 @@ let categorySchema = new Schema({
         required: true
     },
     parentCategory: {
-        type: ObjectId
+        type: ObjectId,
+        index: { unique: false }
     },
     created: {
         type: DateBy,
@@ -28,6 +29,6 @@ let categorySchema = new Schema({
     collection: 'categories'
 })
 
-categorySchema.index({ parentCategory: 1 });   // level
+//categorySchema.index({ parentCategory: 1 });   // level
 
 module.exports = mongoose.model('Category', categorySchema)

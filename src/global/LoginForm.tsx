@@ -2,41 +2,37 @@ import { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Form, FormGroup, CloseButton } from "react-bootstrap";
-import { GlobalActionTypes } from "./globalTypes";
+import { GlobalActionTypes, ILoginUser, ROLES } from "./types";
+import { useNavigate } from "react-router-dom";
+
 import './formik.css';
 
-import { useGlobalStore, useGlobalStoreDispatch } from './GlobalStoreProvider'
+import { useGlobalContext, useGlobalDispatch } from './GlobalProvider'
+import { IUser } from "../users/types";
 
-interface ILogin {
-  userName: string,
-  email: string,
-  password: string
-}
 
 export interface ILoginFormProps {
-  isRegister: boolean;
 }
 
 
-const LoginForm = ({ isRegister }: ILoginFormProps) => {
+const LoginForm = () => {
 
-  const dispatch = useGlobalStoreDispatch();
+  const { globalState, registerUser, signInUser } = useGlobalContext();
+  const { isAuthenticated, authUser } = globalState;
 
+  const dispatch = useGlobalDispatch();
+
+  let navigate = useNavigate();
   const closeForm = () => {
-    //dispatch({ type: isEdit ? ActionTypes.CLOSE_EDITING_FORM : ActionTypes.CLOSE_ADDING_FORM })
+    navigate('/');
   }
 
-  const cancelForm = () => {
-    //dispatch({ type: isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
+  const submitForm = (loginUser: ILoginUser) => {
+    signInUser(loginUser)
   }
 
-  const submitForm = (login: ILogin) => {
-
-  }
-
-  const initialValues = {
+  const initialValues: ILoginUser = {
     userName: '',
-    email: '',
     password: ''
   }
 
@@ -44,23 +40,14 @@ const LoginForm = ({ isRegister }: ILoginFormProps) => {
     enableReinitialize: true,
     initialValues,
     validationSchema: Yup.object().shape({
-
       userName: Yup.string().required("Required"),
-      email: Yup.string()
-        .required("Required")
-        .email("You have enter an invalid email address"),
       password: Yup.string()
         .required("Password is a required field")
         .min(8, "Password must be at least 8 characters"),
-      // rollno: Yup.number()
-      //   .positive("Invalid roll number")
-      //   .integer("Invalid roll number")
-      //   .required("Required"),
     }),
     onSubmit: values => {
       //alert(JSON.stringify(values, null, 2));
       submitForm(values)
-      //props.handleClose(false);
     }
   });
 
@@ -76,7 +63,7 @@ const LoginForm = ({ isRegister }: ILoginFormProps) => {
     <div className="form">
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
-        <span>{isRegister?'Register': 'Login'}</span>
+        <span>Sign in</span>
         <Form.Group controlId="title">
           {/* <Form.Label>Title</Form.Label> */}
           <Form.Control
@@ -100,33 +87,11 @@ const LoginForm = ({ isRegister }: ILoginFormProps) => {
           </Form.Text>
         </Form.Group>
 
-        <Form.Group controlId="email">
-          {/* <Form.Label>email</Form.Label> */}
-          <Form.Control
-            as="input"
-            name="email"
-            onChange={formik.handleChange}
-            //onBlur={formik.handleBlur}
-            // onBlur={(e: React.FocusEvent<HTMLTextAreaElement>): void => {
-            //   if (isEdit && formik.initialValues.title !== formik.values.title)
-            //     formik.submitForm();
-            // }}
-            value={formik.values.email}
-            style={{ width: '100%' }}
-            placeholder={'name@example.com'}
-          />
-          <Form.Text className="text-danger">
-            {formik.touched.email && formik.errors.email ? (
-              <div className="text-danger">{formik.errors.email}</div>
-            ) : null}
-          </Form.Text>
-        </Form.Group>
-
         <Form.Group controlId="password">
           {/* <Form.Label>password</Form.Label> */}
           <Form.Control
             as="input"
-            name="email"
+            name="password"
             type="password"
             onChange={formik.handleChange}
             //onBlur={formik.handleBlur}
@@ -145,7 +110,11 @@ const LoginForm = ({ isRegister }: ILoginFormProps) => {
           </Form.Text>
         </Form.Group>
 
-        <button type="submit" className="submit-button">{isRegister?'Register': 'Login'}</button>
+        <button type="submit" className="submit-button">Sign in</button>
+
+        {globalState.error &&
+          <div>{globalState.error.message}</div>
+        }
 
       </Form>
 

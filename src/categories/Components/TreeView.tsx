@@ -15,19 +15,23 @@ const TreeView = ({ parentCategory, level }: IParentInfo) => {
 
     return (
         <div className={`ms-2`}>
-            <ListGroup as="ul" variant='dark' className="mb-0">
-                {store.categories
-                    .filter(category =>
-                        category.parentCategory === parentCategory
-                    )
-                    .map((category) => 
-                        <CategoryRow category={category} key={category._id!.toString()} />
-                    )
+            <>
+                {!store.loading && !store.error &&
+                    <ListGroup as="ul" variant='dark' className="mb-0">
+                        {store.categories
+                            .filter(category =>
+                                category.parentCategory === parentCategory
+                            )
+                            .map((category) =>
+                                <CategoryRow category={category} key={category._id!.toString()} />
+                            )
+                        }
+                    </ListGroup>
                 }
-            </ListGroup>
 
-            {store.loading && "Loading"}
-            {store.error && store.error}
+                {store.loading && "Loading"}
+                {store.error && store.error}
+            </>
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
-import { useGlobalStore } from '../GlobalStoreProvider'
+import { useGlobalState } from '../global/GlobalProvider'
 import { FORM_MODES, ActionTypes } from "./types";
 import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
 
@@ -12,7 +12,7 @@ import { initialCategory } from "./categoriesReducer";
 
 const Providered = () => {
 
-    const globalStore = useGlobalStore();
+    const globalState = useGlobalState();
     const { store } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 

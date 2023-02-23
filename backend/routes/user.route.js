@@ -2,6 +2,8 @@ let mongoose = require("mongoose"),
     express = require("express"),
     router = express.Router();
 
+let User = require("../models/User");
+
 const ObjectId = mongoose.Types.ObjectId
 
 let userSchema = require("../models/User");
@@ -22,6 +24,29 @@ router.post("/register-user", (req, res, next) => {
         }
     });
 });
+
+// REGISTER User
+router.post("/sign-in-user", (req, res, next) => {
+    User.findOne({ userName: req.body.userName }, function (error, user) {
+        console.log(error)
+        if (error) {
+            return next(error);
+        } else {
+            console.log(user)
+            user.comparePassword(req.body.password, function (error, isMatch) {
+                if (error) {
+                    return next(error);
+                }
+                else {
+                    console.log(req.body.password, isMatch);
+                    res.json(user);
+                }
+            });
+        }
+    });
+});
+
+
 
 // CREATE User
 router.post("/create-user", (req, res, next) => {

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './normalize.scss'
 import './index.css';
 import App from './App';
-import { GlobalStoreProvider } from './GlobalStoreProvider';
+import { GlobalProvider } from './global/GlobalProvider';
 
 //import reportWebVitals from './reportWebVitals';
 
@@ -12,9 +12,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   // <React.StrictMode>
-  <GlobalStoreProvider>
+  <GlobalProvider>
     <App />
-  </GlobalStoreProvider>
+  </GlobalProvider>
   // </React.StrictMode>
 );
 

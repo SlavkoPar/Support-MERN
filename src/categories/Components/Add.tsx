@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useCategoryContext } from '../Provider'
-import { useGlobalStore } from '../../GlobalStoreProvider'
+import { useGlobalContext, useGlobalState } from '../../global/GlobalProvider'
 
 import CategoryForm from "./CategoryForm";
 import InLineCategoryForm from "./InLineCategoryForm";
@@ -8,7 +8,7 @@ import { ICategory } from "../types";
 import { initialCategory } from "../categoriesReducer";
 
 const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
-    const globalStore = useGlobalStore();
+    const globalState = useGlobalState();
 
     const [formValues] = useState(category)
 
@@ -22,7 +22,7 @@ const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => 
             created: {
                 date: new Date(),
                 by: {
-                    userId: globalStore.authUser.userId
+                    userId: globalState.authUser.userId
                 }
             }
         }

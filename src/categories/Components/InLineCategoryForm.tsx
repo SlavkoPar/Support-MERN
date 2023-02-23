@@ -7,7 +7,7 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 
 import { FormButtons } from "../../common/FormButtons"
 
-import { useGlobalStore } from '../../GlobalStoreProvider'
+import { useGlobalState } from '../../global/GlobalProvider'
 
 import { ActionTypes, ICategoryFormProps } from "../types";
 
@@ -17,7 +17,7 @@ const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICa
   const { _id, level } = initialValues;
 
   const dispatch = useCategoryDispatch();
-  const { authUser, isAuthenticated, variant, bg } = useGlobalStore();
+  const{ authUser, isAuthenticated, variant, bg } = useGlobalState();
 
   const cancelForm = () => {
     dispatch({ type: isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
