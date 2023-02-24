@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import { useEffect } from 'react';
 import { Nav, Navbar, Container, Row, Col } from "react-bootstrap";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 
 import { SideBar } from './SideBar'
 import { useGlobalState } from './global/GlobalProvider'
@@ -11,6 +11,7 @@ import './App.css';
 import { IUser } from './users/types';
 
 import Categories from "./categories/Categories"
+import Users from "./users/Users"
 
 import RegisterForm from './global/RegisterForm';
 import LoginForm from './global/LoginForm';
@@ -38,21 +39,23 @@ function App() {
                   <Routes>
                     {/* <Landing /> */}
                     <Route path="/" element={<Landing />} />
-
-                    {!isAuthenticated &&
-                      <Route path="/register" element={
+                    <Route path="/register" element={
+                      !isAuthenticated ? (
                         <RegisterForm />
-                      }
-                      />
+                      ) : (
+                        <Navigate replace to={"/"} />
+                      )
                     }
-                    {!isAuthenticated &&
-                      <Route path="/sign-in" element={
+                    />
+                    <Route path="/sign-in" element={
+                      !isAuthenticated ? (
                         <LoginForm />
-                      }
-                      />
-                    }
+                      ) : (
+                        <Navigate replace to={"/"} />
+                      )}
+                    />
                     <Route path="/categories" element={<Categories />} />
-                    {/* <Route path="/users" element={<Users />} /> */}
+                    <Route path="/users" element={<Users />} />
                   </Routes>
                 </div>
               </Col>

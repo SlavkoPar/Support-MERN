@@ -5,7 +5,6 @@ import { useGlobalContext, useGlobalState } from '../../global/GlobalProvider'
 import CategoryForm from "./CategoryForm";
 import InLineCategoryForm from "./InLineCategoryForm";
 import { ICategory } from "../types";
-import { initialCategory } from "../categoriesReducer";
 
 const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
     const globalState = useGlobalState();

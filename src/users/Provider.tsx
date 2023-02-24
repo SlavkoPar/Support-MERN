@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useReducer, useEffect, useCallback
 import { Types } from 'mongoose';
 
 import { ActionTypes, FORM_MODES, IUser, IUsersState, IUsersContext } from './types';
-import { usersReducer } from './usersReducer';
+import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 
 const initialState: IUsersState = {
@@ -30,8 +30,8 @@ console.log({ hostPort })
 type Props = {
   children: React.ReactNode
 }
-export const UsersProvider: React.FC<Props> = ({ children }) => {
-  const [store, dispatch] = useReducer(usersReducer, initialState);
+export const Provider: React.FC<Props> = ({ children }) => {
+  const [store, dispatch] = useReducer(reducer, initialState);
 
   const getUsers = useCallback(({ parentUser, level }: { parentUser: Types.ObjectId | null, level: number }) => {
     const urlUsers = `${hostPort}/users/${parentUser}`

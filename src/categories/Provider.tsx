@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useReducer, useEffect, useCallback
 import { Types } from 'mongoose';
 import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext } from './types';
 import { IUser } from '../users/types'
-import { categoriesReducer } from './categoriesReducer';
+import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 
 const initialState: ICategoriesState = {
@@ -34,7 +34,7 @@ type Props = {
 
 export const Provider: React.FC<Props> = ({ children }) => {
 
-  const [store, dispatch] = useReducer(categoriesReducer, initialState);
+  const [store, dispatch] = useReducer(reducer, initialState);
 
 
 

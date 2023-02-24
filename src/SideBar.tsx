@@ -99,7 +99,7 @@ export function SideBar(props: ISideBarProps) {
                 </Nav.Link>
               }
               {isAuthenticated && role === ROLES.OWNER &&
-                <Nav.Link href="/users/2">
+                <Nav.Link href="/users">
                   <FontAwesomeIcon icon={faUserFriends} color='lightblue' />{' '}Users
                 </Nav.Link>
               }

@@ -1,17 +1,15 @@
-import { FORM_MODES, ActionTypes, IUsersState, IUser, IParentInfo } from "./types";
+import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo } from "./types";
 import { Types } from 'mongoose';
 import { AxiosError } from "axios";
-import { ROLES } from "../global/types";
 
-export const initialUser: IUser = {
+export const initialCategory: ICategory = {
   // temp _id for inAdding, to server as list key
   // it will be removed on submitForm
   // real _id will be given by the MongoDB 
   _id: new Types.ObjectId('000000000000000000000000'),
-  userName: '',
-  parentUser: null,
+  title: '',
   level: 0,
-  role: ROLES.VIEWER,
+  parentCategory: null
 }
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -26,9 +24,9 @@ type ActionMap<M extends { [index: string]: any }> = {
 };
 
 
-type UsersPayload = {
-  [ActionTypes.SET_USERS]: {
-    users: IUser[];
+type CategoriesPayload = {
+  [ActionTypes.SET_CATEGORIES]: {
+    categories: ICategory[];
   };
 
   [ActionTypes.SET_LOADING]: {
@@ -46,11 +44,11 @@ type UsersPayload = {
   [ActionTypes.ADD]: IParentInfo;
 
   [ActionTypes.EDIT]: {
-    user: IUser;
+    category: ICategory;
   };
 
-  [ActionTypes.REFRESH_UPDATED_USER]: {
-    user: IUser;
+  [ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+    category: ICategory;
   };
 
   [ActionTypes.DELETE]: {
@@ -58,7 +56,7 @@ type UsersPayload = {
   };
 
   [ActionTypes.CLEAN_SUB_TREE]: {
-    user: IUser;
+    category: ICategory;
   };
   
   [ActionTypes.CLOSE_EDITING_FORM]: {
@@ -67,12 +65,12 @@ type UsersPayload = {
   [ActionTypes.CLOSE_ADDING_FORM]: {
   };
 
-  [ActionTypes.REFRESH_ADDED_USER]: {
-    user: IUser;
+  [ActionTypes.REFRESH_ADDED_CATEGORY]: {
+    category: ICategory;
   };
 
-  [ActionTypes.REFRESH_UPDATED_USER]: {
-    user: IUser;
+  [ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+    category: ICategory;
   };
 
   [ActionTypes.SET_ERROR]: {
@@ -80,10 +78,10 @@ type UsersPayload = {
   };
 };
 
-export type UsersActions = ActionMap<UsersPayload>[keyof ActionMap<UsersPayload>];
+export type CategoriesActions = ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];
 
 
-export const usersReducer = (state: IUsersState, action: UsersActions) => {
+export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
   switch (action.type) {
 
     case ActionTypes.SET_LOADING:
@@ -92,22 +90,22 @@ export const usersReducer = (state: IUsersState, action: UsersActions) => {
         loading: true
       }
 
-    case ActionTypes.SET_USERS: {
+    case ActionTypes.SET_CATEGORIES: {
       return {
         ...state,
-        users: state.users.concat(action.payload.users),
+        categories: state.categories.concat(action.payload.categories),
         loading: false
       };
     }
 
     case ActionTypes.CLEAN_SUB_TREE: {
-      const { _id } = action.payload.user;
-      const arr = markForClean(state.users, _id!)
+      const { _id } = action.payload.category;
+      const arr = markForClean(state.categories, _id!)
       console.log('clean:', arr)
       const _ids = arr.map(c => c._id)
       return {
         ...state,
-        users: state.users.filter(c => !_ids.includes(c._id))
+        categories: state.categories.filter(c => !_ids.includes(c._id))
       }
     }
 
@@ -117,54 +115,54 @@ export const usersReducer = (state: IUsersState, action: UsersActions) => {
     }
 
     case ActionTypes.ADD: {
-      const { parentUser, level } = action.payload;
-      const users: IUser[] = [
+      const { parentCategory, level } = action.payload;
+      const categories: ICategory[] = [
         {
-          ...initialUser,
-          userName: '',
+          ...initialCategory,
+          title: '',
           level: level + 1,
-          parentUser,
+          parentCategory,
           inAdding: true
         },
-        ...state.users
+        ...state.categories
       ]
-      console.log('ADD', users)
+      console.log('ADD', categories)
       return {
         ...state,
         mode: FORM_MODES.ADD,
-        users
+        categories
       };
     }
 
-    case ActionTypes.REFRESH_ADDED_USER: {
-      console.log('REFRESH_ADDED_USER', state.users)
-      const { user } = action.payload;
+    case ActionTypes.REFRESH_ADDED_CATEGORY: {
+      console.log('REFRESH_ADDED_CATEGORY', state.categories)
+      const { category } = action.payload;
       return {
         ...state,
-        users: state.users.map(c => c.inAdding ? user : c),
+        categories: state.categories.map(c => c.inAdding ? category : c),
         loading: false
       }
     }
 
-    case ActionTypes.REFRESH_UPDATED_USER: {
-      const { user } = action.payload;
+    case ActionTypes.REFRESH_UPDATED_CATEGORY: {
+      const { category } = action.payload;
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        user: null,
-        users: state.users.map(c => c.inEditing ? user : c), // doesn't contain isEditing 
+        category: null,
+        categories: state.categories.map(c => c.inEditing ? category : c), // doesn't contain isEditing 
         loading: false
       }
     }
 
     case ActionTypes.EDIT: {
-      const { user } = action.payload;
+      const { category } = action.payload;
       return {
         ...state,
         mode: FORM_MODES.EDIT,
-        user,
-        users: state.users.map(c => c._id === user._id
-          ? { ...user, inEditing: true }
+        category,
+        categories: state.categories.map(c => c._id === category._id
+          ? { ...category, inEditing: true }
           : c
         ),
         loading: false
@@ -176,8 +174,8 @@ export const usersReducer = (state: IUsersState, action: UsersActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        user: null,
-        users: state.users.filter(c => c._id !== _id)
+        category: null,
+        categories: state.categories.filter(c => c._id !== _id)
       };
     }
 
@@ -185,7 +183,7 @@ export const usersReducer = (state: IUsersState, action: UsersActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        user: null
+        category: null
       };
     }
 
@@ -193,8 +191,8 @@ export const usersReducer = (state: IUsersState, action: UsersActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        user: null,
-        users: state.users.filter(c => !c.inAdding)
+        category: null,
+        categories: state.categories.filter(c => !c.inAdding)
       };
     }
 
@@ -203,8 +201,8 @@ export const usersReducer = (state: IUsersState, action: UsersActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        user: null,
-        users: state.users.map(c => c.inEditing ? ({ ...c, inEditing: false }) : c)
+        category: null,
+        categories: state.categories.map(c => c.inEditing ? ({ ...c, inEditing: false }) : c)
       };
     }
     
@@ -213,12 +211,12 @@ export const usersReducer = (state: IUsersState, action: UsersActions) => {
   }
 };
 
-function markForClean(users: IUser[], parent_id: Types.ObjectId) {
-  let arr = users
-    .filter(user => user.parentUser === parent_id)
+function markForClean(categories: ICategory[], parent_id: Types.ObjectId) {
+  let arr = categories
+    .filter(category => category.parentCategory === parent_id)
 
-  arr.forEach(user => {
-    arr = arr.concat(markForClean(users, user._id!))
+  arr.forEach(category => {
+    arr = arr.concat(markForClean(categories, category._id!))
   })
   return arr
 }
