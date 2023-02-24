@@ -4,7 +4,7 @@ import { Nav, Navbar, Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 
 import { SideBar } from './SideBar'
-import { useGlobalState } from './global/GlobalProvider'
+import { useGlobalContext } from './global/GlobalProvider'
 
 import './App.css';
 
@@ -18,10 +18,13 @@ import LoginForm from './global/LoginForm';
 import Landing from './Landing';
 
 function App() {
-  const { isAuthenticated } = useGlobalState();
+  
+  const { globalState, loadStateFromLocalStorage } = useGlobalContext();
+  const { isAuthenticated } = globalState;
 
   useEffect(() => {
-  }, [])
+    loadStateFromLocalStorage();
+  }, [loadStateFromLocalStorage])
 
   return (
     <Container fluid className="App">
@@ -40,19 +43,20 @@ function App() {
                     {/* <Landing /> */}
                     <Route path="/" element={<Landing />} />
                     <Route path="/register" element={
-                      !isAuthenticated ? (
+                      // !isAuthenticated ? (
                         <RegisterForm />
-                      ) : (
-                        <Navigate replace to={"/"} />
-                      )
+                      // ) : (
+                      //   <Navigate replace to={"/"} />
+                      // )
                     }
                     />
                     <Route path="/sign-in" element={
-                      !isAuthenticated ? (
+                      // !isAuthenticated ? (
                         <LoginForm />
-                      ) : (
-                        <Navigate replace to={"/"} />
-                      )}
+                      // ) : (
+                      //   <Navigate replace to={"/"} />
+                      // )
+                    }
                     />
                     <Route path="/categories" element={<Categories />} />
                     <Route path="/users" element={<Users />} />

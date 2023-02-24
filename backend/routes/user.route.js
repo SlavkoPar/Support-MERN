@@ -10,38 +10,67 @@ let userSchema = require("../models/User");
 
 // REGISTER User
 router.post("/register-user", (req, res, next) => {
-    // const { role } = req.body;
-    // if (role === 'FIRST_REGISTERED_USER_IS_OWNER') {
-    //     req.body.role = 'OWNER';
-    //     // TODO set CreatedBy = _id for OWNER
-    // }
-    userSchema.create(req.body, (error, data) => {
+    const count = userSchema.count()
+    if (count === 0)
+        req.body.role = "OWNER" // first registered user is OWNER
+
+    console.log('count', count)
+    User.findOne({ userName: req.body.userName }, function (error, user) {
         if (error) {
             return next(error);
         } else {
-            console.log(data);
-            res.json(data);
-        }
+            if (user) {
+                return next(new Error("Username already exists"));
+            }
+            else {
+                User.findOne({ email: req.body.email }, function (error, user) {
+                    if (error) {
+                        return next(error);
+                    } else {
+                        if (user) {
+                            return next(new Error("Email already exists"));
+                        }
+                        else {
+                            userSchema.create(req.body, (error, data) => {
+                                if (error) {
+                                    return next(error);
+                                } else {
+                                    console.log(data);
+                                    res.json(data);
+                                }
+                            });
+                        }
+                    }
+                })
+            }
+        };
+
     });
-});
+})
+
 
 // REGISTER User
 router.post("/sign-in-user", (req, res, next) => {
     User.findOne({ userName: req.body.userName }, function (error, user) {
-        console.log(error)
         if (error) {
             return next(error);
         } else {
-            console.log(user)
-            user.comparePassword(req.body.password, function (error, isMatch) {
-                if (error) {
-                    return next(error);
-                }
-                else {
-                    console.log(req.body.password, isMatch);
-                    res.json(user);
-                }
-            });
+            if (!user) {
+                return next(new Error("User doesn't exist"));
+            }
+            else {
+                user.comparePassword(req.body.password, function (error, isMatch) {
+                    if (error) {
+                        return next(error);
+                    }
+                    else {
+                        if (isMatch)
+                            res.json(user);
+                        else
+                            return next(new Error("Wrong Password"));
+                    }
+                });
+            }
         }
     });
 });

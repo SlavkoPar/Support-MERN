@@ -15,6 +15,7 @@ export const FORM_MODES = {
 export interface IUser {
 	_id?: Types.ObjectId,
 	userName: string,
+	password?: string,
 	level: number,
 	role: ROLES,
 	parentUser: Types.ObjectId | null,

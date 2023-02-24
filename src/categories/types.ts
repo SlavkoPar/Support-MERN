@@ -1,8 +1,8 @@
 import { Types } from 'mongoose';
 
 import { IDateAndBy } from '../global/types';
-import { IOption } from '../common/types';
 import { AxiosError } from 'axios';
+import { ActionMap } from '../global/types'
 
 export const FORM_MODES = {
 	UNDEFINED: undefined,
@@ -40,7 +40,7 @@ export interface ICategoriesState {
 }
 
 export interface ICategoriesContext {
-	store: ICategoriesState,
+	state: ICategoriesState,
 	getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
 	createCategory: (category: ICategory) => void,
 	editCategory: (_id: Types.ObjectId) => void,
@@ -73,3 +73,59 @@ export enum ActionTypes  {
   }
 
 
+  type CategoriesPayload = {
+	[ActionTypes.SET_CATEGORIES]: {
+	  categories: ICategory[];
+	};
+  
+	[ActionTypes.SET_LOADING]: {
+	};
+  
+	[ActionTypes.CANCEL_ADDING_FORM]: {
+	};
+  
+	[ActionTypes.CANCEL_EDITING_FORM]: {
+	};
+  
+	[ActionTypes.CLOSE_EDITING_FORM]: {
+	};
+  
+	[ActionTypes.ADD]: IParentInfo;
+  
+	[ActionTypes.EDIT]: {
+	  category: ICategory;
+	};
+  
+	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+	  category: ICategory;
+	};
+  
+	[ActionTypes.DELETE]: {
+	  _id: Types.ObjectId;
+	};
+  
+	[ActionTypes.CLEAN_SUB_TREE]: {
+	  category: ICategory;
+	};
+	
+	[ActionTypes.CLOSE_EDITING_FORM]: {
+	};
+  
+	[ActionTypes.CLOSE_ADDING_FORM]: {
+	};
+  
+	[ActionTypes.REFRESH_ADDED_CATEGORY]: {
+	  category: ICategory;
+	};
+  
+	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+	  category: ICategory;
+	};
+  
+	[ActionTypes.SET_ERROR]: {
+	  error: AxiosError;
+	};
+  };
+  
+  export type CategoriesActions = 
+  	ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];

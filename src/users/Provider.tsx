@@ -1,13 +1,14 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 
+import { hostPort } from '../global/GlobalProvider'
+
 import { ActionTypes, FORM_MODES, IUser, IUsersState, IUsersContext } from './types';
 import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 
 const initialState: IUsersState = {
   mode: FORM_MODES.NULL,
-  // user: null,
   loading: false,
   users: []
 }
@@ -22,14 +23,10 @@ const UsersContext = createContext<IUsersContext>({
 
 const UserDispatchContext = createContext<Dispatch<any>>(() => null);
 
-const configHost: string | undefined = process.env.REACT_APP_HOST;
-const configPort: string | undefined = process.env.REACT_APP_PORT;
-export const hostPort = `${configHost!}:${configPort!}`
-console.log({ hostPort })
-
 type Props = {
   children: React.ReactNode
 }
+
 export const Provider: React.FC<Props> = ({ children }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
 

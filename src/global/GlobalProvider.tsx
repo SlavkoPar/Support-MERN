@@ -1,20 +1,23 @@
 import React, { createContext, useContext, useReducer, Dispatch, useCallback } from "react";
 import { Types } from 'mongoose';
 
-import { globalReducer, GlobalActions } from "./reducer";
+import { globalReducer } from "./globalReducer";
 
-import { IGlobalContext, IGlobalState, ILoginUser, ROLES, GlobalActionTypes } from './types'
+import { IGlobalContext, IGlobalState, ILoginUser, ROLES, GlobalActionTypes, IAuthUser } from './types'
 import axios, { AxiosError } from "axios";
 import { IUser } from "../users/types";
 
+export const initialAuthUser: IAuthUser = {
+  userId: new Types.ObjectId(),
+  color: 'blue',
+  userName: '',
+  password: '',
+  role: ROLES.VIEWER
+}
+
 const initialState: IGlobalState = {
   isAuthenticated: false,
-  authUser: {
-    userId: new Types.ObjectId('63ef5e1813d8ce86929c61be'),
-    color: 'blue',
-    userName: '',
-    role: ROLES.VIEWER,
-  },
+  authUser: initialAuthUser,
   canEdit: false,
   isDarkMode: true,
   variant: 'dark',
@@ -24,6 +27,7 @@ const initialState: IGlobalState = {
 
 const GlobalContext = createContext<IGlobalContext>({
   globalState: { ...initialState },
+  loadStateFromLocalStorage: () => { },
   registerUser: (user: ILoginUser) => { },
   signInUser: (user: ILoginUser) => { },
 });
@@ -37,7 +41,6 @@ interface Props {
 const configHost: string | undefined = process.env.REACT_APP_HOST;
 const configPort: string | undefined = process.env.REACT_APP_PORT;
 export const hostPort = `${configHost!}:${configPort!}`
-console.log({ hostPort })
 
 export const GlobalProvider: React.FC<Props> = ({ children }) => {
   const [globalState, dispatch] = useReducer(globalReducer, initialState);
@@ -113,10 +116,43 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
       });
   }, [dispatch]);
 
-
+  const loadStateFromLocalStorage = useCallback(() => {
+    dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
+    try {
+      let globalState: IGlobalState | undefined;
+      if ('localStorage' in window) {
+        const s = localStorage.getItem('GLOBAL_STATE');
+        if (s !== null) {
+          const parsed = JSON.parse(s);
+          console.log('parsed', parsed)
+          globalState = parsed;
+          //global = parseFromLocalStorage(parsed);
+        }
+      }
+      if (globalState) {
+        const { authUser } = globalState;
+        dispatch({
+          type: GlobalActionTypes.SET_STATE, payload: {
+            globalState: {
+              ...globalState,
+              isAuthenticated: false
+            }
+          }
+        });
+        const loginUser: ILoginUser = {
+          userName: authUser.userName,
+          password: authUser.password
+        }
+        signInUser(loginUser);
+      }
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }, [dispatch, signInUser]);
 
   return (
-    <GlobalContext.Provider value={{ globalState, registerUser, signInUser }}>
+    <GlobalContext.Provider value={{ globalState, loadStateFromLocalStorage, registerUser, signInUser }}>
       <GlobalDispatchContext.Provider value={dispatch}>
         {children}
       </GlobalDispatchContext.Provider>
@@ -137,16 +173,6 @@ export const useGlobalState = () => {
   return globalState;
 }
 
-// const storeReducer: React.Reducer<IGlobalState, GlobalActions> = (state, action) => {
-//   switch (action.type) {
-//     case GlobalActions.AUTHENTICATE: {
-//       return { ...state, isAuthenticated: true, user: action.user };
-//     }
-//     default: {
-//       throw Error('Unknown action: ' + action.type);
-//     }
-//   }
-// }
 
 
 

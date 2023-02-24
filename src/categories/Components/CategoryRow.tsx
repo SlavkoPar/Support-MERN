@@ -20,7 +20,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
 
     const { canEdit, isDarkMode: darkMode, variant, bg } = useGlobalState();
 
-    const { store, editCategory, deleteCategory } = useCategoryContext();
+    const { state, editCategory, deleteCategory } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
     const [isExpanded, setIsExpanded] = useState(false);

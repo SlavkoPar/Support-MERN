@@ -1,7 +1,7 @@
 import { FORM_MODES, ActionTypes, IUsersState, IUser, IParentInfo } from "./types";
 import { Types } from 'mongoose';
 import { AxiosError } from "axios";
-import { ROLES } from "../global/types";
+import { ActionMap, ROLES } from "../global/types";
 
 export const initialUser: IUser = {
   // temp _id for inAdding, to server as list key
@@ -13,17 +13,6 @@ export const initialUser: IUser = {
   level: 0,
   role: ROLES.VIEWER,
 }
-
-type ActionMap<M extends { [index: string]: any }> = {
-  [Key in keyof M]: M[Key] extends undefined
-  ? {
-    type: Key;
-  }
-  : {
-    type: Key;
-    payload: M[Key];
-  }
-};
 
 type UsersPayload = {
   [ActionTypes.SET_USERS]: {

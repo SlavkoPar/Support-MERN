@@ -11,7 +11,7 @@ const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => 
 
     const [formValues] = useState(category)
 
-    const { store, createCategory } = useCategoryContext();
+    const { state, createCategory } = useCategoryContext();
 
     const submitForm = (categoryObject: ICategory) => {
         delete categoryObject.inAdding;

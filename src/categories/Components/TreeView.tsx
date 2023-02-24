@@ -7,7 +7,7 @@ import { IParentInfo } from "../types";
 import { useCategoryContext } from "../Provider";
 
 const TreeView = ({ parentCategory, level }: IParentInfo) => {
-    const { store, getCategories } = useCategoryContext();
+    const { state, getCategories } = useCategoryContext();
     useEffect(() => {
         console.log('Zovem getCategories', level, parentCategory)
         getCategories({ parentCategory, level });
@@ -16,9 +16,9 @@ const TreeView = ({ parentCategory, level }: IParentInfo) => {
     return (
         <div className={`ms-2`}>
             <>
-                {!store.loading && !store.error &&
+                {!state.loading && !state.error &&
                     <ListGroup as="ul" variant='dark' className="mb-0">
-                        {store.categories
+                        {state.categories
                             .filter(category =>
                                 category.parentCategory === parentCategory
                             )
@@ -29,8 +29,8 @@ const TreeView = ({ parentCategory, level }: IParentInfo) => {
                     </ListGroup>
                 }
 
-                {store.loading && "Loading"}
-                {store.error && store.error}
+                {state.loading && "Loading"}
+                {state.error && state.error}
             </>
         </div>
     );

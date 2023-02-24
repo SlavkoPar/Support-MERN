@@ -13,7 +13,7 @@ import { initialCategory } from "./reducer";
 const Providered = () => {
 
     const globalState = useGlobalState();
-    const { store } = useCategoryContext();
+    const { state } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
     return (
@@ -41,7 +41,7 @@ const Providered = () => {
                         {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                         {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                         <div className="d-none d-md-block">
-                            {store.mode === FORM_MODES.EDIT && <Edit />}
+                            {state.mode === FORM_MODES.EDIT && <Edit />}
                         </div>
 
                     </Col>

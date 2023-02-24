@@ -1,4 +1,6 @@
-import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo } from "./types";
+
+import { ActionMap } from '../global/types'
+import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
 import { Types } from 'mongoose';
 import { AxiosError } from "axios";
 
@@ -11,74 +13,6 @@ export const initialCategory: ICategory = {
   level: 0,
   parentCategory: null
 }
-
-type ActionMap<M extends { [index: string]: any }> = {
-  [Key in keyof M]: M[Key] extends undefined
-  ? {
-    type: Key;
-  }
-  : {
-    type: Key;
-    payload: M[Key];
-  }
-};
-
-
-type CategoriesPayload = {
-  [ActionTypes.SET_CATEGORIES]: {
-    categories: ICategory[];
-  };
-
-  [ActionTypes.SET_LOADING]: {
-  };
-
-  [ActionTypes.CANCEL_ADDING_FORM]: {
-  };
-
-  [ActionTypes.CANCEL_EDITING_FORM]: {
-  };
-
-  [ActionTypes.CLOSE_EDITING_FORM]: {
-  };
-
-  [ActionTypes.ADD]: IParentInfo;
-
-  [ActionTypes.EDIT]: {
-    category: ICategory;
-  };
-
-  [ActionTypes.REFRESH_UPDATED_CATEGORY]: {
-    category: ICategory;
-  };
-
-  [ActionTypes.DELETE]: {
-    _id: Types.ObjectId;
-  };
-
-  [ActionTypes.CLEAN_SUB_TREE]: {
-    category: ICategory;
-  };
-  
-  [ActionTypes.CLOSE_EDITING_FORM]: {
-  };
-
-  [ActionTypes.CLOSE_ADDING_FORM]: {
-  };
-
-  [ActionTypes.REFRESH_ADDED_CATEGORY]: {
-    category: ICategory;
-  };
-
-  [ActionTypes.REFRESH_UPDATED_CATEGORY]: {
-    category: ICategory;
-  };
-
-  [ActionTypes.SET_ERROR]: {
-    error: AxiosError;
-  };
-};
-
-export type CategoriesActions = ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];
 
 
 export const reducer = (state: ICategoriesState, action: CategoriesActions) => {

@@ -1,19 +1,18 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
+import { hostPort } from '../global/GlobalProvider'
 import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext } from './types';
-import { IUser } from '../users/types'
 import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 
 const initialState: ICategoriesState = {
-  mode: FORM_MODES.NULL,
-  // category: null,
+  mode: FORM_MODES.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
   loading: false,
   categories: []
 }
 
 const CategoriesContext = createContext<ICategoriesContext>({
-  store: { ...initialState },
+  state: { ...initialState },
   getCategories: ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => { },
   createCategory: (category: ICategory) => { },
   editCategory: (_id: Types.ObjectId) => { },
@@ -23,20 +22,13 @@ const CategoriesContext = createContext<ICategoriesContext>({
 
 const CategoryDispatchContext = createContext<Dispatch<any>>(() => null);
 
-const configHost: string | undefined = process.env.REACT_APP_HOST;
-const configPort: string | undefined = process.env.REACT_APP_PORT;
-export const hostPort = `${configHost!}:${configPort!}`
-console.log({ hostPort })
-
 type Props = {
   children: React.ReactNode
 }
 
 export const Provider: React.FC<Props> = ({ children }) => {
 
-  const [store, dispatch] = useReducer(reducer, initialState);
-
-
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const getCategories = useCallback(({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => {
     const urlCategories = `${hostPort}/categories/${parentCategory}`
@@ -139,26 +131,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   };
 
-  /*
-  const refreshAddedCategory = useCallback(_id => {
-    const url = `${hostPort}/categories/get-category/${_id}`
-    console.log(`FETCHING --->>> ${url}`)
-    dispatch({ type: ActionTypes.SET_LOADING })
-    axios
-      .get(url)
-      .then(({ data }) => {
-        console.log(data)
-        dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, data });
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({ type: ActionTypes.SET_ERROR, payload: error });
-      });
-  }, []);
-  */
-
   return (
-    <CategoriesContext.Provider value={{ store, getCategories, createCategory, editCategory, updateCategory, deleteCategory }}>
+    <CategoriesContext.Provider value={{ state: state, getCategories, createCategory, editCategory, updateCategory, deleteCategory }}>
       <CategoryDispatchContext.Provider value={dispatch}>
         {children}
       </CategoryDispatchContext.Provider>

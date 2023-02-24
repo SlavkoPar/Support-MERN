@@ -15,15 +15,12 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Modal } from "react-bootstrap";
 
 import { useGlobalContext, useGlobalDispatch } from './global/GlobalProvider'
-import { ROLES } from "./global/types";
+import { GlobalActionTypes, ROLES } from "./global/types";
 
 interface ISideBarProps {
 }
 
 export function SideBar(props: ISideBarProps) {
-  // const {
-  //   signOut,
-  // } = props;
 
   const { globalState } = useGlobalContext();
   const { authUser, isAuthenticated, isDarkMode, variant, bg } = globalState;
@@ -34,8 +31,8 @@ export function SideBar(props: ISideBarProps) {
   let navigate = useNavigate();
 
   const otkaciMe = () => {
-    // signOut();
-    navigate('/landing');
+    dispatch({ type: GlobalActionTypes.UN_AUTHENTICATE, payload: {} })
+    navigate('/');
   }
 
   const [show, setShow] = useState(false);
@@ -128,16 +125,12 @@ export function SideBar(props: ISideBarProps) {
                 </Nav.Link>
               }
               {!isAuthenticated &&
-                <Nav.Link href="/sign-in ">
+                <Nav.Link href="/sign-in">
                   Sign In
                 </Nav.Link>
               }
 
               {isAuthenticated &&
-                // <Nav.Link href="#" disabled>
-                //   <FontAwesomeIcon icon={faUser} />{' '}{auth!.who.userName}
-                // </Nav.Link>
-
                 <NavDropdown
                   title={<><FontAwesomeIcon icon={faUser} />{' '}{userName}</>}
                   id={`offcanvasNavbarDropdown-expand`}
