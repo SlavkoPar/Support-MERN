@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, Dispatch, useCallback } from "react";
+import React, { createContext, useContext, useReducer, Dispatch, useCallback, useMemo } from "react";
 import { Types } from 'mongoose';
 
 import { globalReducer } from "./globalReducer";
@@ -25,13 +25,7 @@ const initialState: IGlobalState = {
   loading: false
 }
 
-const GlobalContext = createContext<IGlobalContext>({
-  globalState: { ...initialState },
-  loadStateFromLocalStorage: () => { },
-  registerUser: (user: ILoginUser) => { },
-  signInUser: (user: ILoginUser) => { },
-});
-
+const GlobalContext = createContext<IGlobalContext>({} as any);
 const GlobalDispatchContext = createContext<Dispatch<any>>(() => null);
 
 interface Props {
@@ -149,7 +143,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
     catch (err) {
       console.error(err);
     }
-  }, [dispatch, signInUser]);
+  }, [dispatch]);
 
   return (
     <GlobalContext.Provider value={{ globalState, loadStateFromLocalStorage, registerUser, signInUser }}>

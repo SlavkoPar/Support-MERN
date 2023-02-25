@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // import logo from './logo.svg'
@@ -35,102 +35,69 @@ export function SideBar(props: ISideBarProps) {
     navigate('/');
   }
 
+  useEffect(() => {
+    if (isAuthenticated){
+       return navigate("/");
+    }
+ }, [isAuthenticated, navigate]);
+
+
   const [show, setShow] = useState(false);
 
   return (
-    <Navbar expand={"md"} variant={variant} bg={bg} collapseOnSelect className="sticky-top">
-      <Container fluid>
-        <Navbar.Brand href="#" className="ps-3">Support Knowledge</Navbar.Brand>
-        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand`} />
-        <Navbar.Offcanvas
-          id={`offcanvasNavbar-expand`}
-          aria-labelledby={`offcanvasNavbarLabel-expand`}
-          placement="end"
-          className={`text-bg-${bg}`}
-        >
-          {isDarkMode ? (
-            <Offcanvas.Header closeButton closeVariant="white">
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>Support</Offcanvas.Title>
-            </Offcanvas.Header>
-          ) : (
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>Support</Offcanvas.Title>
-            </Offcanvas.Header>
-          )}
+    <Container fluid>
+      {isAuthenticated ? (
+        <Navbar expand={"md"} variant={variant} bg={bg} collapseOnSelect className="sticky-top">
+          <Navbar.Brand href="#" className="ps-3">Support Knowledge</Navbar.Brand>
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand`} />
+          <Navbar.Offcanvas
+            id={`offcanvasNavbar-expand`}
+            aria-labelledby={`offcanvasNavbarLabel-expand`}
+            placement="end"
+            className={`text-bg-${bg}`}
+          >
+            {isDarkMode ? (
+              <Offcanvas.Header closeButton closeVariant="white">
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>Support</Offcanvas.Title>
+              </Offcanvas.Header>
+            ) : (
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>Support</Offcanvas.Title>
+              </Offcanvas.Header>
+            )}
 
-          <Offcanvas.Body>
-            <Nav
-              className="justify-content-end flex-grow-1 pe-3 d-flex flex-nowrap"
-              onSelect={eventKey => { 
-                
-                switch (eventKey) {
-                  case "LIGHT_MODE":
-                  case "DARK_MODE":
-                    if (document.body.classList.contains('dark')) {
-                      document.body.classList.remove('dark')
-                      document.body.classList.add('light')
-                    }
-                    else {
-                      document.body.classList.add('dark')
-                    }
-                    dispatch({ type: eventKey })
-                    break;
-                }
-              }}
-            >
-              {isAuthenticated &&
+            <Offcanvas.Body>
+              <Nav
+                className="justify-content-end flex-grow-1 pe-3 d-flex flex-nowrap"
+              >
                 <Nav.Link href="/supporter/promo" onClick={() => {
                   //closeQuestionForm();
                 }}>
                   <FontAwesomeIcon icon={faSurprise} color='lightblue' />{' '}Supporter
                 </Nav.Link>
-              }
-              {isAuthenticated &&
                 <Nav.Link href="/categories">
                   <FontAwesomeIcon icon={faQuestion} color='lightblue' />{' '}Questions
                 </Nav.Link>
-              }
-              {isAuthenticated &&
                 <Nav.Link href="/answers/pera">
                   <FontAwesomeIcon icon={faAnchor} color='lightblue' />{' '}Answers
                 </Nav.Link>
-              }
-              {isAuthenticated && role === ROLES.OWNER &&
-                <Nav.Link href="/users">
-                  <FontAwesomeIcon icon={faUserFriends} color='lightblue' />{' '}Users
-                </Nav.Link>
-              }
+                {role === ROLES.OWNER &&
+                  <Nav.Link href="/users">
+                    <FontAwesomeIcon icon={faUserFriends} color='lightblue' />{' '}Users
+                  </Nav.Link>
+                }
 
-              {!isAuthenticated &&
-                <Nav.Link href="/landing">
-                  Landing
-                </Nav.Link>
-              }
-              {!isAuthenticated &&
-                <Nav.Link href="/About">
+                <Nav.Link href="/about">
                   About
                 </Nav.Link>
-              }
 
-              {/* <NavDropdown
+                {/* <NavDropdown
                 title={<><FontAwesomeIcon icon={faCog} color='lightblue' />{' '}Settings</>}
                 id={`offcanvasNavbarDropdown-expand`}
                 menuVariant={variant}
               >
               </NavDropdown> */}
 
-              {!isAuthenticated &&
-                <Nav.Link href="/Register">
-                  Register
-                </Nav.Link>
-              }
-              {!isAuthenticated &&
-                <Nav.Link href="/sign-in">
-                  Sign In
-                </Nav.Link>
-              }
-
-              {isAuthenticated &&
                 <NavDropdown
                   title={<><FontAwesomeIcon icon={faUser} />{' '}{userName}</>}
                   id={`offcanvasNavbarDropdown-expand`}
@@ -186,11 +153,75 @@ export function SideBar(props: ISideBarProps) {
                     Sign out
                   </NavDropdown.Item>
                 </NavDropdown>
-              }
-            </Nav>
-          </Offcanvas.Body>
-        </Navbar.Offcanvas>
-      </Container>
-    </Navbar>
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
+        </Navbar>
+      ) : (
+        <Navbar expand={"md"} variant={variant} bg={bg} collapseOnSelect className="sticky-top">
+          <Navbar.Brand href="#" className="ps-3">Support Knowledge</Navbar.Brand>
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand`} />
+          <Navbar.Offcanvas
+            id={`offcanvasNavbar-expand`}
+            aria-labelledby={`offcanvasNavbarLabel-expand`}
+            placement="end"
+            className={`text-bg-${bg}`}
+          >
+            {isDarkMode ? (
+              <Offcanvas.Header closeButton closeVariant="white">
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>Support</Offcanvas.Title>
+              </Offcanvas.Header>
+            ) : (
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand`}>Support</Offcanvas.Title>
+              </Offcanvas.Header>
+            )}
+
+            <Offcanvas.Body>
+              <Nav
+                className="justify-content-end flex-grow-1 pe-3 d-flex flex-nowrap"
+                onSelect={eventKey => {
+
+                  switch (eventKey) {
+                    case "LIGHT_MODE":
+                    case "DARK_MODE":
+                      if (document.body.classList.contains('dark')) {
+                        document.body.classList.remove('dark')
+                        document.body.classList.add('light')
+                      }
+                      else {
+                        document.body.classList.add('dark')
+                      }
+                      dispatch({ type: eventKey })
+                      break;
+                  }
+                }}
+              >
+
+                <Nav.Link href="/about">
+                  About
+                </Nav.Link>
+
+                {/* <NavDropdown
+                title={<><FontAwesomeIcon icon={faCog} color='lightblue' />{' '}Settings</>}
+                id={`offcanvasNavbarDropdown-expand`}
+                menuVariant={variant}
+              >
+              </NavDropdown> */}
+
+                <Nav.Link href="/register">
+                  Register
+                </Nav.Link>
+                <Nav.Link href="/sign-in">
+                  Sign In
+                </Nav.Link>
+
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
+        </Navbar>
+      )
+      }
+    </Container>
   );
 }

@@ -13,6 +13,9 @@ const TreeView = ({ parentCategory, level }: IParentInfo) => {
         getCategories({ parentCategory, level });
     }, [level, getCategories, parentCategory]);
 
+    if (state.loading)
+        return <div>...loading</div>
+
     return (
         <div className={`ms-2`}>
             <>
@@ -29,7 +32,6 @@ const TreeView = ({ parentCategory, level }: IParentInfo) => {
                     </ListGroup>
                 }
 
-                {state.loading && "Loading"}
                 {state.error && state.error}
             </>
         </div>
