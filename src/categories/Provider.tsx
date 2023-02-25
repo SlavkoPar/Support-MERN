@@ -37,7 +37,6 @@ export const Provider: React.FC<Props> = ({ children }) => {
     axios
       .get(urlCategories)
       .then(({ data }) => {
-        console.log(data)
         dispatch({ type: ActionTypes.SET_CATEGORIES, payload: { categories: data } });
       })
       .catch((error) => {

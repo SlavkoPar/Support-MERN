@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useReducer, Dispatch, useCallback, useMemo } from "react";
+import React, { createContext, useContext, useReducer, Dispatch, useCallback } from "react";
 import { Types } from 'mongoose';
-
-import { globalReducer } from "./globalReducer";
+import axios, { AxiosError } from "axios";
 
 import { IGlobalContext, IGlobalState, ILoginUser, ROLES, GlobalActionTypes, IAuthUser } from './types'
-import axios, { AxiosError } from "axios";
+import { reducer } from "./reducer";
+
 import { IUser } from "../users/types";
 
 export const initialAuthUser: IAuthUser = {
@@ -37,7 +37,7 @@ const configPort: string | undefined = process.env.REACT_APP_PORT;
 export const hostPort = `${configHost!}:${configPort!}`
 
 export const GlobalProvider: React.FC<Props> = ({ children }) => {
-  const [globalState, dispatch] = useReducer(globalReducer, initialState);
+  const [globalState, dispatch] = useReducer(reducer, initialState);
 
   const registerUser = useCallback((loginUser: ILoginUser) => {
     dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
@@ -143,7 +143,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
     catch (err) {
       console.error(err);
     }
-  }, [dispatch]);
+  }, [dispatch, signInUser]);
 
   return (
     <GlobalContext.Provider value={{ globalState, loadStateFromLocalStorage, registerUser, signInUser }}>

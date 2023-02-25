@@ -38,9 +38,9 @@ function App() {
           <Col md={12}>
             <div className="wrapper">
               <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/landing" element={<Landing />} />
+                <Route path="/" element={<Categories />} />
                 <Route path="/categories" element={<Categories />} />
+                <Route path="/landing" element={<Landing />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/register" element={<RegisterForm />} />
                 <Route path="/sign-in" element={<LoginForm />} />

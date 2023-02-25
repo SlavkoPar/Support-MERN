@@ -25,6 +25,8 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
 
     case ActionTypes.SET_CATEGORIES: {
+      console.log(state.categories)
+      console.log(action.payload.categories)
       return {
         ...state,
         categories: state.categories.concat(action.payload.categories),

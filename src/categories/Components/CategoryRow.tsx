@@ -43,8 +43,6 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     // console.log({ inEditing, isExpanded, inAdding })
     const [hoverRef, hoverProps] = useHover();
 
-    console.log({ canEdit })
-
     return (
         <>
             {inAdding ? (
@@ -119,16 +117,20 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
             }
 
             {(isExpanded || inEditing) && !inAdding &&
-                <ListGroup.Item className="py-0 px-0" variant={variant}>
+                <ListGroup.Item 
+                    className="py-0 px-0"
+                    variant={variant} 
+                    as="li"
+                >
                     {inEditing ? ( // store.mode === FORM_MODES.EDIT &&
                         // <div class="d-lg-none">hide on lg and wider screens</div>
                         <div className="mx-3 d-md-none">
                             <Edit />
                         </div>
                     )
-                        : (
-                            <TreeView level={level + 1} parentCategory={_id!} />
-                        )}
+                    : (
+                        <TreeView level={level + 1} parentCategory={_id!} />
+                    )}
                 </ListGroup.Item>
             }
         </>

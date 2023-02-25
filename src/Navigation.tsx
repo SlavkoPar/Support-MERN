@@ -14,7 +14,6 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import { useGlobalContext, useGlobalDispatch } from './global/GlobalProvider'
 import { ROLES, GlobalActionTypes } from "./global/types";
-import { ActionTypes } from "./users/types";
 
 interface INavigation {
 }

@@ -1,9 +1,9 @@
 import React, { Reducer } from 'react'
 import { initialAuthUser } from './GlobalProvider';
-import { IGlobalState, GlobalActionTypes, GlobalActions } from "./types";
+import { IGlobalState, GlobalActionTypes, GlobalActions, ROLES } from "./types";
 
-export const globalReducer: Reducer<IGlobalState, GlobalActions> = (state, action) => {
-	const newState = reducer(state, action);
+export const reducer: Reducer<IGlobalState, GlobalActions> = (state, action) => {
+	const newState = globalReducer(state, action);
     //const aTypesToStore = Object.keys(GlobalActionTypes).filter(a => a !== GlobalActionTypes.SET_ERROR);
     const aTypesToStore = [	"AUTHENTICATE", "DARK_MODE", "LIGHT_MODE"];
 	if (aTypesToStore.includes(action.type)) {
@@ -12,7 +12,7 @@ export const globalReducer: Reducer<IGlobalState, GlobalActions> = (state, actio
 	return newState;
 }
 
-const reducer: Reducer<IGlobalState, GlobalActions> = (state, action) => {
+const globalReducer: Reducer<IGlobalState, GlobalActions> = (state, action) => {
     const s = action.type;
 
     switch (action.type) {
@@ -51,6 +51,7 @@ const reducer: Reducer<IGlobalState, GlobalActions> = (state, action) => {
                     registered: user.created!.date
                     //visited: user.visited!.date
                 },
+                canEdit: user.role !== ROLES.VIEWER,
                 isAuthenticated: true
             };
         }
