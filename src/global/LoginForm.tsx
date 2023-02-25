@@ -20,8 +20,6 @@ const LoginForm = () => {
   const { globalState, registerUser, signInUser } = useGlobalContext();
   const { isAuthenticated, authUser } = globalState;
 
-  const dispatch = useGlobalDispatch();
-
   let navigate = useNavigate();
   const closeForm = () => {
     navigate('/');
@@ -58,6 +56,11 @@ const LoginForm = () => {
   useEffect(() => {
     nameRef.current!.focus()
   }, [nameRef])
+
+  useEffect(() => {
+    if (isAuthenticated)
+      navigate('/')
+  }, [isAuthenticated, navigate])
 
   return (
     <div className="form">

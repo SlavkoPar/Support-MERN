@@ -59,17 +59,22 @@ router.post("/sign-in-user", (req, res, next) => {
                 return next(new Error("User doesn't exist"));
             }
             else {
-                user.comparePassword(req.body.password, function (error, isMatch) {
-                    if (error) {
-                        return next(error);
-                    }
-                    else {
-                        if (isMatch)
-                            res.json(user);
-                        else
-                            return next(new Error("Wrong Password"));
-                    }
-                });
+                if (req.body.password === user.password) {
+                    res.json(user);
+                }
+                else {
+                    user.comparePassword(req.body.password, function (error, isMatch) {
+                        if (error) {
+                            return next(error);
+                        }
+                        else {
+                            if (isMatch)
+                                res.json(user);
+                            else
+                                return next(new Error("Wrong Password"));
+                        }
+                    });
+                }
             }
         }
     });

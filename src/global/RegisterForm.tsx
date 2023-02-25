@@ -18,7 +18,7 @@ export interface ILoginFormProps {
 const RegisterForm = () => {
 
   const { globalState, registerUser, signInUser } = useGlobalContext();
-  const { authUser } = globalState;
+  const { isAuthenticated, authUser } = globalState;
 
   const dispatch = useGlobalDispatch();
 
@@ -68,6 +68,11 @@ const RegisterForm = () => {
   useEffect(() => {
     nameRef.current!.focus()
   }, [nameRef])
+
+  useEffect(() => {
+    if (isAuthenticated)
+      navigate('/')
+  }, [isAuthenticated, navigate])
 
   return (
     <div className="form">

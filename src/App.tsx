@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Nav, Navbar, Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { SideBar } from './SideBar'
+import { Navigation } from './Navigation'
 import { useGlobalContext } from './global/GlobalProvider'
 
 import './App.css';
@@ -20,8 +20,7 @@ import About from './About';
 
 function App() {
 
-  const { globalState, loadStateFromLocalStorage } = useGlobalContext();
-  const { isAuthenticated } = globalState;
+  const { loadStateFromLocalStorage } = useGlobalContext();
 
   useEffect(() => {
     loadStateFromLocalStorage();
@@ -33,7 +32,7 @@ function App() {
     <Router>
       <Container fluid className="App">
         <header className="App-header">
-          <SideBar />
+          <Navigation />
         </header>
         <Row>
           <Col md={12}>
