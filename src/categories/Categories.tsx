@@ -5,7 +5,7 @@ import { useGlobalState } from '../global/GlobalProvider'
 import { FORM_MODES, ActionTypes } from "./types";
 import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
 
-import TreeView from "./Components/TreeView";
+import List from "./Components/List";
 // import Add from "./Components/Add";
 import Edit from "./Components/Edit";
 import { initialCategory } from "./reducer";
@@ -34,7 +34,7 @@ const Providered = () => {
                 <Row>
                     <Col xs={12} md={7}>
                         <div>
-                            <TreeView parentCategory={null} level={1} />
+                            <List parentCategory={null} level={1} />
                         </div>
                     </Col>
                     <Col xs={0} md={5}>

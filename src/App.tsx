@@ -1,14 +1,11 @@
-import { Types } from 'mongoose';
 import { useEffect } from 'react';
-import { Nav, Navbar, Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { Navigation } from './Navigation'
 import { useGlobalContext } from './global/GlobalProvider'
 
 import './App.css';
-
-import { IUser } from './users/types';
 
 import Categories from "./categories/Categories"
 import Users from "./users/Users"
@@ -38,7 +35,7 @@ function App() {
           <Col md={12}>
             <div className="wrapper">
               <Routes>
-                <Route path="/" element={<Categories />} />
+                <Route path="/" element={<About />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/landing" element={<Landing />} />
                 <Route path="/users" element={<Users />} />

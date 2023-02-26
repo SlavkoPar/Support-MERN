@@ -7,7 +7,7 @@ import { ListGroup, Button, Badge } from "react-bootstrap";
 import { useGlobalState } from '../../global/GlobalProvider'
 import { ActionTypes } from "../types";
 import { useCategoryContext, useCategoryDispatch } from '../Provider'
-import TreeView from "./TreeView";
+import List from "./List";
 import Add from "./Add";
 import Edit from "./Edit";
 import { Types } from "mongoose";
@@ -129,7 +129,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                         </div>
                     )
                     : (
-                        <TreeView level={level + 1} parentCategory={_id!} />
+                        <List level={level + 1} parentCategory={_id!} />
                     )}
                 </ListGroup.Item>
             }

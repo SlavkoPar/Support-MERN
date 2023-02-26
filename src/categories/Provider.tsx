@@ -11,15 +11,8 @@ const initialState: ICategoriesState = {
   categories: []
 }
 
-const CategoriesContext = createContext<ICategoriesContext>({
-  state: { ...initialState },
-  getCategories: ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => { },
-  createCategory: (category: ICategory) => { },
-  editCategory: (_id: Types.ObjectId) => { },
-  updateCategory: (category: ICategory) => { },
-  deleteCategory: (_id: Types.ObjectId) => { }
-});
 
+const CategoriesContext = createContext<ICategoriesContext>({} as any);
 const CategoryDispatchContext = createContext<Dispatch<any>>(() => null);
 
 type Props = {
@@ -130,8 +123,9 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   };
 
+  const contextValue = { state: state, getCategories, createCategory, editCategory, updateCategory, deleteCategory }
   return (
-    <CategoriesContext.Provider value={{ state: state, getCategories, createCategory, editCategory, updateCategory, deleteCategory }}>
+    <CategoriesContext.Provider value={contextValue}>
       <CategoryDispatchContext.Provider value={dispatch}>
         {children}
       </CategoryDispatchContext.Provider>

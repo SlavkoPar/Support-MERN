@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 // import logo from './logo.svg'
 
@@ -31,7 +31,7 @@ export function Navigation(props: INavigation) {
 
   const otkaciMe = () => {
     dispatch({ type: GlobalActionTypes.UN_AUTHENTICATE })
-    //navigate('/');
+    navigate('/');
   }
 
   return (
@@ -58,8 +58,8 @@ export function Navigation(props: INavigation) {
           <Offcanvas.Body>
             <Nav
               className="justify-content-end flex-grow-1 pe-3 d-flex flex-nowrap"
-              onSelect={eventKey => { 
-                
+              onSelect={eventKey => {
+
                 switch (eventKey) {
                   case "LIGHT_MODE":
                   case "DARK_MODE":
@@ -80,7 +80,7 @@ export function Navigation(props: INavigation) {
                   onClick={() => {
                     //closeQuestionForm();
                   }
-                }>
+                  }>
                   <FontAwesomeIcon icon={faSurprise} color='lightblue' />{' '}Supporter
                 </NavLink>
               }
@@ -106,7 +106,7 @@ export function Navigation(props: INavigation) {
                 </NavLink>
               }
               {!isAuthenticated &&
-                <NavLink to="/About" className="nav-link">
+                <NavLink to="/about" className="nav-link">
                   About
                 </NavLink>
               }
@@ -123,7 +123,7 @@ export function Navigation(props: INavigation) {
                   Register
                 </NavLink>
               }
-              
+
               {!isAuthenticated &&
                 <NavLink to="/sign-in" className="nav-link">
                   Sign In
@@ -178,8 +178,8 @@ export function Navigation(props: INavigation) {
                   </NavDropdown> */}
                   <NavDropdown.Divider />
 
-                  <NavDropdown.Item href="#/About">
-                    About
+                  <NavDropdown.Item as={Link} to="/about" >
+                      About
                   </NavDropdown.Item>
 
                   <NavDropdown.Item href="#" onClick={otkaciMe}>
