@@ -6,9 +6,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 ### `yarn run dev`
-Starts concurrently server script "backend/server.js", Express web application framework, and the React App in the development mode.\
-
-or
+Runs concurrently server script "backend/server.js", and the React App in the development mode.
+"backend/server.js" script starts Express web application framework and connecting MongoDB database.
 
 ### `yarn start`
 
