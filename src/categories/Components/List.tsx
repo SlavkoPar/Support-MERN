@@ -13,13 +13,9 @@ const List = ({ parentCategory, level }: IParentInfo) => {
         getCategories({ parentCategory, level });
     }, [level, getCategories, parentCategory]);
 
-    console.log('List')
-    console.log('LIst level, parentCategory:', level, parentCategory)
-
-    console.log('parentCategory', parentCategory)
+    console.log('level, parentCategory:', level, parentCategory)
     const cats = state.categories.filter(c => c.parentCategory === parentCategory)
     console.log('length:', cats.length)
-    console.log('parentCategory', parentCategory)
     cats.forEach(c => console.log(c.parentCategory, c.title));
 
     return (

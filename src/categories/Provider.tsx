@@ -11,7 +11,6 @@ const initialState: ICategoriesState = {
   categories: []
 }
 
-
 const CategoriesContext = createContext<ICategoriesContext>({} as any);
 const CategoryDispatchContext = createContext<Dispatch<any>>(() => null);
 
