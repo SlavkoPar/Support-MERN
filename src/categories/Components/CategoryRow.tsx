@@ -18,7 +18,7 @@ import { ICategory } from '../types'
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inEditing, inAdding } = category;
 
-    const { canEdit, isDarkMode: darkMode, variant, bg } = useGlobalState();
+    const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
     const { state, editCategory, deleteCategory } = useCategoryContext();
     const dispatch = useCategoryDispatch();
@@ -43,6 +43,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     // console.log({ inEditing, isExpanded, inAdding })
     const [hoverRef, hoverProps] = useHover();
 
+    console.log({isExpanded})
     return (
         <>
             {inAdding ? (
