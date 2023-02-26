@@ -1,8 +1,7 @@
-
-import { ActionMap } from '../global/types'
 import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
 import { Types } from 'mongoose';
 import { AxiosError } from "axios";
+import { IQuestion } from "../questions/types";
 
 export const initialCategory: ICategory = {
   // temp _id for inAdding, to server as list key
@@ -11,7 +10,8 @@ export const initialCategory: ICategory = {
   _id: new Types.ObjectId('000000000000000000000000'),
   title: '',
   level: 0,
-  parentCategory: null
+  parentCategory: null,
+  questions: []
 }
 
 
@@ -85,7 +85,6 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null,
         categories: state.categories.map(c => c.inEditing ? category : c), // doesn't contain isEditing 
         loading: false
       }
@@ -110,7 +109,6 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null,
         categories: state.categories.filter(c => c._id !== _id)
       };
     }
@@ -118,8 +116,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
     case ActionTypes.CLOSE_ADDING_FORM: {
       return {
         ...state,
-        mode: FORM_MODES.NULL,
-        category: null
+        mode: FORM_MODES.NULL
       };
     }
 
@@ -127,7 +124,6 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null,
         categories: state.categories.filter(c => !c.inAdding)
       };
     }
@@ -137,13 +133,30 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null,
         categories: state.categories.map(c => c.inEditing ? ({ ...c, inEditing: false }) : c)
       };
     }
     
+
+    case ActionTypes.ADD_QUESTION: {
+      const { category } = action.payload;
+      const {_id, level } = category;
+      const question: IQuestion = {
+        parentCategory: _id!,
+        level,
+        title : 'novi'
+      }
+      return {
+        ...state,
+        categories: state.categories.map(c => c._id === _id
+          ? { ...c, questions: [...c.questions??[], question]}
+          : c),
+        mode: FORM_MODES.ADD_QUESTION
+      };
+    }
+
     default:
-      return state;
+      return state;  // TODO throw error
   }
 };
 

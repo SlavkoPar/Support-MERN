@@ -6,39 +6,39 @@ import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalState } from '../../global/GlobalProvider'
 import { ActionTypes } from "../types";
-import { useCategoryContext, useCategoryDispatch } from '../Provider'
+import { useQuestionContext, useQuestionDispatch } from '../Provider'
 import List from "./List";
 import Add from "./Add";
 import Edit from "./Edit";
 import { Types } from "mongoose";
 import { useHover } from '../../common/components/useHover';
 
-import { ICategory } from '../types'
+import { IQuestion } from '../types'
 
-const CategoryRow = ({ category }: { category: ICategory }) => {
-    const { _id, title, level, inEditing, inAdding } = category;
+const QuestionRow = ({ question }: { question: IQuestion }) => {
+    const { _id, title, level, inEditing, inAdding } = question;
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
-    const { state, editCategory, deleteCategory } = useCategoryContext();
-    const dispatch = useCategoryDispatch();
+    const { state, editQuestion, deleteQuestion } = useQuestionContext();
+    const dispatch = useQuestionDispatch();
 
     const [isExpanded, setIsExpanded] = useState(false);
 
     const del = () => {
-        deleteCategory(_id!);
+        deleteQuestion(_id!);
     };
 
     const expand = () => {
         const refresh = isExpanded;
         setIsExpanded(!isExpanded);
         if (refresh)
-            dispatch({ type: ActionTypes.CLEAN_SUB_TREE, payload: { category } })
+            dispatch({ type: ActionTypes.CLEAN_SUB_TREE, payload: { question } })
     }
 
     const edit = (_id: Types.ObjectId) => {
-        // Load data from server and reinitialize category
-        editCategory(_id);
+        // Load data from server and reinitialize question
+        editQuestion(_id);
     }
     // console.log({ inEditing, isExpanded, inAdding })
     const [hoverRef, hoverProps] = useHover();
@@ -46,7 +46,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     return (
         <>
             {inAdding ? (
-                <Add category={category} inLine={true} />
+                <Add question={question} inLine={true} />
             )
                 : (
                     <ListGroup.Item
@@ -69,7 +69,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                 size="sm"
                                 className="py-0 mx-1 text-decoration-none"
                                 title={_id!.toString()}
-                            // onClick={() => onSelectCategory(categoryId)}
+                            // onClick={() => onSelectQuestion(questionId)}
                             >
                                 {title}
                             </Button>
@@ -78,31 +78,14 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                             </Badge>
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
-                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                    onClick={() => edit(_id!)}
-                                >
-                                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
-                                </Button>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{ border: '1px solid orange' }}
-                                    onClick={del}
-                                >
-                                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
-                                </Button>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
+                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubQuestion" >
                                     <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
                                         onClick={() => {
                                             dispatch({
                                                 type: ActionTypes.ADD,
                                                 payload: {
-                                                    parentCategory: category._id,
-                                                    level: category.level
+                                                    parentCategory: question._id,
+                                                    level: question.level
                                                 }
                                             })
                                             if (!isExpanded)
@@ -113,29 +96,30 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                             }
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
-                                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
-                                        onClick={() => {
-                                            dispatch({
-                                                type: ActionTypes.ADD_QUESTION,
-                                                payload: { category }
-                                            })
-                                            if (!isExpanded)
-                                                setIsExpanded(true)
-                                        }}
-                                    />
+                                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
+                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, question }) }}>
+                                    onClick={() => edit(_id!)}
+                                >
+                                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
                                 </Button>
                             }
 
+                            {canEdit && hoverProps.isHovered &&
+                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{border: '1px solid orange'}}
+                                    onClick={del}
+                                >
+                                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
+                                </Button>
+                            }
                         </div>
                     </ListGroup.Item>
                 )
             }
 
             {(isExpanded || inEditing) && !inAdding &&
-                <ListGroup.Item
+                <ListGroup.Item 
                     className="py-0 px-0"
-                    variant={variant}
+                    variant={variant} 
                     as="li"
                 >
                     {inEditing ? ( // store.mode === FORM_MODES.EDIT &&
@@ -144,13 +128,13 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                             <Edit />
                         </div>
                     )
-                        : (
-                            <List level={level + 1} parentCategory={_id!} />
-                        )}
+                    : (
+                        <List level={level + 1} parentCategory={_id!} />
+                    )}
                 </ListGroup.Item>
             }
         </>
     );
 };
 
-export default CategoryRow;
+export default QuestionRow;

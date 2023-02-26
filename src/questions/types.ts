@@ -3,24 +3,20 @@ import { Types } from 'mongoose';
 import { IDateAndBy } from '../global/types';
 import { AxiosError } from 'axios';
 import { ActionMap } from '../global/types'
-import { IQuestion } from '../questions/types';
 
 export const FORM_MODES = {
 	UNDEFINED: undefined,
 	NULL: null,
 	ADD: 'ADD',
 	EDIT: 'EDIT',
-	DELETE: 'DELETE',
-	// questions
-	ADD_QUESTION: 'ADD_QUESTION'
+	DELETE: 'DELETE'
 }
 
-export interface ICategory {
+export interface IQuestion {
 	_id?: Types.ObjectId,
 	title: string,
 	level: number,
-	questions: IQuestion[],
-	parentCategory: Types.ObjectId | null,
+	parentCategory: Types.ObjectId,
 	isExpanded?: boolean,
 	created?: IDateAndBy,
 	createdBy?: string,
@@ -35,26 +31,26 @@ export interface IParentInfo {
     level: number
   }
 
-export interface ICategoriesState {
+export interface IQuestionsState {
 	mode: string | null,
 	loading: boolean,
-	categories: ICategory[],
+	questions: IQuestion[],
 	error?: AxiosError;
 }
 
-export interface ICategoriesContext {
-	state: ICategoriesState,
-	getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
-	createCategory: (category: ICategory) => void,
-	editCategory: (_id: Types.ObjectId) => void,
-	updateCategory:  (category: ICategory) => void,
-	deleteCategory: (_id: Types.ObjectId) => void
+export interface IQuestionsContext {
+	state: IQuestionsState,
+	getQuestions: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	createQuestion: (question: IQuestion) => void,
+	editQuestion: (_id: Types.ObjectId) => void,
+	updateQuestion:  (question: IQuestion) => void,
+	deleteQuestion: (_id: Types.ObjectId) => void
 }
 
-export interface ICategoryFormProps {
-	initialValues: ICategory;
+export interface IQuestionFormProps {
+	initialValues: IQuestion;
 	isEdit: boolean;
-	submitForm: (category: ICategory) => void,
+	submitForm: (question: IQuestion) => void,
 	children: string
   }
 
@@ -72,16 +68,13 @@ export enum ActionTypes  {
 	CLOSE_ADDING_FORM = 'CLOSE_ADDING_FORM',
 	CANCEL_ADDING_FORM = 'CANCEL_ADDING_FORM',
 	CLOSE_EDITING_FORM = 'CLOSE_EDITING_FORM',
-	CANCEL_EDITING_FORM = 'CANCEL_EDITING_FORM',
-
-	// questions
-	ADD_QUESTION = 'ADD_QUESTION',
+	CANCEL_EDITING_FORM = 'CANCEL_EDITING_FORM'
   }
 
 
-  type CategoriesPayload = {
+  type QuestionsPayload = {
 	[ActionTypes.SET_CATEGORIES]: {
-	  categories: ICategory[];
+	  questions: IQuestion[];
 	};
   
 	[ActionTypes.SET_LOADING]: {
@@ -99,11 +92,11 @@ export enum ActionTypes  {
 	[ActionTypes.ADD]: IParentInfo;
   
 	[ActionTypes.EDIT]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
   
 	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
   
 	[ActionTypes.DELETE]: {
@@ -111,7 +104,7 @@ export enum ActionTypes  {
 	};
   
 	[ActionTypes.CLEAN_SUB_TREE]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
 	
 	[ActionTypes.CLOSE_EDITING_FORM]: {
@@ -121,23 +114,17 @@ export enum ActionTypes  {
 	};
   
 	[ActionTypes.REFRESH_ADDED_CATEGORY]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
   
 	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
   
 	[ActionTypes.SET_ERROR]: {
 	  error: AxiosError;
 	};
-
-	// questions
-	[ActionTypes.ADD_QUESTION]: {
-		category: ICategory;
-	}
-
   };
   
-  export type CategoriesActions = 
-  	ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];
+  export type QuestionsActions = 
+  	ActionMap<QuestionsPayload>[keyof ActionMap<QuestionsPayload>];
