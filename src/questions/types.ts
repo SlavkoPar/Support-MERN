@@ -12,12 +12,12 @@ export const FORM_MODES = {
 	DELETE: 'DELETE'
 }
 
-export interface ICategory {
+export interface IQuestion {
 	_id?: Types.ObjectId,
 	title: string,
 	level: number,
 	// questions: IQuestion[],
-	parentCategory: Types.ObjectId | null,
+	parentQuestion: Types.ObjectId | null,
 	isExpanded?: boolean,
 	created?: IDateAndBy,
 	createdBy?: string,
@@ -28,30 +28,30 @@ export interface ICategory {
 }
 
 export interface IParentInfo {
-    parentCategory: Types.ObjectId | null,
+    parentQuestion: Types.ObjectId | null,
     level: number
   }
 
-export interface ICategoriesState {
+export interface IQuestionsState {
 	mode: string | null,
 	loading: boolean,
-	categories: ICategory[],
+	questions: IQuestion[],
 	error?: AxiosError;
 }
 
-export interface ICategoriesContext {
-	state: ICategoriesState,
-	getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
-	createCategory: (category: ICategory) => void,
-	editCategory: (_id: Types.ObjectId) => void,
-	updateCategory:  (category: ICategory) => void,
-	deleteCategory: (_id: Types.ObjectId) => void
+export interface IQuestionsContext {
+	state: IQuestionsState,
+	getQuestions: ({parentQuestion, level}: { parentQuestion: Types.ObjectId | null, level: number }) => void,
+	createQuestion: (question: IQuestion) => void,
+	editQuestion: (_id: Types.ObjectId) => void,
+	updateQuestion:  (question: IQuestion) => void,
+	deleteQuestion: (_id: Types.ObjectId) => void
 }
 
-export interface ICategoryFormProps {
-	initialValues: ICategory;
+export interface IQuestionFormProps {
+	initialValues: IQuestion;
 	isEdit: boolean;
-	submitForm: (category: ICategory) => void,
+	submitForm: (question: IQuestion) => void,
 	children: string
   }
 
@@ -73,9 +73,9 @@ export enum ActionTypes  {
   }
 
 
-  type CategoriesPayload = {
+  type QuestionsPayload = {
 	[ActionTypes.SET_CATEGORIES]: {
-	  categories: ICategory[];
+	  questions: IQuestion[];
 	};
   
 	[ActionTypes.SET_LOADING]: {
@@ -93,11 +93,11 @@ export enum ActionTypes  {
 	[ActionTypes.ADD]: IParentInfo;
   
 	[ActionTypes.EDIT]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
   
 	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
   
 	[ActionTypes.DELETE]: {
@@ -105,7 +105,7 @@ export enum ActionTypes  {
 	};
   
 	[ActionTypes.CLEAN_SUB_TREE]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
 	
 	[ActionTypes.CLOSE_EDITING_FORM]: {
@@ -115,11 +115,11 @@ export enum ActionTypes  {
 	};
   
 	[ActionTypes.REFRESH_ADDED_CATEGORY]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
   
 	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
-	  category: ICategory;
+	  question: IQuestion;
 	};
   
 	[ActionTypes.SET_ERROR]: {
@@ -127,5 +127,5 @@ export enum ActionTypes  {
 	};
   };
   
-  export type CategoriesActions = 
-  	ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];
+  export type QuestionsActions = 
+  	ActionMap<QuestionsPayload>[keyof ActionMap<QuestionsPayload>];

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useCategoryContext } from '../Provider'
+import { useQuestionContext } from '../Provider'
 import { useGlobalContext, useGlobalState } from '../../global/GlobalProvider'
 
-import CategoryForm from "./CategoryForm";
-import InLineCategoryForm from "./InLineCategoryForm";
-import { ICategory } from "../types";
+import QuestionForm from "./QuestionForm";
+import InLineQuestionForm from "./InLineQuestionForm";
+import { IQuestion } from "../types";
 
-const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
+const Add = ({ question, inLine } : { question: IQuestion, inLine: boolean}) => {
     const globalState = useGlobalState();
 
-    const [formValues] = useState(category)
+    const [formValues] = useState(question)
 
-    const { state, createCategory } = useCategoryContext();
+    const { state, createQuestion } = useQuestionContext();
 
-    const submitForm = (categoryObject: ICategory) => {
-        delete categoryObject.inAdding;
-        const object: ICategory = {
-            ...categoryObject,
+    const submitForm = (questionObject: IQuestion) => {
+        delete questionObject.inAdding;
+        const object: IQuestion = {
+            ...questionObject,
             _id: undefined,
             created: {
                 date: new Date(),
@@ -25,27 +25,27 @@ const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => 
                 }
             }
         }
-        createCategory(object);
+        createQuestion(object);
     }
 
     return (
         <>
             {inLine ?
-                <InLineCategoryForm
+                <InLineQuestionForm
                     initialValues={formValues}
                     isEdit={false}
                     submitForm={submitForm}
                 >
                     Create
-                </InLineCategoryForm>
+                </InLineQuestionForm>
                 :
-                <CategoryForm
+                <QuestionForm
                     initialValues={formValues}
                     isEdit={false}
                     submitForm={submitForm}
                 >
-                    Create Category
-                </CategoryForm >
+                    Create Question
+                </QuestionForm >
             }
         </>
     )

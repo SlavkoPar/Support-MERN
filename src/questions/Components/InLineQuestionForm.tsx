@@ -9,14 +9,14 @@ import { FormButtons } from "../../common/FormButtons"
 
 import { useGlobalState } from '../../global/GlobalProvider'
 
-import { ActionTypes, ICategoryFormProps } from "../types";
+import { ActionTypes, IQuestionFormProps } from "../types";
 
-import { useCategoryDispatch } from "../Provider";
+import { useQuestionDispatch } from "../Provider";
 
-const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategoryFormProps) => {
+const InLineQuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestionFormProps) => {
   const { _id, level } = initialValues;
 
-  const dispatch = useCategoryDispatch();
+  const dispatch = useQuestionDispatch();
   const{ authUser, isAuthenticated, variant, bg } = useGlobalState();
 
   const cancelForm = () => {
@@ -38,7 +38,7 @@ const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICa
     }),
     onSubmit: values => {
       //alert(JSON.stringify(values, null, 2));
-      console.log('InLineCategoryForm.onSubmit', JSON.stringify(values, null, 2))
+      console.log('InLineQuestionForm.onSubmit', JSON.stringify(values, null, 2))
       submitForm(values)
       //props.handleClose(false);
     }
@@ -89,7 +89,7 @@ const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICa
               value={formik.values.title}
               style={{ width: '100%' }}
               rows={2}
-              placeholder={'New Category'}
+              placeholder={'New Question'}
             />
             <Form.Text className="text-danger">
               {formik.touched.title && formik.errors.title ? (
@@ -109,4 +109,4 @@ const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICa
   );
 };
 
-export default InLineCategoryForm;
+export default InLineQuestionForm;

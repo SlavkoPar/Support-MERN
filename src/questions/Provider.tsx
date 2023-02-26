@@ -1,18 +1,18 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 import { hostPort } from '../global/GlobalProvider'
-import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext } from './types';
+import { ActionTypes, FORM_MODES, IQuestion, IQuestionsState, IQuestionsContext } from './types';
 import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 
-const initialState: ICategoriesState = {
+const initialState: IQuestionsState = {
   mode: FORM_MODES.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
   loading: false,
-  categories: []
+  questions: []
 }
 
-const CategoriesContext = createContext<ICategoriesContext>({} as any);
-const CategoryDispatchContext = createContext<Dispatch<any>>(() => null);
+const QuestionsContext = createContext<IQuestionsContext>({} as any);
+const QuestionDispatchContext = createContext<Dispatch<any>>(() => null);
 
 type Props = {
   children: React.ReactNode
@@ -22,14 +22,14 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const getCategories = useCallback(({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => {
-    const urlCategories = `${hostPort}/categories/${parentCategory}`
-    console.log('FETCHING --->>> getCategories', level, parentCategory)
+  const getQuestions = useCallback(({ parentQuestion, level }: { parentQuestion: Types.ObjectId | null, level: number }) => {
+    const urlQuestions = `${hostPort}/questions/${parentQuestion}`
+    console.log('FETCHING --->>> getQuestions', level, parentQuestion)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
-      .get(urlCategories)
+      .get(urlQuestions)
       .then(({ data }) => {
-        dispatch({ type: ActionTypes.SET_CATEGORIES, payload: { categories: data } });
+        dispatch({ type: ActionTypes.SET_CATEGORIES, payload: { questions: data } });
       })
       .catch((error) => {
         console.log(error);
@@ -37,14 +37,14 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  const createCategory = useCallback((category: ICategory) => {
+  const createQuestion = useCallback((question: IQuestion) => {
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
     axios
-      .post(`${hostPort}/categories/create-category`, category)
+      .post(`${hostPort}/questions/create-question`, question)
       .then(({ status, data }) => {
         if (status === 200) {
-          console.log('Category successfully created')
-          dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, payload: { category: data } });
+          console.log('Question successfully created')
+          dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, payload: { question: data } });
           dispatch({ type: ActionTypes.CLOSE_ADDING_FORM, payload: {} })
         }
         else {
@@ -63,15 +63,15 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  const editCategory = useCallback((_id: Types.ObjectId) => {
-    const url = `${hostPort}/categories/get-category/${_id}`
+  const editQuestion = useCallback((_id: Types.ObjectId) => {
+    const url = `${hostPort}/questions/get-question/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
       .get(url)
-      .then(({ data: category }) => {
-        console.log(category)
-        dispatch({ type: ActionTypes.EDIT, payload: { category } });
+      .then(({ data: question }) => {
+        console.log(question)
+        dispatch({ type: ActionTypes.EDIT, payload: { question } });
       })
       .catch((error) => {
         console.log(error);
@@ -80,16 +80,16 @@ export const Provider: React.FC<Props> = ({ children }) => {
   }, []);
 
 
-  const updateCategory = useCallback((category: ICategory) => {
+  const updateQuestion = useCallback((question: IQuestion) => {
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
-    const url = `${hostPort}/categories/update-category/${category._id}`
+    const url = `${hostPort}/questions/update-question/${question._id}`
     console.log(`UPDATING --->>> ${url}`)
     axios
-      .put(url, category)
-      .then(({ status, data: category }) => {
+      .put(url, question)
+      .then(({ status, data: question }) => {
         if (status === 200) {
-          console.log("Category successfully updated");
-          dispatch({ type: ActionTypes.REFRESH_UPDATED_CATEGORY, payload: { category } });
+          console.log("Question successfully updated");
+          dispatch({ type: ActionTypes.REFRESH_UPDATED_CATEGORY, payload: { question } });
           dispatch({ type: ActionTypes.CLOSE_EDITING_FORM, payload: {} })
         }
         else {
@@ -106,13 +106,13 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  const deleteCategory = (_id: Types.ObjectId) => {
+  const deleteQuestion = (_id: Types.ObjectId) => {
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
-      .delete(`${hostPort}/categories/delete-category/${_id}`)
+      .delete(`${hostPort}/questions/delete-question/${_id}`)
       .then(res => {
         if (res.status === 200) {
-          console.log("Category successfully deleted");
+          console.log("Question successfully deleted");
           dispatch({ type: ActionTypes.DELETE, payload: { _id } });
         }
       })
@@ -122,21 +122,21 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   };
 
-  const contextValue = { state: state, getCategories, createCategory, editCategory, updateCategory, deleteCategory }
+  const contextValue = { state: state, getQuestions, createQuestion, editQuestion, updateQuestion, deleteQuestion }
   return (
-    <CategoriesContext.Provider value={contextValue}>
-      <CategoryDispatchContext.Provider value={dispatch}>
+    <QuestionsContext.Provider value={contextValue}>
+      <QuestionDispatchContext.Provider value={dispatch}>
         {children}
-      </CategoryDispatchContext.Provider>
-    </CategoriesContext.Provider>
+      </QuestionDispatchContext.Provider>
+    </QuestionsContext.Provider>
   );
 }
 
-export function useCategoryContext() {
-  return useContext(CategoriesContext);
+export function useQuestionContext() {
+  return useContext(QuestionsContext);
 }
 
-export const useCategoryDispatch = () => {
-  return useContext(CategoryDispatchContext)
+export const useQuestionDispatch = () => {
+  return useContext(QuestionDispatchContext)
 };
 

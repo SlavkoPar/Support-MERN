@@ -38,7 +38,7 @@ const Providered = () => {
                         </div>
                     </Col>
                     <Col xs={0} md={5}>
-                        {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialUser} />} */}
+                        {/* {store.mode === FORM_MODES.ADD && <Add question={question??initialUser} />} */}
                         {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                         <div className="d-none d-md-block">
                             {/* {store.mode === FORM_MODES.EDIT && <Edit />} */}

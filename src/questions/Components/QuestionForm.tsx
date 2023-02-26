@@ -4,13 +4,13 @@ import { useFormik } from "formik";
 import { Form, FormGroup, CloseButton } from "react-bootstrap";
 import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
 import { FormButtons } from "../../common/FormButtons"
-import { ActionTypes, ICategoryFormProps } from "../types";
+import { ActionTypes, IQuestionFormProps } from "../types";
 
-import { useCategoryDispatch } from "../Provider";
+import { useQuestionDispatch } from "../Provider";
 
-const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategoryFormProps) => {
+const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestionFormProps) => {
 
-  const dispatch = useCategoryDispatch();
+  const dispatch = useQuestionDispatch();
 
   const closeForm = () => {
     dispatch({ type: isEdit ? ActionTypes.CLOSE_EDITING_FORM : ActionTypes.CLOSE_ADDING_FORM })
@@ -35,7 +35,7 @@ const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategory
     }),
     onSubmit: values => {
       //alert(JSON.stringify(values, null, 2));
-      console.log('CategoryForm.onSubmit', JSON.stringify(values, null, 2))
+      console.log('QuestionForm.onSubmit', JSON.stringify(values, null, 2))
       submitForm(values)
       //props.handleClose(false);
     }
@@ -68,7 +68,7 @@ const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategory
             value={formik.values.title}
             style={{ width: '100%' }}
             rows={2}
-            placeholder={'New Category'}
+            placeholder={'New Question'}
           />
           <Form.Text className="text-danger">
             {formik.touched.title && formik.errors.title ? (
@@ -95,4 +95,4 @@ const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategory
   );
 };
 
-export default CategoryForm;
+export default QuestionForm;

@@ -1,21 +1,21 @@
 
 import { ActionMap } from '../global/types'
-import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
+import { FORM_MODES, ActionTypes, IQuestionsState, IQuestion, IParentInfo, QuestionsActions } from "./types";
 import { Types } from 'mongoose';
 import { AxiosError } from "axios";
 
-export const initialCategory: ICategory = {
+export const initialQuestion: IQuestion = {
   // temp _id for inAdding, to server as list key
   // it will be removed on submitForm
   // real _id will be given by the MongoDB 
   _id: new Types.ObjectId('000000000000000000000000'),
   title: '',
   level: 0,
-  parentCategory: null
+  parentQuestion: null
 }
 
 
-export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
+export const reducer = (state: IQuestionsState, action: QuestionsActions) => {
   switch (action.type) {
 
     case ActionTypes.SET_LOADING:
@@ -25,23 +25,23 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
 
     case ActionTypes.SET_CATEGORIES: {
-      console.log(state.categories)
-      console.log(action.payload.categories)
+      console.log(state.questions)
+      console.log(action.payload.questions)
       return {
         ...state,
-        categories: state.categories.concat(action.payload.categories),
+        questions: state.questions.concat(action.payload.questions),
         loading: false
       };
     }
 
     case ActionTypes.CLEAN_SUB_TREE: {
-      const { _id } = action.payload.category;
-      const arr = markForClean(state.categories, _id!)
+      const { _id } = action.payload.question;
+      const arr = markForClean(state.questions, _id!)
       console.log('clean:', arr)
       const _ids = arr.map(c => c._id)
       return {
         ...state,
-        categories: state.categories.filter(c => !_ids.includes(c._id))
+        questions: state.questions.filter(c => !_ids.includes(c._id))
       }
     }
 
@@ -51,54 +51,54 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
     }
 
     case ActionTypes.ADD: {
-      const { parentCategory, level } = action.payload;
-      const categories: ICategory[] = [
+      const { parentQuestion, level } = action.payload;
+      const questions: IQuestion[] = [
         {
-          ...initialCategory,
+          ...initialQuestion,
           title: '',
           level: level + 1,
-          parentCategory,
+          parentQuestion,
           inAdding: true
         },
-        ...state.categories
+        ...state.questions
       ]
-      console.log('ADD', categories)
+      console.log('ADD', questions)
       return {
         ...state,
         mode: FORM_MODES.ADD,
-        categories
+        questions
       };
     }
 
     case ActionTypes.REFRESH_ADDED_CATEGORY: {
-      console.log('REFRESH_ADDED_CATEGORY', state.categories)
-      const { category } = action.payload;
+      console.log('REFRESH_ADDED_CATEGORY', state.questions)
+      const { question } = action.payload;
       return {
         ...state,
-        categories: state.categories.map(c => c.inAdding ? category : c),
+        questions: state.questions.map(c => c.inAdding ? question : c),
         loading: false
       }
     }
 
     case ActionTypes.REFRESH_UPDATED_CATEGORY: {
-      const { category } = action.payload;
+      const { question } = action.payload;
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null,
-        categories: state.categories.map(c => c.inEditing ? category : c), // doesn't contain isEditing 
+        question: null,
+        questions: state.questions.map(c => c.inEditing ? question : c), // doesn't contain isEditing 
         loading: false
       }
     }
 
     case ActionTypes.EDIT: {
-      const { category } = action.payload;
+      const { question } = action.payload;
       return {
         ...state,
         mode: FORM_MODES.EDIT,
-        category,
-        categories: state.categories.map(c => c._id === category._id
-          ? { ...category, inEditing: true }
+        question,
+        questions: state.questions.map(c => c._id === question._id
+          ? { ...question, inEditing: true }
           : c
         ),
         loading: false
@@ -110,8 +110,8 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null,
-        categories: state.categories.filter(c => c._id !== _id)
+        question: null,
+        questions: state.questions.filter(c => c._id !== _id)
       };
     }
 
@@ -119,7 +119,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null
+        question: null
       };
     }
 
@@ -127,8 +127,8 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null,
-        categories: state.categories.filter(c => !c.inAdding)
+        question: null,
+        questions: state.questions.filter(c => !c.inAdding)
       };
     }
 
@@ -137,8 +137,8 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        category: null,
-        categories: state.categories.map(c => c.inEditing ? ({ ...c, inEditing: false }) : c)
+        question: null,
+        questions: state.questions.map(c => c.inEditing ? ({ ...c, inEditing: false }) : c)
       };
     }
     
@@ -147,12 +147,12 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
   }
 };
 
-function markForClean(categories: ICategory[], parent_id: Types.ObjectId) {
-  let arr = categories
-    .filter(category => category.parentCategory === parent_id)
+function markForClean(questions: IQuestion[], parent_id: Types.ObjectId) {
+  let arr = questions
+    .filter(question => question.parentQuestion === parent_id)
 
-  arr.forEach(category => {
-    arr = arr.concat(markForClean(categories, category._id!))
+  arr.forEach(question => {
+    arr = arr.concat(markForClean(questions, question._id!))
   })
   return arr
 }

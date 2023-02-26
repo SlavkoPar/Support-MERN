@@ -7,7 +7,7 @@ import { useGlobalContext } from './global/GlobalProvider'
 
 import './App.css';
 
-import Categories from "./categories/Categories"
+import Questions from "./questions/Questions"
 import Users from "./users/Users"
 
 import RegisterForm from './global/RegisterForm';
@@ -36,7 +36,7 @@ function App() {
             <div className="wrapper">
               <Routes>
                 <Route path="/" element={<About />} />
-                <Route path="/categories" element={<Categories />} />
+                <Route path="/questions" element={<Questions />} />
                 <Route path="/landing" element={<Landing />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/register" element={<RegisterForm />} />
