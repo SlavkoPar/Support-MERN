@@ -43,7 +43,6 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     // console.log({ inEditing, isExpanded, inAdding })
     const [hoverRef, hoverProps] = useHover();
 
-    console.log({isExpanded})
     return (
         <>
             {inAdding ? (

@@ -13,24 +13,22 @@ const List = ({ parentCategory, level }: IParentInfo) => {
         getCategories({ parentCategory, level });
     }, [level, getCategories, parentCategory]);
 
-    console.log('level, parentCategory:', level, parentCategory)
-    const cats = state.categories.filter(c => c.parentCategory === parentCategory)
-    console.log('length:', cats.length)
-    cats.forEach(c => console.log(c.parentCategory, c.title));
+    // console.log('level, parentCategory:', level, parentCategory)
+    const cats = state.categories.filter(c => c.parentCategory === parentCategory);
+    // console.log('length:', cats.length)
+    // cats.forEach(c => console.log(c.parentCategory, c.title));
 
     return (
         <div className={`ms-2`}>
             <>
-                {!state.loading && !state.error &&
-                    <ListGroup as="ul" variant='dark' className="mb-0">
-                        {cats.map(category => 
-                            <CategoryRow category={category} key={category._id!.toString()} />)
-                        }
-                    </ListGroup>
-                }
+                <ListGroup as="ul" variant='dark' className="mb-0">
+                    {cats.map(category => 
+                        <CategoryRow category={category} key={category._id!.toString()} />)
+                    }
+                </ListGroup>
 
                 {state.error && state.error}
-                {state.loading && <div>...loading</div>}
+                {/* {state.loading && <div>...loading</div>} */}
             </>
         </div>
     );
