@@ -6,7 +6,7 @@ import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalState } from '../../global/GlobalProvider'
 import { ActionTypes } from "../types";
-import { useQuestionContext, useQuestionDispatch } from '../Provider'
+import { useQuestionContext, useQuestionDispatch } from '../QuestionProvider'
 import List from "./List";
 import Add from "./Add";
 import Edit from "./Edit";
@@ -14,6 +14,8 @@ import { Types } from "mongoose";
 import { useHover } from '../../common/components/useHover';
 
 import { IQuestion } from '../types'
+import { initialQuestion } from "../reducer";
+import { initialCategory } from "../../categories/reducer";
 
 const QuestionRow = ({ question }: { question: IQuestion }) => {
     const { _id, title, level, inEditing, inAdding } = question;
@@ -45,8 +47,8 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
 
     return (
         <>
-            {inAdding ? (
-                <Add question={question} inLine={true} />
+            {inAdding ? ( // TODO proveri ovo ispod
+                <Add category={{...initialCategory}} inLine={true} />
             )
                 : (
                     <ListGroup.Item

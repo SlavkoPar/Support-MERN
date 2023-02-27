@@ -4,9 +4,11 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { useGlobalState } from '../global/GlobalProvider'
 import { FORM_MODES, ActionTypes } from "./types";
 import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
+import { QuestionProvider } from "../questions/QuestionProvider";
 
 import List from "./Components/List";
 // import Add from "./Components/Add";
+import CategoryView from "./Components/CategoryView";
 import Edit from "./Components/Edit";
 import { initialCategory } from "./reducer";
 
@@ -19,13 +21,13 @@ const Providered = () => {
     return (
         <>
             <Button variant="secondary" size="sm" type="button"
-                onClick={() => dispatch({ 
-                        type: ActionTypes.ADD,
-                        payload: {
-                             parentCategory: null,
-                             level: 0 
-                        }
-                    })
+                onClick={() => dispatch({
+                    type: ActionTypes.ADD,
+                    payload: {
+                        parentCategory: null,
+                        level: 0
+                    }
+                })
                 }
             >
                 Add Category
@@ -41,6 +43,7 @@ const Providered = () => {
                         {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                         {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                         <div className="d-none d-md-block">
+                            {state.mode === FORM_MODES.VIEW && <CategoryView />}
                             {state.mode === FORM_MODES.EDIT && <Edit />}
                         </div>
 

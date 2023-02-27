@@ -19,7 +19,7 @@ router.post("/create-question", (req, res, next) => {
   });
 });
 
-const pipeline =[
+const pipeline = [
   {
     $lookup: {
       from: "users",

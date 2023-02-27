@@ -11,7 +11,7 @@ import { useGlobalState } from '../../global/GlobalProvider'
 
 import { ActionTypes, IQuestionFormProps } from "../types";
 
-import { useQuestionDispatch } from "../Provider";
+import { useQuestionDispatch } from "../QuestionProvider";
 
 const InLineQuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestionFormProps) => {
   const { _id, level } = initialValues;

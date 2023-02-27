@@ -1,6 +1,6 @@
 //import { useParams } from 'react-router-dom'
 import React, { useState, useEffect } from "react";
-import { useQuestionContext } from '../Provider'
+import { useQuestionContext } from '../QuestionProvider'
 import { useGlobalState } from '../../global/GlobalProvider'
 
 import QuestionForm from "./QuestionForm";

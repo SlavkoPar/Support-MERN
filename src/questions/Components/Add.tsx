@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useQuestionContext } from '../Provider'
+import { useQuestionContext } from '../QuestionProvider'
 import { useGlobalContext, useGlobalState } from '../../global/GlobalProvider'
 
 import QuestionForm from "./QuestionForm";
 import InLineQuestionForm from "./InLineQuestionForm";
 import { IQuestion } from "../types";
+import { initialQuestion } from "../reducer";
+import { ICategory } from "../../categories/types";
 
-const Add = ({ question, inLine } : { question: IQuestion, inLine: boolean}) => {
+// const Add = ({ category, question, inLine } : { category: ICategory, question: IQuestion, inLine: boolean}) => {
+const Add = ({ category, inLine }: { category: ICategory, inLine: boolean }) => {
     const globalState = useGlobalState();
 
+    const question: IQuestion = {
+        ...initialQuestion,
+        parentCategory: category._id!
+
+
+    }
     const [formValues] = useState(question)
 
     const { state, createQuestion } = useQuestionContext();

@@ -8,6 +8,7 @@ require('dotenv').config();
 // Express Route
 const userRoute = require('../backend/routes/user.route')
 const categoryRoute = require('../backend/routes/category.route')
+const questionRoute = require('../backend/routes/question.route')
 
 // Configure mongoDB Database
 // mongoose.set('useNewUrlParser', true);
@@ -34,6 +35,7 @@ app.use(bodyParser.urlencoded({
 app.use(cors());
 app.use('/users', userRoute)
 app.use('/categories', categoryRoute)
+app.use('/questions', questionRoute)
 
 // PORT
 const port = process.env.REACT_APP_PORT || 4000;

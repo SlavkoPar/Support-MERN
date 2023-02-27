@@ -12,12 +12,19 @@ export const FORM_MODES = {
 	DELETE: 'DELETE'
 }
 
+export interface IAnswer {
+	_id?: Types.ObjectId
+}
+
 export interface IQuestion {
 	_id?: Types.ObjectId,
 	title: string,
 	level: number,
 	parentCategory: Types.ObjectId,
-	isExpanded?: boolean,
+	words: string[],
+	answers: IAnswer[],
+	source: number,
+	status: number,
 	created?: IDateAndBy,
 	createdBy?: string,
 	modified?: IDateAndBy,
@@ -57,12 +64,12 @@ export interface IQuestionFormProps {
 
 export enum ActionTypes  {
 	SET_LOADING = 'SET_LOADING',
-	SET_CATEGORIES = 'SET_CATEGORIES',
+	SET_QUESTIONS = 'SET_QUESTIONS',
 	CLEAN_SUB_TREE = 'CLEAN_SUB_TREE',
 	SET_ERROR = 'SET_ERROR',
 	ADD = 'ADD',
-	REFRESH_ADDED_CATEGORY = 'REFRESH_ADDED_CATEGORY',
-	REFRESH_UPDATED_CATEGORY = 'REFRESH_UPDATED_CATEGORY',
+	REFRESH_ADDED_QUESTION = 'REFRESH_ADDED_QUESTION',
+	REFRESH_UPDATED_QUESTION = 'REFRESH_UPDATED_QUESTION',
 	EDIT = 'EDIT',
 	DELETE = 'DELETE',
 	CLOSE_ADDING_FORM = 'CLOSE_ADDING_FORM',
@@ -73,7 +80,7 @@ export enum ActionTypes  {
 
 
   type QuestionsPayload = {
-	[ActionTypes.SET_CATEGORIES]: {
+	[ActionTypes.SET_QUESTIONS]: {
 	  questions: IQuestion[];
 	};
   
@@ -95,7 +102,7 @@ export enum ActionTypes  {
 	  question: IQuestion;
 	};
   
-	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+	[ActionTypes.REFRESH_UPDATED_QUESTION]: {
 	  question: IQuestion;
 	};
   
@@ -113,11 +120,11 @@ export enum ActionTypes  {
 	[ActionTypes.CLOSE_ADDING_FORM]: {
 	};
   
-	[ActionTypes.REFRESH_ADDED_CATEGORY]: {
+	[ActionTypes.REFRESH_ADDED_QUESTION]: {
 	  question: IQuestion;
 	};
   
-	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+	[ActionTypes.REFRESH_UPDATED_QUESTION]: {
 	  question: IQuestion;
 	};
   

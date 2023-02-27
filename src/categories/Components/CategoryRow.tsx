@@ -5,22 +5,23 @@ import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus } fr
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalState } from '../../global/GlobalProvider'
-import { ActionTypes } from "../types";
+import { ActionTypes, FORM_MODES } from "../types";
 import { useCategoryContext, useCategoryDispatch } from '../Provider'
 import List from "./List";
 import Add from "./Add";
 import Edit from "./Edit";
 import { Types } from "mongoose";
 import { useHover } from '../../common/components/useHover';
+import AddQuestion from "../../questions/Components/Add";
 
 import { ICategory } from '../types'
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
-    const { _id, title, level, inEditing, inAdding } = category;
+    const { _id, title, level, inEditing, inAdding, questions } = category;
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
-    const { state, editCategory, deleteCategory } = useCategoryContext();
+    const { state, viewCategory, editCategory, deleteCategory } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -40,13 +41,24 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
         // Load data from server and reinitialize category
         editCategory(_id);
     }
+
+    
+    const onSelectCategory = (_id: Types.ObjectId) => {
+        // Load data from server and reinitialize category
+        viewCategory(_id);
+    }
+
+
     // console.log({ inEditing, isExpanded, inAdding })
+
     const [hoverRef, hoverProps] = useHover();
 
     return (
         <>
             {inAdding ? (
-                <Add category={category} inLine={true} />
+                state.mode === FORM_MODES.ADD_QUESTION
+                    ? <AddQuestion category={category} inLine={false} />
+                    : <Add category={category} inLine={true} />
             )
                 : (
                     <ListGroup.Item
@@ -69,13 +81,16 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                 size="sm"
                                 className="py-0 mx-1 text-decoration-none"
                                 title={_id!.toString()}
-                            // onClick={() => onSelectCategory(categoryId)}
+                                onClick={() => onSelectCategory(_id!)}
                             >
                                 {title}
                             </Button>
-                            <Badge bg="primary" pill>
-                                {11}
-                            </Badge>
+
+                            {questions && questions.length > 0 &&
+                                <Badge bg="primary" pill>
+                                    {questions.length}
+                                </Badge>
+                            }
 
                             {canEdit && hoverProps.isHovered &&
                                 <Button variant='link' size="sm" className="ms-1 py-0 px-1"
@@ -145,7 +160,12 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                         </div>
                     )
                         : (
+                            <>
                             <List level={level + 1} parentCategory={_id!} />
+                            { questions &&
+                                questions.map(q => <div>{q.title}</div>) 
+                            }
+                            </>
                         )}
                 </ListGroup.Item>
             }

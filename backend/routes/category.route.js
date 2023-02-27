@@ -19,7 +19,7 @@ router.post("/create-category", (req, res, next) => {
   });
 });
 
-const pipeline =[
+const pipeline = [
   {
     $lookup: {
       from: "users",
@@ -136,82 +136,7 @@ const pipeline =[
   },
 ]
 
-const pipelineWas = [
-  {
-    $lookup: {
-      from: "users",
-      localField: "created.by.userId",
-      foreignField: "_id",
-      as: "fromUsers",
-    },
-  },
-  {
-    $lookup: {
-      from: "users",
-      localField: "modified.by.userId",
-      foreignField: "_id",
-      as: "fromUsers2",
-    },
-  },
-  {
-    $replaceRoot: {
-      newRoot: {
-        $mergeObjects: [
-          {
-            $arrayElemAt: ["$fromUsers", 0],
-          },
-          {
-            $cond: [
-              {
-                $gt: [
-                  {
-                    $size: "$fromUsers2",
-                  },
-                  0,
-                ],
-              },
-              {
-                $arrayElemAt: ["$fromUsers2", 0],
-              },
-              null
-            ],
-          },
-          "$$ROOT",
-        ],
-      },
-    },
-  },
-  {
-    $project:
-    {
-      title: 1,
-      createdBy_userName: "$userName", // moze $fromUsers.userName
-      role: 1,
-      created: 1,
-      modified: 1,
-      level: 1,
-      parentCategory: 1,
-      modifiedBy_user: {
-        $cond: [
-          {
-            $gt: [
-              {
-                $size: "$fromUsers2",
-              },
-              0,
-            ],
-          },
-          {
-            $arrayElemAt: ["$fromUsers2", 0],
-          },
-          {
-            userName: "Unspecified"
-          },
-        ],
-      },
-    },
-  },
-]
+
 
 // Get Categories
 // router.get("/", (req, res, next) => {
@@ -235,13 +160,14 @@ router.get('/', async (req, res, next) => {
   });
 })
 
-// Get Categories
+
+// Get child Categories
 router.get('/:id', async (req, res, next) => {
   categorySchema.aggregate([
     {
       $match: {
         parentCategory: req.params.id !== 'null' ? ObjectId(req.params.id) : null
-      } 
+      }
     },
     ...pipeline
   ], (error, data) => {
@@ -265,7 +191,41 @@ router
           _id: ObjectId(req.params.id),
         }
       },
-      ...pipeline
+      ...pipeline,
+      {
+        $lookup: {
+          from: "questions",
+          let: {
+            searchId: {
+              $toObjectId: "$_id",
+            },
+          },
+          //search query with our [searchId] value
+          pipeline: [
+            //searching [searchId] value equals your field [_id]
+            {
+              $match: {
+                $expr: [
+                  {
+                    parentCategory: "$$searchId",
+                  },
+                ],
+              },
+            },
+            //projecting only fields you reaaly need, otherwise you will store all - huge data loads
+            {
+              $project: {
+                title: 1,
+                created: 1,
+                createdBy: 1,
+                modified: 1,
+                modifiedBy: 1,
+              },
+            },
+          ],
+          as: "fromQuestions",
+        },
+      }
     ], (error, data) => {
       if (error) {
         return next(error);

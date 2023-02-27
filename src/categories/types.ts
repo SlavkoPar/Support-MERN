@@ -9,6 +9,7 @@ export const FORM_MODES = {
 	UNDEFINED: undefined,
 	NULL: null,
 	ADD: 'ADD',
+	VIEW: 'VIEW',
 	EDIT: 'EDIT',
 	DELETE: 'DELETE',
 	// questions
@@ -31,9 +32,9 @@ export interface ICategory {
 }
 
 export interface IParentInfo {
-    parentCategory: Types.ObjectId | null,
-    level: number
-  }
+	parentCategory: Types.ObjectId | null,
+	level: number
+}
 
 export interface ICategoriesState {
 	mode: string | null,
@@ -44,11 +45,19 @@ export interface ICategoriesState {
 
 export interface ICategoriesContext {
 	state: ICategoriesState,
-	getCategories: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	getCategories: ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => void,
 	createCategory: (category: ICategory) => void,
+	viewCategory: (_id: Types.ObjectId) => void,
 	editCategory: (_id: Types.ObjectId) => void,
-	updateCategory:  (category: ICategory) => void,
-	deleteCategory: (_id: Types.ObjectId) => void
+	updateCategory: (category: ICategory) => void,
+	deleteCategory: (_id: Types.ObjectId) => void,
+	//////////////
+	// questions
+	getQuestions: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	createQuestion: (question: IQuestion) => void,
+	editQuestion: (_id: Types.ObjectId) => void,
+	updateQuestion:  (question: IQuestion) => void,
+	deleteQuestion: (_id: Types.ObjectId) => void
 }
 
 export interface ICategoryFormProps {
@@ -56,10 +65,10 @@ export interface ICategoryFormProps {
 	isEdit: boolean;
 	submitForm: (category: ICategory) => void,
 	children: string
-  }
+}
 
 
-export enum ActionTypes  {
+export enum ActionTypes {
 	SET_LOADING = 'SET_LOADING',
 	SET_CATEGORIES = 'SET_CATEGORIES',
 	CLEAN_SUB_TREE = 'CLEAN_SUB_TREE',
@@ -67,6 +76,7 @@ export enum ActionTypes  {
 	ADD = 'ADD',
 	REFRESH_ADDED_CATEGORY = 'REFRESH_ADDED_CATEGORY',
 	REFRESH_UPDATED_CATEGORY = 'REFRESH_UPDATED_CATEGORY',
+	VIEW = 'VIEW',
 	EDIT = 'EDIT',
 	DELETE = 'DELETE',
 	CLOSE_ADDING_FORM = 'CLOSE_ADDING_FORM',
@@ -75,69 +85,104 @@ export enum ActionTypes  {
 	CANCEL_EDITING_FORM = 'CANCEL_EDITING_FORM',
 
 	// questions
+	SET_CATEGORY_QUESTIONS = 'SET_CATEGORY_QUESTIONS',
 	ADD_QUESTION = 'ADD_QUESTION',
-  }
+	EDIT_QUESTION = 'EDIT_QUESTION',
+
+	REFRESH_ADDED_QUESTION = 'REFRESH_ADDED_QUESTION',
+	REFRESH_UPDATED_QUESTION = 'REFRESH_UPDATED_QUESTION'
+}
 
 
-  type CategoriesPayload = {
+type CategoriesPayload = {
 	[ActionTypes.SET_CATEGORIES]: {
-	  categories: ICategory[];
+		categories: ICategory[];
 	};
-  
+
 	[ActionTypes.SET_LOADING]: {
 	};
-  
+
 	[ActionTypes.CANCEL_ADDING_FORM]: {
 	};
-  
+
 	[ActionTypes.CANCEL_EDITING_FORM]: {
 	};
-  
+
 	[ActionTypes.CLOSE_EDITING_FORM]: {
-	};
-  
-	[ActionTypes.ADD]: IParentInfo;
-  
-	[ActionTypes.EDIT]: {
-	  category: ICategory;
-	};
-  
-	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
-	  category: ICategory;
-	};
-  
-	[ActionTypes.DELETE]: {
-	  _id: Types.ObjectId;
-	};
-  
-	[ActionTypes.CLEAN_SUB_TREE]: {
-	  category: ICategory;
-	};
-	
-	[ActionTypes.CLOSE_EDITING_FORM]: {
-	};
-  
-	[ActionTypes.CLOSE_ADDING_FORM]: {
-	};
-  
-	[ActionTypes.REFRESH_ADDED_CATEGORY]: {
-	  category: ICategory;
-	};
-  
-	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
-	  category: ICategory;
-	};
-  
-	[ActionTypes.SET_ERROR]: {
-	  error: AxiosError;
 	};
 
+	[ActionTypes.ADD]: IParentInfo;
+
+	[ActionTypes.VIEW]: {
+		category: ICategory;
+	};
+
+	[ActionTypes.EDIT]: {
+		category: ICategory;
+	};
+
+	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+		category: ICategory;
+	};
+
+	[ActionTypes.DELETE]: {
+		_id: Types.ObjectId;
+	};
+
+	[ActionTypes.CLEAN_SUB_TREE]: {
+		category: ICategory;
+	};
+
+	[ActionTypes.CLOSE_EDITING_FORM]: {
+	};
+
+	[ActionTypes.CLOSE_ADDING_FORM]: {
+	};
+
+	[ActionTypes.REFRESH_ADDED_CATEGORY]: {
+		category: ICategory;
+	};
+
+	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+		category: ICategory;
+	};
+
+	[ActionTypes.SET_ERROR]: {
+		error: AxiosError;
+	};
+
+	/////////////
 	// questions
+	[ActionTypes.SET_CATEGORY_QUESTIONS]: {
+		parentCategory: Types.ObjectId | null,
+		questions: IQuestion[];
+	};
+
 	[ActionTypes.ADD_QUESTION]: {
 		category: ICategory;
 	}
 
-  };
-  
-  export type CategoriesActions = 
-  	ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];
+	[ActionTypes.EDIT_QUESTION]: {
+		question: IQuestion;
+	};
+
+	[ActionTypes.REFRESH_UPDATED_QUESTION]: {
+		question: IQuestion;
+	};
+
+	[ActionTypes.DELETE]: {
+		_id: Types.ObjectId;
+	};
+
+	[ActionTypes.REFRESH_ADDED_QUESTION]: {
+		question: IQuestion;
+	};
+
+	[ActionTypes.REFRESH_UPDATED_QUESTION]: {
+		question: IQuestion;
+	};
+
+};
+
+export type CategoriesActions =
+	ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];

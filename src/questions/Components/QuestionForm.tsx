@@ -6,7 +6,11 @@ import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
 import { FormButtons } from "../../common/FormButtons"
 import { ActionTypes, IQuestionFormProps } from "../types";
 
-import { useQuestionDispatch } from "../Provider";
+import { Select } from '../../common/components/Select';
+import { sourceOptions } from '../sourceOptions'
+import { statusOptions } from '../statusOptions'
+
+import { useQuestionDispatch } from "../QuestionProvider";
 
 const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestionFormProps) => {
 
@@ -49,8 +53,10 @@ const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestion
     nameRef.current!.focus()
   }, [nameRef])
 
+  const isDisabled = false; // !canEdit;
+
   return (
-    <div className="form-wrapper">
+    <div className="form-wrapper px-3 py-3 my-3" style={{border: '1px solid silver', borderRadius: '5px'}}>
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">
@@ -77,11 +83,52 @@ const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestion
           </Form.Text>
         </Form.Group>
 
-        {isEdit && 
-          <CreatedModifiedForm 
+        <Form.Group controlId="source">
+          <Form.Label>Source</Form.Label>
+          <Select
+            id="source"
+            name="source"
+            options={sourceOptions}
+            onChange={(e, value) => {
+              formik.setFieldValue('source', value)
+                .then(() => { if (isEdit) formik.submitForm() })
+            }}
+            value={formik.values.source}
+            disabled={isDisabled}
+          />
+          <Form.Text className="text-danger">
+            {formik.touched.source && formik.errors.source ? (
+              <div className="text-danger">{formik.errors.source}</div>
+            ) : null}
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group controlId="status">
+        <Form.Label>Status</Form.Label>
+        <Select
+          id="status"
+          name="status"
+          options={statusOptions}
+          //onChange={formik.handleChange}
+          onChange={(e, value) => {
+            formik.setFieldValue('status', value)
+            .then(() => { if (isEdit) formik.submitForm()})
+          }}
+          value={formik.values.status}
+          disabled={isDisabled}
+        />
+        <Form.Text className="text-danger">
+          {formik.touched.status && formik.errors.status ? (
+            <div className="text-danger">{formik.errors.status}</div>
+          ) : null}
+        </Form.Text>
+      </Form.Group>
+
+        {isEdit &&
+          <CreatedModifiedForm
             created={initialValues.created}
             createdBy={initialValues.createdBy}
-            modified={initialValues.modified} 
+            modified={initialValues.modified}
             modifiedBy={initialValues.modifiedBy}
           />
         }

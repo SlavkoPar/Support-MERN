@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 
 import { useGlobalState } from '../global/GlobalProvider'
 import { FORM_MODES, ActionTypes } from "./types";
-import { Provider, useQuestionContext, useQuestionDispatch } from "./Provider";
+import { QuestionProvider, useQuestionContext, useQuestionDispatch } from "./QuestionProvider";
 
 import List from "./Components/List";
 // import Add from "./Components/Add";
@@ -53,9 +53,9 @@ const Providered = () => {
 
 const Questions = () => {
     return (
-        <Provider>
+        <QuestionProvider>
             <Providered />
-        </Provider>
+        </QuestionProvider>
     )
 }
 

@@ -2,6 +2,7 @@ import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo, Cate
 import { Types } from 'mongoose';
 import { AxiosError } from "axios";
 import { IQuestion } from "../questions/types";
+import { initialQuestion } from "../questions/reducer";
 
 export const initialCategory: ICategory = {
   // temp _id for inAdding, to server as list key
@@ -90,6 +91,20 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
     }
 
+    case ActionTypes.VIEW: {
+      const { category } = action.payload;
+      return {
+        ...state,
+        mode: FORM_MODES.VIEW,
+        category,
+        categories: state.categories.map(c => c._id === category._id
+          ? { ...category, inEditing: true }
+          : c
+        ),
+        loading: false
+      };
+    }
+
     case ActionTypes.EDIT: {
       const { category } = action.payload;
       return {
@@ -142,6 +157,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       const { category } = action.payload;
       const {_id, level } = category;
       const question: IQuestion = {
+        ...initialQuestion,
         parentCategory: _id!,
         level,
         title : 'novi'
@@ -149,9 +165,19 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         categories: state.categories.map(c => c._id === _id
-          ? { ...c, questions: [...c.questions??[], question]}
+          ? { ...c, questions: [...c.questions??[], question], inAdding: true}
           : c),
         mode: FORM_MODES.ADD_QUESTION
+      };
+    }
+
+    case ActionTypes.SET_CATEGORY_QUESTIONS: {
+      const { parentCategory, questions } = action.payload;
+      return {
+        ...state,
+        categories: state.categories.map(c => c._id === parentCategory // TODO what if null
+          ? { ...c, questions }
+          : c)
       };
     }
 

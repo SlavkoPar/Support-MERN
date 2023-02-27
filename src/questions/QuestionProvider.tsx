@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 import { hostPort } from '../global/GlobalProvider'
-import { ActionTypes, FORM_MODES, IQuestion, IQuestionsState, IQuestionsContext } from './types';
+import { ActionTypes, FORM_MODES, IQuestion, IQuestionsState, IQuestionsContext, IParentInfo } from './types';
 import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 
@@ -18,18 +18,18 @@ type Props = {
   children: React.ReactNode
 }
 
-export const Provider: React.FC<Props> = ({ children }) => {
+export const QuestionProvider: React.FC<Props> = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const getQuestions = useCallback(({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => {
+  const getQuestions = useCallback(({ parentCategory, level }: IParentInfo) => {
     const urlQuestions = `${hostPort}/questions/${parentCategory}`
     console.log('FETCHING --->>> getQuestions', level, parentCategory)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
       .get(urlQuestions)
       .then(({ data }) => {
-        dispatch({ type: ActionTypes.SET_CATEGORIES, payload: { questions: data } });
+        dispatch({ type: ActionTypes.SET_QUESTIONS, payload: { questions: data } });
       })
       .catch((error) => {
         console.log(error);
@@ -44,7 +44,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Question successfully created')
-          dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, payload: { question: data } });
+          dispatch({ type: ActionTypes.REFRESH_ADDED_QUESTION, payload: { question: data } });
           dispatch({ type: ActionTypes.CLOSE_ADDING_FORM, payload: {} })
         }
         else {
@@ -89,7 +89,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data: question }) => {
         if (status === 200) {
           console.log("Question successfully updated");
-          dispatch({ type: ActionTypes.REFRESH_UPDATED_CATEGORY, payload: { question } });
+          dispatch({ type: ActionTypes.REFRESH_UPDATED_QUESTION, payload: { question } });
           dispatch({ type: ActionTypes.CLOSE_EDITING_FORM, payload: {} })
         }
         else {

@@ -8,10 +8,14 @@ export const initialQuestion: IQuestion = {
   // temp _id for inAdding, to server as list key
   // it will be removed on submitForm
   // real _id will be given by the MongoDB 
+  parentCategory: new Types.ObjectId('000000000000000000000000'),
   _id: new Types.ObjectId('000000000000000000000000'),
   title: '',
   level: 0,
-  parentCategory: new Types.ObjectId('000000000000000000000000')
+  words: [],
+	answers: [],
+	source: 0,
+	status: 0
 }
 
 
@@ -24,7 +28,7 @@ export const reducer = (state: IQuestionsState, action: QuestionsActions) => {
         loading: true
       }
 
-    case ActionTypes.SET_CATEGORIES: {
+    case ActionTypes.SET_QUESTIONS: {
       console.log(state.questions)
       console.log(action.payload.questions)
       return {
@@ -70,8 +74,8 @@ export const reducer = (state: IQuestionsState, action: QuestionsActions) => {
     //   };
     // }
 
-    case ActionTypes.REFRESH_ADDED_CATEGORY: {
-      console.log('REFRESH_ADDED_CATEGORY', state.questions)
+    case ActionTypes.REFRESH_ADDED_QUESTION: {
+      console.log('REFRESH_ADDED_QUESTION', state.questions)
       const { question } = action.payload;
       return {
         ...state,
@@ -80,7 +84,7 @@ export const reducer = (state: IQuestionsState, action: QuestionsActions) => {
       }
     }
 
-    case ActionTypes.REFRESH_UPDATED_CATEGORY: {
+    case ActionTypes.REFRESH_UPDATED_QUESTION: {
       const { question } = action.payload;
       return {
         ...state,

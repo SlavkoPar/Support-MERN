@@ -35,7 +35,7 @@ function App() {
           <Col md={12}>
             <div className="wrapper">
               <Routes>
-                <Route path="/" element={<Categories />} />
+                <Route path="/" element={<About />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/landing" element={<Landing />} />
                 <Route path="/users" element={<Users />} />
