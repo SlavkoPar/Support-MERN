@@ -64,7 +64,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  const viewCategory = useCallback((_id: Types.ObjectId) => {
+  const viewCategoryQuestions = useCallback((_id: Types.ObjectId) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
@@ -72,7 +72,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .get(url)
       .then(({ data: category }) => {
         console.log(category)
-        dispatch({ type: ActionTypes.VIEW, payload: { category } });
+        dispatch({ type: ActionTypes.VIEW_CATEGORY_QUESTIONS, payload: { category } });
       })
       .catch((error) => {
         console.log(error);
@@ -142,20 +142,21 @@ export const Provider: React.FC<Props> = ({ children }) => {
   /////////////
   // Questions
   //
-  const getQuestions = useCallback(({ parentCategory, level }: IParentInfo) => {
+  /*const getQuestions = useCallback(({ parentCategory, level }: IParentInfo) => {
     const urlQuestions = `${hostPort}/questions/${parentCategory}`
     console.log('FETCHING --->>> getQuestions', level, parentCategory)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
       .get(urlQuestions)
       .then(({ data }) => {
-        dispatch({ type: ActionTypes.SET_CATEGORY_QUESTIONS, payload: { parentCategory, questions: data } });
+        dispatch({ type: ActionTypes.SET_CATEGORY_QUESTIONS, payload: { parentCategory, questions: data.fromQuestions } });
       })
       .catch((error) => {
         console.log(error);
         dispatch({ type: ActionTypes.SET_ERROR, payload: error });
       });
   }, []);
+  */
 
   const createQuestion = useCallback((question: IQuestion) => {
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
@@ -165,7 +166,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log('Question successfully created')
           dispatch({ type: ActionTypes.REFRESH_ADDED_QUESTION, payload: { question: data } });
-          dispatch({ type: ActionTypes.CLOSE_ADDING_FORM, payload: {} })
+          // TODO setting inAdding: false will close the form
+          //dispatch({ type: ActionTypes.CLOSE_QUESTION_ADDING_FORM, payload: {} })
         }
         else {
           console.log('Status is not 200', status)
@@ -243,8 +245,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
   };
 
   const contextValue = { state: state, 
-    getCategories, createCategory, viewCategory, editCategory, updateCategory, deleteCategory,
-    getQuestions, createQuestion, editQuestion, updateQuestion, deleteQuestion
+    getCategories, createCategory, viewCategoryQuestions, editCategory, updateCategory, deleteCategory,
+    createQuestion, editQuestion, updateQuestion, deleteQuestion
   }
   return (
     <CategoriesContext.Provider value={contextValue}>

@@ -8,7 +8,7 @@ import { QuestionProvider } from "../questions/QuestionProvider";
 
 import List from "./Components/List";
 // import Add from "./Components/Add";
-import CategoryView from "./Components/CategoryView";
+import CategoryQuestionsView from "./Components/CategoryQuestionsView";
 import Edit from "./Components/Edit";
 import { initialCategory } from "./reducer";
 
@@ -34,16 +34,16 @@ const Providered = () => {
             </Button>
             <Container>
                 <Row>
-                    <Col xs={12} md={7}>
+                    <Col xs={12} md={6}>
                         <div>
                             <List parentCategory={null} level={1} />
                         </div>
                     </Col>
-                    <Col xs={0} md={5}>
+                    <Col xs={0} md={6}>
                         {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                         {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                         <div className="d-none d-md-block">
-                            {state.mode === FORM_MODES.VIEW && <CategoryView />}
+                            {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
                             {state.mode === FORM_MODES.EDIT && <Edit />}
                         </div>
 

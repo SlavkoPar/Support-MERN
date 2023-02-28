@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -10,7 +11,7 @@ import { useCategoryContext, useCategoryDispatch } from '../Provider'
 import List from "./List";
 import Add from "./Add";
 import Edit from "./Edit";
-import { Types } from "mongoose";
+import CategoryQuestionsView from "./CategoryQuestionsView";
 import { useHover } from '../../common/components/useHover';
 import AddQuestion from "../../questions/Components/Add";
 
@@ -21,7 +22,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
-    const { state, viewCategory, editCategory, deleteCategory } = useCategoryContext();
+    const { state, viewCategoryQuestions, editCategory, deleteCategory } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -45,7 +46,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     
     const onSelectCategory = (_id: Types.ObjectId) => {
         // Load data from server and reinitialize category
-        viewCategory(_id);
+        viewCategoryQuestions(_id);
     }
 
 
@@ -153,19 +154,15 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                     variant={variant}
                     as="li"
                 >
-                    {inEditing ? ( // store.mode === FORM_MODES.EDIT &&
+                    {inEditing ? (
                         // <div class="d-lg-none">hide on lg and wider screens</div>
                         <div className="mx-3 d-md-none">
-                            <Edit />
+                            {state.mode === FORM_MODES.EDIT && <Edit />}
+                            {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
                         </div>
                     )
                         : (
-                            <>
                             <List level={level + 1} parentCategory={_id!} />
-                            { questions &&
-                                questions.map(q => <div>{q.title}</div>) 
-                            }
-                            </>
                         )}
                 </ListGroup.Item>
             }

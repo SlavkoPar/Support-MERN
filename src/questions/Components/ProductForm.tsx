@@ -1,18 +1,15 @@
 import { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Form, FormGroup, CloseButton } from "react-bootstrap";
+import { Form, FormGroup, Button } from "react-bootstrap";
 import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
 import { FormButtons } from "../../common/FormButtons"
 import { ActionTypes, IQuestionFormProps } from "../types";
 
-import { Select } from '../../common/components/Select';
-import { sourceOptions } from '../sourceOptions'
-import { statusOptions } from '../statusOptions'
-
 import { useQuestionDispatch } from "../QuestionProvider";
 
-const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestionFormProps) => {
+const ProductForm = ({ isEdit, initialValues, submitForm, children }: IQuestionFormProps) => {
+
 
   const dispatch = useQuestionDispatch();
 
@@ -56,9 +53,10 @@ const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestion
   const isDisabled = false; // !canEdit;
 
   return (
-    <div className="form-wrapper px-3 py-3 my-3" style={{ border: '1px solid silver', borderRadius: '5px' }}>
-      <CloseButton onClick={closeForm} className="float-end" />
+    <div className="px-2 py-2">
+      {/* <CloseButton onClick={closeForm} className="float-end" /> */}
       <Form onSubmit={formik.handleSubmit}>
+
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
           <Form.Control
@@ -83,63 +81,15 @@ const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestion
           </Form.Text>
         </Form.Group>
 
-        <Form.Group controlId="source">
-          <Form.Label>Source</Form.Label>
-          <Select
-            id="source"
-            name="source"
-            options={sourceOptions}
-            onChange={(e, value) => {
-              formik.setFieldValue('source', value)
-                .then(() => { if (isEdit) formik.submitForm() })
-            }}
-            value={formik.values.source}
-            disabled={isDisabled}
-          />
-          <Form.Text className="text-danger">
-            {formik.touched.source && formik.errors.source ? (
-              <div className="text-danger">{formik.errors.source}</div>
-            ) : null}
-          </Form.Text>
-        </Form.Group>
+        <div style={{ color: 'green', textAlign: 'center' }}>$ 93.98 </div>
 
-        <Form.Group controlId="status">
-          <Form.Label>Status</Form.Label>
-          <Select
-            id="status"
-            name="status"
-            options={statusOptions}
-            //onChange={formik.handleChange}
-            onChange={(e, value) => {
-              formik.setFieldValue('status', value)
-                .then(() => { if (isEdit) formik.submitForm() })
-            }}
-            value={formik.values.status}
-            disabled={isDisabled}
-          />
-          <Form.Text className="text-danger">
-            {formik.touched.status && formik.errors.status ? (
-              <div className="text-danger">{formik.errors.status}</div>
-            ) : null}
-          </Form.Text>
-        </Form.Group>
+        <Button variant="primary" size="sm" type="button" className="ms-0" style={{ width: '100%', borderRadius: '3px' }} >
+          Add to Cart
+        </Button>
 
-        {isEdit &&
-          <CreatedModifiedForm
-            created={initialValues.created}
-            createdBy={initialValues.createdBy}
-            modified={initialValues.modified}
-            modifiedBy={initialValues.modifiedBy}
-          />
-        }
-        <FormButtons
-          cancelForm={cancelForm}
-          handleSubmit={formik.handleSubmit}
-          title={children}
-        />
       </Form>
     </div >
   );
 };
 
-export default QuestionForm;
+export default ProductForm;

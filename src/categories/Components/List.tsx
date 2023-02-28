@@ -7,9 +7,8 @@ import { IParentInfo } from "../types";
 import { useCategoryContext } from "../Provider";
 
 const List = ({ parentCategory, level }: IParentInfo) => {
-    const { state, getCategories, getQuestions } = useCategoryContext();
+    const { state, getCategories } = useCategoryContext();
     useEffect(() => {
-        // getQuestions({ parentCategory, level });
         console.log('Zovem getCategories', level, parentCategory)
         getCategories({ parentCategory, level });
     }, [level, getCategories, parentCategory]);

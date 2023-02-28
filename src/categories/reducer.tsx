@@ -91,16 +91,16 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
     }
 
-    case ActionTypes.VIEW: {
+    case ActionTypes.VIEW_CATEGORY_QUESTIONS: {
       const { category } = action.payload;
       return {
         ...state,
-        mode: FORM_MODES.VIEW,
         category,
         categories: state.categories.map(c => c._id === category._id
-          ? { ...category, inEditing: true }
+          ? { ...category, inEditing: true } // category.questions are inside of object
           : c
         ),
+        mode: FORM_MODES.VIEW,
         loading: false
       };
     }
@@ -160,7 +160,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         ...initialQuestion,
         parentCategory: _id!,
         level,
-        title : 'novi'
+        title : 'New Product'
       }
       return {
         ...state,
@@ -179,6 +179,16 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
           ? { ...c, questions }
           : c)
       };
+    }
+
+    case ActionTypes.REFRESH_ADDED_QUESTION: {
+      console.log('REFRESH_ADDED_QUESTION', state.categories)
+      const { question } = action.payload;
+      return {
+        ...state,
+        categories: state.categories.map(c => c.inAdding ? { ...c, questions: [...c.questions, question], inAdding: false } : c),
+        loading: false
+      }
     }
 
     default:

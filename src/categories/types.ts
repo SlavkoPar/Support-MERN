@@ -47,13 +47,13 @@ export interface ICategoriesContext {
 	state: ICategoriesState,
 	getCategories: ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => void,
 	createCategory: (category: ICategory) => void,
-	viewCategory: (_id: Types.ObjectId) => void,
+	viewCategoryQuestions: (_id: Types.ObjectId) => void,
 	editCategory: (_id: Types.ObjectId) => void,
 	updateCategory: (category: ICategory) => void,
 	deleteCategory: (_id: Types.ObjectId) => void,
 	//////////////
 	// questions
-	getQuestions: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	// getQuestions: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
 	createQuestion: (question: IQuestion) => void,
 	editQuestion: (_id: Types.ObjectId) => void,
 	updateQuestion:  (question: IQuestion) => void,
@@ -76,7 +76,7 @@ export enum ActionTypes {
 	ADD = 'ADD',
 	REFRESH_ADDED_CATEGORY = 'REFRESH_ADDED_CATEGORY',
 	REFRESH_UPDATED_CATEGORY = 'REFRESH_UPDATED_CATEGORY',
-	VIEW = 'VIEW',
+	VIEW_CATEGORY_QUESTIONS = 'VIEW_CATEGORY_QUESTIONS',
 	EDIT = 'EDIT',
 	DELETE = 'DELETE',
 	CLOSE_ADDING_FORM = 'CLOSE_ADDING_FORM',
@@ -90,7 +90,9 @@ export enum ActionTypes {
 	EDIT_QUESTION = 'EDIT_QUESTION',
 
 	REFRESH_ADDED_QUESTION = 'REFRESH_ADDED_QUESTION',
-	REFRESH_UPDATED_QUESTION = 'REFRESH_UPDATED_QUESTION'
+	REFRESH_UPDATED_QUESTION = 'REFRESH_UPDATED_QUESTION',
+	CLOSE_QUESTION_ADDING_FORM = 'CLOSE_QUESTION_ADDING_FORM',
+	CANCEL_QUESTION_ADDING_FORM = 'CANCEL_ADDING_FORM'
 }
 
 
@@ -113,7 +115,7 @@ type CategoriesPayload = {
 
 	[ActionTypes.ADD]: IParentInfo;
 
-	[ActionTypes.VIEW]: {
+	[ActionTypes.VIEW_CATEGORY_QUESTIONS]: {
 		category: ICategory;
 	};
 

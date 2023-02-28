@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useQuestionContext } from '../QuestionProvider'
+import { useCategoryContext } from '../../categories/Provider'
 import { useGlobalContext, useGlobalState } from '../../global/GlobalProvider'
 
 import QuestionForm from "./QuestionForm";
@@ -20,13 +20,14 @@ const Add = ({ category, inLine }: { category: ICategory, inLine: boolean }) => 
     }
     const [formValues] = useState(question)
 
-    const { state, createQuestion } = useQuestionContext();
+    const { state, createQuestion } = useCategoryContext();
 
     const submitForm = (questionObject: IQuestion) => {
         delete questionObject.inAdding;
+        delete questionObject._id;
         const object: IQuestion = {
             ...questionObject,
-            _id: undefined,
+            //_id: undefined,
             created: {
                 date: new Date(),
                 by: {
