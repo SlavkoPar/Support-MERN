@@ -2,28 +2,28 @@ import React, { useState, useEffect } from "react";
 import { Types } from 'mongoose';
 
 import { ListGroup } from "react-bootstrap";
-import CategoryRow from "./CategoryRow";
+import QuestionRow from "./QuestionRow";
 import { IParentInfo } from "../types";
-import { useCategoryContext } from "../Provider";
+import { useQuestionContext } from "../QuestionProvider";
 
 const List = ({ parentCategory, level }: IParentInfo) => {
-    const { state, getCategories } = useCategoryContext();
+    const { state, getQuestions } = useQuestionContext();
     useEffect(() => {
-        console.log('Zovem getCategories', level, parentCategory)
-        getCategories({ parentCategory, level });
-    }, [level, getCategories, parentCategory]);
+        console.log('Zovem getQuestions', level, parentCategory)
+        getQuestions({ parentCategory: parentCategory, level });
+    }, [level, getQuestions, parentCategory]);
 
     // console.log('level, parentCategory:', level, parentCategory)
-    const cats = state.categories.filter(c => c.parentCategory === parentCategory);
+    const cats = state.questions.filter(c => c.parentCategory === parentCategory);
     // console.log('length:', cats.length)
     // cats.forEach(c => console.log(c.parentCategory, c.title));
 
     return (
-        <div className={`ms-4`}>
+        <div className={`ms-2`}>
             <>
                 <ListGroup as="ul" variant='dark' className="mb-0">
-                    {cats.map(category => 
-                        <CategoryRow category={category} key={category._id!.toString()} />)
+                    {cats.map(question => 
+                        <QuestionRow question={question} key={question._id!.toString()} />)
                     }
                 </ListGroup>
 

@@ -4,12 +4,12 @@ let mongoose = require("mongoose"),
 
 const ObjectId = mongoose.Types.ObjectId
 
-let categorySchema = require("../models/Category");
+let questionSchema = require("../models/Question");
 
-// CREATE Category
-router.post("/create-category", (req, res, next) => {
+// CREATE Question
+router.post("/create-question", (req, res, next) => {
   req.body.modified = null; // to be more readable, mongo treats undefineds as nulls
-  categorySchema.create(req.body, (error, data) => {
+  questionSchema.create(req.body, (error, data) => {
     if (error) {
       return next(error);
     } else {
@@ -127,7 +127,7 @@ const pipeline = [
     $project: {
       title: 1,
       level: 1,
-      parentCategory: 1,
+      parentQuestion: 1,
       created: 1,
       createdBy: 1,
       modified: 1,
@@ -136,11 +136,9 @@ const pipeline = [
   },
 ]
 
-
-
-// Get Categories
+// Get Questions
 // router.get("/", (req, res, next) => {
-//     categorySchema.find((error, data) => {
+//     questionSchema.find((error, data) => {
 //         if (error) {
 //             return next(error);
 //         } else {
@@ -149,9 +147,9 @@ const pipeline = [
 //     });
 // });
 
-// Get Categories
+// Get Questions
 router.get('/', async (req, res, next) => {
-  categorySchema.aggregate(pipeline, (error, data) => {
+  questionSchema.aggregate(pipeline, (error, data) => {
     if (error) {
       return next(error);
     } else {
@@ -160,14 +158,13 @@ router.get('/', async (req, res, next) => {
   });
 })
 
-
-// Get child Categories
+// Get Questions
 router.get('/:id', async (req, res, next) => {
-  categorySchema.aggregate([
+  questionSchema.aggregate([
     {
       $match: {
-        parentCategory: req.params.id !== 'null' ? ObjectId(req.params.id) : null
-      }
+        parentQuestion: req.params.id !== 'null' ? ObjectId(req.params.id) : null
+      } 
     },
     ...pipeline
   ], (error, data) => {
@@ -181,51 +178,17 @@ router.get('/:id', async (req, res, next) => {
 })
 
 
-// Get Single Category
+// Get Single Question
 router
-  .route("/get-category/:id")
+  .route("/get-question/:id")
   .get((req, res, next) => {
-    categorySchema.aggregate([
+    questionSchema.aggregate([
       {
         $match: {
           _id: ObjectId(req.params.id),
         }
       },
-      ...pipeline,
-      {
-        $lookup: {
-          from: "questions",
-          let: {
-            searchId: {
-              $toObjectId: "$_id",
-            },
-          },
-          //search query with our [searchId] value
-          pipeline: [
-            //searching [searchId] value equals your field [_id]
-            {
-              $match: {
-                $expr: [
-                  {
-                    parentCategory: "$$searchId",
-                  },
-                ],
-              },
-            },
-            //projecting only fields you reaaly need, otherwise you will store all - huge data loads
-            {
-              $project: {
-                title: 1,
-                created: 1,
-                createdBy: 1,
-                modified: 1,
-                modifiedBy: 1,
-              },
-            },
-          ],
-          as: "questions",
-        },
-      }
+      ...pipeline
     ], (error, data) => {
       if (error) {
         return next(error);
@@ -235,12 +198,12 @@ router
     });
   })
 
-// UPDATE Category
+// UPDATE Question
 router
-  .route("/update-category/:id")
-  // Get Single Category
+  .route("/update-question/:id")
+  // Get Single Question
   .get((req, res, next) => {
-    categorySchema.findById(
+    questionSchema.findById(
       req.params.id, (error, data) => {
         if (error) {
           return next(error);
@@ -250,9 +213,9 @@ router
       });
   })
 
-  // Update Category Data
+  // Update Question Data
   .put((req, res, next) => {
-    categorySchema.findByIdAndUpdate(
+    questionSchema.findByIdAndUpdate(
       req.params.id,
       {
         $set: req.body,
@@ -266,16 +229,16 @@ router
           return next(error);
         } else {
           res.json(data);
-          console.log("Category updated successfully !", data);
+          console.log("Question updated successfully !", data);
         }
       }
     );
   });
 
-// Delete Category
-router.delete("/delete-category/:id",
+// Delete Question
+router.delete("/delete-question/:id",
   (req, res, next) => {
-    categorySchema.findByIdAndRemove(
+    questionSchema.findByIdAndRemove(
       req.params.id, (error, data) => {
         if (error) {
           return next(error);

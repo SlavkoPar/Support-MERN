@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -5,22 +6,23 @@ import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus } fr
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalState } from '../../global/GlobalProvider'
-import { ActionTypes } from "../types";
+import { ActionTypes, FORM_MODES } from "../types";
 import { useCategoryContext, useCategoryDispatch } from '../Provider'
 import List from "./List";
 import Add from "./Add";
 import Edit from "./Edit";
-import { Types } from "mongoose";
+import CategoryQuestionsView from "./CategoryQuestionsView";
 import { useHover } from '../../common/components/useHover';
+import AddQuestion from "../../questions/Components/Add";
 
 import { ICategory } from '../types'
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
-    const { _id, title, level, inEditing, inAdding } = category;
+    const { _id, title, level, inViewing, inEditing, inAdding, questions } = category;
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
-    const { state, editCategory, deleteCategory } = useCategoryContext();
+    const { state, viewCategoryQuestions, editCategory, deleteCategory } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -40,13 +42,20 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
         // Load data from server and reinitialize category
         editCategory(_id);
     }
-    // console.log({ inEditing, isExpanded, inAdding })
-    const [hoverRef, hoverProps] = useHover();
 
+
+    const onSelectCategory = (_id: Types.ObjectId) => {
+        // Load data from server and reinitialize category
+        viewCategoryQuestions(_id);
+    }
+
+    const [hoverRef, hoverProps] = useHover();
     return (
         <>
             {inAdding ? (
-                <Add category={category} inLine={true} />
+                state.mode === FORM_MODES.ADD_QUESTION
+                    ? <AddQuestion category={category} inLine={false} />
+                    : <Add category={category} inLine={true} />
             )
                 : (
                     <ListGroup.Item
@@ -69,13 +78,33 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                 size="sm"
                                 className="py-0 mx-1 text-decoration-none"
                                 title={_id!.toString()}
-                            // onClick={() => onSelectCategory(categoryId)}
+                                onClick={() => onSelectCategory(_id!)}
                             >
                                 {title}
                             </Button>
-                            <Badge bg="primary" pill>
-                                {11}
-                            </Badge>
+
+                            {questions && questions.length > 0 &&
+                                <Badge bg="primary" pill>
+                                    {questions.length}
+                                </Badge>
+                            }
+
+                            {canEdit && hoverProps.isHovered &&
+                                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
+                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
+                                    onClick={() => edit(_id!)}
+                                >
+                                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
+                                </Button>
+                            }
+
+                            {canEdit && hoverProps.isHovered &&
+                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{ border: '1px solid orange' }}
+                                    onClick={del}
+                                >
+                                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
+                                </Button>
+                            }
 
                             {canEdit && hoverProps.isHovered &&
                                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
@@ -96,40 +125,57 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                             }
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
-                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                    onClick={() => edit(_id!)}
-                                >
-                                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
+                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
+                                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
+                                        onClick={() => {
+                                            dispatch({
+                                                type: ActionTypes.ADD_QUESTION,
+                                                payload: { category }
+                                            })
+                                            if (!isExpanded)
+                                                setIsExpanded(true)
+                                        }}
+                                    />
                                 </Button>
                             }
 
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{border: '1px solid orange'}}
-                                    onClick={del}
-                                >
-                                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
-                                </Button>
-                            }
                         </div>
                     </ListGroup.Item>
                 )
             }
 
-            {(isExpanded || inEditing) && !inAdding &&
-                <ListGroup.Item 
+            {/* {(isExpanded || inEditing) && !inAdding &&
+                <ListGroup.Item
                     className="py-0 px-0"
-                    variant={variant} 
+                    variant={variant}
                     as="li"
                 >
-                    {inEditing ? ( // store.mode === FORM_MODES.EDIT &&
+                    {inEditing ? (
                         // <div class="d-lg-none">hide on lg and wider screens</div>
                         <div className="mx-3 d-md-none">
-                            <Edit />
+                            {state.mode === FORM_MODES.EDIT && <Edit />}
+                            {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
                         </div>
                     )
-                    : (
-                        <List level={level + 1} parentCategory={_id!} />
+                        : (
+                            <List level={level + 1} parentCategory={_id!} />
+                        )}
+                </ListGroup.Item>
+            } */}
+
+            {(isExpanded || inEditing || inViewing) && !inAdding &&
+                <ListGroup.Item
+                    className="py-0 px-0"
+                    variant={variant}
+                    as="li"
+                >
+                    <List level={level + 1} parentCategory={_id!} />
+                    {(inEditing || inViewing) && (
+                        // <div class="d-lg-none">hide on lg and wider screens</div>
+                        <div className="mx-3 d-md-none">
+                            {state.mode === FORM_MODES.EDIT && <Edit />}
+                            {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
+                        </div>
                     )}
                 </ListGroup.Item>
             }
