@@ -47,7 +47,7 @@ const ProductForm = ({ isEdit, initialValues, submitForm, children }: IQuestionF
   const nameRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    nameRef.current!.focus()
+    //nameRef.current!.focus()
   }, [nameRef])
 
   const isDisabled = false; // !canEdit;
@@ -57,29 +57,7 @@ const ProductForm = ({ isEdit, initialValues, submitForm, children }: IQuestionF
       {/* <CloseButton onClick={closeForm} className="float-end" /> */}
       <Form onSubmit={formik.handleSubmit}>
 
-        <Form.Group controlId="title">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            as="textarea"
-            name="title"
-            ref={nameRef}
-            onChange={formik.handleChange}
-            //onBlur={formik.handleBlur}
-            // onBlur={(e: React.FocusEvent<HTMLTextAreaElement>): void => {
-            //   if (isEdit && formik.initialValues.title !== formik.values.title)
-            //     formik.submitForm();
-            // }}
-            value={formik.values.title}
-            style={{ width: '100%' }}
-            rows={2}
-            placeholder={'New Question'}
-          />
-          <Form.Text className="text-danger">
-            {formik.touched.title && formik.errors.title ? (
-              <div className="text-danger">{formik.errors.title}</div>
-            ) : null}
-          </Form.Text>
-        </Form.Group>
+        <div style={{ color: 'green', textAlign: 'center' }}>{initialValues.title}</div>
 
         <div style={{ color: 'green', textAlign: 'center' }}>$ 93.98 </div>
 

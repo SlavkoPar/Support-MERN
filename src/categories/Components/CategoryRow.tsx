@@ -49,11 +49,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
         viewCategoryQuestions(_id);
     }
 
-
-    // console.log({ inEditing, isExpanded, inAdding })
-
     const [hoverRef, hoverProps] = useHover();
-
     return (
         <>
             {inAdding ? (

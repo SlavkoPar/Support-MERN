@@ -19,7 +19,7 @@ const List = ({ parentCategory, level }: IParentInfo) => {
     // cats.forEach(c => console.log(c.parentCategory, c.title));
 
     return (
-        <div className={`ms-2`}>
+        <div className={`ms-4`}>
             <>
                 <ListGroup as="ul" variant='dark' className="mb-0">
                     {cats.map(category => 

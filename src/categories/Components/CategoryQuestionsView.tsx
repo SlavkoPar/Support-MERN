@@ -41,12 +41,13 @@ const CategoryQuestionsView = () => {
             as="ul"
             variant='dark'
             className="mb-0 d-flex justify-content-start align-items-center flex-row flex-wrap"
+            style={{backgroundColor: '#cdbcf2'}}
         >
             {
                 questions.map((q: IQuestion) =>
                     <ListGroup.Item
                         variant={'dark'}
-                        className="py-1 px-1 mb-1 ms-2 mb-2"
+                        className="py-1 px-1 mb-1 ms-2 my-2"
                         as="li"
                         key={q._id!.toString()}
                     >

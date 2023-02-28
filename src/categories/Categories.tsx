@@ -19,7 +19,7 @@ const Providered = () => {
     const dispatch = useCategoryDispatch();
 
     return (
-        <>
+        <Container>
             <Button variant="secondary" size="sm" type="button"
                 onClick={() => dispatch({
                     type: ActionTypes.ADD,
@@ -32,25 +32,23 @@ const Providered = () => {
             >
                 Add Category
             </Button>
-            <Container>
-                <Row>
-                    <Col xs={12} md={6}>
-                        <div>
-                            <List parentCategory={null} level={1} />
-                        </div>
-                    </Col>
-                    <Col xs={0} md={6}>
-                        {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
-                        {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
-                        <div className="d-none d-md-block">
-                            {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
-                            {state.mode === FORM_MODES.EDIT && <Edit />}
-                        </div>
+            <Row>
+                <Col xs={12} md={6}>
+                    <div>
+                        <List parentCategory={null} level={1} />
+                    </div>
+                </Col>
+                <Col xs={0} md={6}>
+                    {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
+                    {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
+                    <div className="d-none d-md-block">
+                        {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
+                        {state.mode === FORM_MODES.EDIT && <Edit />}
+                    </div>
 
-                    </Col>
-                </Row>
-            </Container>
-        </>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
