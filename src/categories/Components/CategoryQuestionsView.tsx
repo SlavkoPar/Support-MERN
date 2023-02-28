@@ -12,7 +12,7 @@ import ProductForm from "../../questions/Components/ProductForm";
 const CategoryQuestionsView = () => {
     const globalState = useGlobalState();
     const { state, updateCategory } = useCategoryContext();
-    const category = state.categories.find(c => c.inEditing);
+    const category = state.categories.find(c => c.inViewing);
     const questions: IQuestion[] = category!.questions ?? [];
 
     const [formValues, setFormValues] = useState<ICategory>(category!);

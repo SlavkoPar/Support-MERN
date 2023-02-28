@@ -27,6 +27,7 @@ export interface ICategory {
 	createdBy?: string,
 	modified?: IDateAndBy,
 	modifiedBy?: string,
+	inViewing?: boolean,
 	inEditing?: boolean,
 	inAdding?: boolean
 }
