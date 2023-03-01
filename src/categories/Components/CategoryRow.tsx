@@ -43,7 +43,6 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
         editCategory(_id);
     }
 
-
     const onSelectCategory = (_id: Types.ObjectId) => {
         // Load data from server and reinitialize category
         viewCategoryQuestions(_id);
@@ -144,39 +143,23 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 )
             }
 
-            {/* {(isExpanded || inEditing) && !inAdding &&
+            {!inAdding && (isExpanded || inEditing) &&
                 <ListGroup.Item
                     className="py-0 px-0"
                     variant={variant}
                     as="li"
                 >
-                    {inEditing ? (
-                        // <div class="d-lg-none">hide on lg and wider screens</div>
-                        <div className="mx-3 d-md-none">
-                            {state.mode === FORM_MODES.EDIT && <Edit />}
-                            {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
-                        </div>
-                    )
-                        : (
-                            <List level={level + 1} parentCategory={_id!} />
-                        )}
-                </ListGroup.Item>
-            } */}
+                    {isExpanded &&
+                        <List level={level + 1} parentCategory={_id!} />
+                    }
 
-            {(isExpanded || inEditing || inViewing) && !inAdding &&
-                <ListGroup.Item
-                    className="py-0 px-0"
-                    variant={variant}
-                    as="li"
-                >
-                    <List level={level + 1} parentCategory={_id!} />
-                    {(inEditing || inViewing) && (
+                    {(inEditing || inViewing) && 
                         // <div class="d-lg-none">hide on lg and wider screens</div>
                         <div className="mx-3 d-md-none">
-                            {state.mode === FORM_MODES.EDIT && <Edit />}
-                            {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
+                            {inEditing && <Edit />}
+                            {inViewing && <CategoryQuestionsView />}
                         </div>
-                    )}
+                    }
                 </ListGroup.Item>
             }
         </>

@@ -137,7 +137,6 @@ const arrPipeline = [
 ]
 
 
-
 // Get Categories
 // router.get("/", (req, res, next) => {
 //     categorySchema.find((error, data) => {
