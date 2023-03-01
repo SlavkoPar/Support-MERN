@@ -19,7 +19,7 @@ router.post("/create-category", (req, res, next) => {
   });
 });
 
-const pipeline = [
+const arrPipeline = [
   {
     $lookup: {
       from: "users",
@@ -151,7 +151,7 @@ const pipeline = [
 
 // Get Categories
 router.get('/', async (req, res, next) => {
-  categorySchema.aggregate(pipeline, (error, data) => {
+  categorySchema.aggregate(arrPipeline, (error, data) => {
     if (error) {
       return next(error);
     } else {
@@ -169,7 +169,7 @@ router.get('/:id', async (req, res, next) => {
         parentCategory: req.params.id !== 'null' ? ObjectId(req.params.id) : null
       }
     },
-    ...pipeline
+    ...arrPipeline
   ], (error, data) => {
     if (error) {
       console.log(error)
@@ -191,14 +191,15 @@ router
           _id: ObjectId(req.params.id),
         }
       },
-      ...pipeline,
-      {
+      ...arrPipeline,
+      /*{
         $lookup: {
           from: "questions",
           let: {
-            searchId: {
-              $toObjectId: "$_id",
-            },
+            // searchId: {
+            //   $toObjectId: "$_id",
+            // },
+            searchId: "$_id"
           },
           //search query with our [searchId] value
           pipeline: [
@@ -216,16 +217,37 @@ router
             {
               $project: {
                 title: 1,
-                created: 1,
-                createdBy: 1,
-                modified: 1,
-                modifiedBy: 1,
+                // created: 1,
+                // createdBy: 1,
+                // modified: 1,
+                // modifiedBy: 1,
               },
             },
           ],
           as: "questions",
         },
-      }
+      }*/
+      {
+        $lookup: {
+          from: "questions",
+          localField: "_id",
+          foreignField: "parentCategory",
+          pipeline: [
+            {
+              $project: {
+                title: 1,
+                //parentCategory: 1,
+                created: 1,
+                // createdBy: 1,
+                // modified: 1,
+                // modifiedBy: 1,
+              },
+            },
+          ],
+    
+          as: "questions",
+        },
+      }      
     ], (error, data) => {
       if (error) {
         return next(error);

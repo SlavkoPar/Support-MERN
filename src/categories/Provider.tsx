@@ -67,7 +67,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const viewCategoryQuestions = useCallback((_id: Types.ObjectId) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    // dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
       .get(url)
       .then(({ data: category }) => {

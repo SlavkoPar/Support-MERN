@@ -98,7 +98,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         category,
         categories: state.categories.map(c => c._id === category._id
           ? { ...category, inViewing: true } // category.questions are inside of object
-          : c
+          : { ...c, inViewing: false }
         ),
         mode: FORM_MODES.VIEW,
         loading: false
