@@ -46,15 +46,15 @@ export interface ICategoriesState {
 
 export interface ICategoriesContext {
 	state: ICategoriesState,
-	getCategories: ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	getSubCategories: ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => void,
 	createCategory: (category: ICategory) => void,
-	viewCategoryQuestions: (_id: Types.ObjectId) => void,
+	viewCategory: (_id: Types.ObjectId) => void,
 	editCategory: (_id: Types.ObjectId) => void,
 	updateCategory: (category: ICategory) => void,
 	deleteCategory: (_id: Types.ObjectId) => void,
 	//////////////
 	// questions
-	// getQuestions: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	getCategoryQuestions: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
 	createQuestion: (question: IQuestion) => void,
 	editQuestion: (_id: Types.ObjectId) => void,
 	updateQuestion:  (question: IQuestion) => void,
@@ -77,7 +77,7 @@ export enum ActionTypes {
 	ADD = 'ADD',
 	REFRESH_ADDED_CATEGORY = 'REFRESH_ADDED_CATEGORY',
 	REFRESH_UPDATED_CATEGORY = 'REFRESH_UPDATED_CATEGORY',
-	VIEW_CATEGORY_QUESTIONS = 'VIEW_CATEGORY_QUESTIONS',
+	VIEW_CATEGORY = 'VIEW_CATEGORY',
 	EDIT = 'EDIT',
 	DELETE = 'DELETE',
 	CLOSE_ADDING_FORM = 'CLOSE_ADDING_FORM',
@@ -116,7 +116,7 @@ type CategoriesPayload = {
 
 	[ActionTypes.ADD]: IParentInfo;
 
-	[ActionTypes.VIEW_CATEGORY_QUESTIONS]: {
+	[ActionTypes.VIEW_CATEGORY]: {
 		category: ICategory;
 	};
 

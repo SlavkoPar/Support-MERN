@@ -6,9 +6,9 @@ import { FORM_MODES, ActionTypes } from "./types";
 import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
 import { QuestionProvider } from "../questions/QuestionProvider";
 
-import List from "./Components/List";
+import List from "./Components/CategoryList";
 // import Add from "./Components/Add";
-import CategoryQuestionsView from "./Components/CategoryQuestionsView";
+import CategoryFormView from "./Components/CategoryFormView";
 import Edit from "./Components/Edit";
 import { initialCategory } from "./reducer";
 
@@ -42,7 +42,7 @@ const Providered = () => {
                     {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                     {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                     <div className="d-none d-md-block">
-                        {state.mode === FORM_MODES.VIEW && <CategoryQuestionsView />}
+                        {state.mode === FORM_MODES.VIEW && <CategoryFormView />}
                         {state.mode === FORM_MODES.EDIT && <Edit />}
                     </div>
 

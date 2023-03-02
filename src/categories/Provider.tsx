@@ -23,7 +23,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const getCategories = useCallback(({ parentCategory, level }: IParentInfo) => {
+  const getSubCategories = useCallback(({ parentCategory, level }: IParentInfo) => {
     const urlCategories = `${hostPort}/categories/${parentCategory}`
     console.log('FETCHING --->>> getCategories', level, parentCategory)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
@@ -64,7 +64,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  const viewCategoryQuestions = useCallback((_id: Types.ObjectId) => {
+  // it is the sam3 as editCategory but with readonly CategoyForm
+  const viewCategory = useCallback((_id: Types.ObjectId) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     // dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
@@ -72,7 +73,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .get(url)
       .then(({ data: category }) => {
         console.log(category)
-        dispatch({ type: ActionTypes.VIEW_CATEGORY_QUESTIONS, payload: { category } });
+        dispatch({ type: ActionTypes.VIEW_CATEGORY, payload: { category } });
       })
       .catch((error) => {
         console.log(error);
@@ -157,6 +158,23 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
   */
+
+  const getCategoryQuestions = useCallback(({parentCategory:_id, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
+    const url = `${hostPort}/categories/get-category/${_id}`
+    console.log(`FETCHING --->>> ${url}`)
+    // dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    axios
+      .get(url)
+      .then(({ data: category }) => {
+        console.log(category)
+        dispatch({ type: ActionTypes.VIEW_CATEGORY, payload: { category } });
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: ActionTypes.SET_ERROR, payload: error });
+      });
+  }, []);
+ 
 
   const createQuestion = useCallback((question: IQuestion) => {
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
@@ -244,9 +262,9 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   };
 
-  const contextValue = { state: state, 
-    getCategories, createCategory, viewCategoryQuestions, editCategory, updateCategory, deleteCategory,
-    createQuestion, editQuestion, updateQuestion, deleteQuestion
+  const contextValue: ICategoriesContext = { state: state, 
+    getSubCategories, createCategory, viewCategory: viewCategory, editCategory, updateCategory, deleteCategory,
+    getCategoryQuestions, createQuestion, editQuestion, updateQuestion, deleteQuestion
   }
   return (
     <CategoriesContext.Provider value={contextValue}>

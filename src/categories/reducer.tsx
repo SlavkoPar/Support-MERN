@@ -91,7 +91,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
     }
 
-    case ActionTypes.VIEW_CATEGORY_QUESTIONS: {
+    case ActionTypes.VIEW_CATEGORY: {
       const { category } = action.payload;
       return {
         ...state,
