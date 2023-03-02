@@ -4,7 +4,7 @@ import { useGlobalContext, useGlobalState } from '../../global/GlobalProvider'
 
 import CategoryForm from "./CategoryForm";
 import InLineCategoryForm from "./InLineCategoryForm";
-import { ICategory } from "../types";
+import { FormMode, ICategory } from "../types";
 
 const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
     const globalState = useGlobalState();
@@ -33,7 +33,8 @@ const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => 
             {inLine ?
                 <InLineCategoryForm
                     initialValues={formValues}
-                    isEdit={false}
+                    //isEdit={false}
+                    mode={FormMode.adding}
                     submitForm={submitForm}
                 >
                     Create
@@ -41,7 +42,8 @@ const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => 
                 :
                 <CategoryForm
                     initialValues={formValues}
-                    isEdit={false}
+                    //isEdit={false}
+                    mode={FormMode.adding}
                     submitForm={submitForm}
                 >
                     Create Category

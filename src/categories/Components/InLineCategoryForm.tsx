@@ -9,18 +9,23 @@ import { FormButtons } from "../../common/FormButtons"
 
 import { useGlobalState } from '../../global/GlobalProvider'
 
-import { ActionTypes, ICategoryFormProps } from "../types";
+import { ActionTypes, FormMode, ICategoryFormProps } from "../types";
 
 import { useCategoryDispatch } from "../Provider";
 
-const InLineCategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategoryFormProps) => {
+const InLineCategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFormProps) => {
+
+  const viewing = mode === FormMode.viewing;
+  const editing = mode === FormMode.editing;
+  const adding = mode === FormMode.adding;
+  
   const { _id, level } = initialValues;
 
   const dispatch = useCategoryDispatch();
   const{ authUser, isAuthenticated, variant, bg } = useGlobalState();
 
   const cancelForm = () => {
-    dispatch({ type: isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
+    dispatch({ type: ActionTypes.CANCEL_FORM })
   }
 
   const formik = useFormik({

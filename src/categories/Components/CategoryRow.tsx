@@ -14,7 +14,7 @@ import { ICategory } from '../types'
 import CategoryList from "./CategoryList";
 import Add from "./Add";
 import Edit from "./Edit";
-import CategoryFormView from "./CategoryFormView";
+import CategoryView from "./CategoryView";
 import AddQuestion from "../../questions/Components/Add";
 import QuestionList from "./QuestionList";
 
@@ -161,7 +161,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                         // <div class="d-lg-none">hide on lg and wider screens</div>
                         <div className="mx-3 d-md-none">
                             {inEditing && <Edit />}
-                            {inViewing && <CategoryFormView />}
+                            {inViewing && <CategoryView />}
                         </div>
                     }
                 </ListGroup.Item>

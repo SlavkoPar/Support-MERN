@@ -4,20 +4,24 @@ import { useFormik } from "formik";
 import { Form, FormGroup, CloseButton } from "react-bootstrap";
 import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
 import { FormButtons } from "../../common/FormButtons"
-import { ActionTypes, ICategoryFormProps } from "../types";
+import { FormMode, ActionTypes, ICategoryFormProps } from "../types";
 
 import { useCategoryDispatch } from "../Provider";
 
-const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategoryFormProps) => {
+const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFormProps) => {
+
+  const viewing = mode === FormMode.viewing;
+  const editing = mode === FormMode.editing;
+  const adding = mode === FormMode.adding;
 
   const dispatch = useCategoryDispatch();
 
   const closeForm = () => {
-    dispatch({ type: isEdit ? ActionTypes.CLOSE_EDITING_FORM : ActionTypes.CLOSE_ADDING_FORM })
+    dispatch({ type: ActionTypes.CLOSE_FORM })
   }
 
   const cancelForm = () => {
-    dispatch({ type: isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
+    dispatch({ type: ActionTypes.CANCEL_FORM })
   }
 
   const formik = useFormik({
@@ -67,6 +71,7 @@ const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategory
             // }}
             value={formik.values.title}
             style={{ width: '100%' }}
+            disabled={viewing}
             rows={2}
             placeholder={'New Category'}
           />
@@ -77,19 +82,22 @@ const CategoryForm = ({ isEdit, initialValues, submitForm, children }: ICategory
           </Form.Text>
         </Form.Group>
 
-        {isEdit && 
-          <CreatedModifiedForm 
+        {(viewing || editing) &&
+          <CreatedModifiedForm
             created={initialValues.created}
             createdBy={initialValues.createdBy}
-            modified={initialValues.modified} 
+            modified={initialValues.modified}
             modifiedBy={initialValues.modifiedBy}
           />
         }
-        <FormButtons
-          cancelForm={cancelForm}
-          handleSubmit={formik.handleSubmit}
-          title={children}
-        />
+
+        {(editing || adding) &&
+          <FormButtons
+            cancelForm={cancelForm}
+            handleSubmit={formik.handleSubmit}
+            title={children}
+          />
+        }
       </Form>
     </div >
   );

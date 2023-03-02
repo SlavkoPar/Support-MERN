@@ -16,6 +16,12 @@ export const FORM_MODES = {
 	ADD_QUESTION: 'ADD_QUESTION'
 }
 
+export enum FormMode {
+	viewing,
+	adding,
+	editing
+}
+
 export interface ICategory {
 	_id?: Types.ObjectId,
 	title: string,
@@ -63,7 +69,8 @@ export interface ICategoriesContext {
 
 export interface ICategoryFormProps {
 	initialValues: ICategory;
-	isEdit: boolean;
+	//isEdit: boolean;
+	mode: FormMode;
 	submitForm: (category: ICategory) => void,
 	children: string
 }
@@ -80,10 +87,9 @@ export enum ActionTypes {
 	VIEW_CATEGORY = 'VIEW_CATEGORY',
 	EDIT = 'EDIT',
 	DELETE = 'DELETE',
-	CLOSE_ADDING_FORM = 'CLOSE_ADDING_FORM',
-	CANCEL_ADDING_FORM = 'CANCEL_ADDING_FORM',
-	CLOSE_EDITING_FORM = 'CLOSE_EDITING_FORM',
-	CANCEL_EDITING_FORM = 'CANCEL_EDITING_FORM',
+
+	CLOSE_FORM = 'CLOSE_FORM',
+	CANCEL_FORM = 'CANCEL_FORM',
 
 	// questions
 	SET_CATEGORY_QUESTIONS = 'SET_CATEGORY_QUESTIONS',
@@ -103,15 +109,6 @@ type CategoriesPayload = {
 	};
 
 	[ActionTypes.SET_LOADING]: {
-	};
-
-	[ActionTypes.CANCEL_ADDING_FORM]: {
-	};
-
-	[ActionTypes.CANCEL_EDITING_FORM]: {
-	};
-
-	[ActionTypes.CLOSE_EDITING_FORM]: {
 	};
 
 	[ActionTypes.ADD]: IParentInfo;
@@ -136,10 +133,10 @@ type CategoriesPayload = {
 		category: ICategory;
 	};
 
-	[ActionTypes.CLOSE_EDITING_FORM]: {
+	[ActionTypes.CLOSE_FORM]: {
 	};
 
-	[ActionTypes.CLOSE_ADDING_FORM]: {
+	[ActionTypes.CANCEL_FORM]: {
 	};
 
 	[ActionTypes.REFRESH_ADDED_CATEGORY]: {

@@ -5,15 +5,15 @@ import { useGlobalState } from '../../global/GlobalProvider'
 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
-import { ICategory } from "../types";
+import { FormMode, ICategory } from "../types";
 import { IQuestion } from "../../questions/types";
 import ProductForm from "../../questions/Components/ProductForm";
 import CategoryForm from "./CategoryForm";
 
-const CategoryFormView = () => {
+const CategoryView = () => {
     const globalState = useGlobalState();
     const { state, updateCategory } = useCategoryContext();
-    const category = state.categories.find(c=>c.inEditing);
+    const category = state.categories.find(c=>c.inViewing);
 
     const [formValues, setFormValues] = useState<ICategory>(category!);
 
@@ -25,7 +25,7 @@ const CategoryFormView = () => {
     return (
         <CategoryForm
             initialValues={formValues}
-            isEdit={true}
+            mode={FormMode.viewing}
             submitForm={() => {}}
         >
             Update Category
@@ -33,4 +33,4 @@ const CategoryFormView = () => {
     );
 }
 
-export default CategoryFormView;
+export default CategoryView;

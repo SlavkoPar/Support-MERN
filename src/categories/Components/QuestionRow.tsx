@@ -55,7 +55,7 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
                         variant={variant}
                         className="py-1 px-1"
                         as="li"
-                        style={{backgroundColor: 'yellow'}}
+                        style={{backgroundColor: 'lightcyan'}}
                     >
                         <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
                             <Button

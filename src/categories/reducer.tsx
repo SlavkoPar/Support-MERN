@@ -127,31 +127,16 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         categories: state.categories.filter(c => c._id !== _id)
       };
     }
-
-    case ActionTypes.CLOSE_ADDING_FORM: {
-      return {
-        ...state,
-        mode: FORM_MODES.NULL
-      };
-    }
-
-    case ActionTypes.CANCEL_ADDING_FORM: {
-      return {
-        ...state,
-        mode: FORM_MODES.NULL,
-        categories: state.categories.filter(c => !c.inAdding)
-      };
-    }
-
-    case ActionTypes.CANCEL_EDITING_FORM:
-    case ActionTypes.CLOSE_EDITING_FORM: {
-      return {
-        ...state,
-        mode: FORM_MODES.NULL,
-        categories: state.categories.map(c => c.inEditing ? ({ ...c, inEditing: false }) : c)
-      };
-    }
     
+    case ActionTypes.CANCEL_FORM:
+     case ActionTypes.CLOSE_FORM: {
+        return {
+          ...state,
+          mode: FORM_MODES.NULL,
+          categories: state.categories.map(c => ({ ...c, inViewing: false, inEditing: false, inAdding: false, }))
+        };
+      }
+
 
     case ActionTypes.ADD_QUESTION: {
       const { category } = action.payload;

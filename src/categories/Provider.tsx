@@ -46,7 +46,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log('Category successfully created')
           dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, payload: { category: data } });
-          dispatch({ type: ActionTypes.CLOSE_ADDING_FORM, payload: {} })
+          dispatch({ type: ActionTypes.CLOSE_FORM, payload: {} })
         }
         else {
           console.log('Status is not 200', status)
@@ -108,7 +108,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log("Category successfully updated");
           dispatch({ type: ActionTypes.REFRESH_UPDATED_CATEGORY, payload: { category } });
-          dispatch({ type: ActionTypes.CLOSE_EDITING_FORM, payload: {} })
+          dispatch({ type: ActionTypes.CLOSE_FORM, payload: {} })
         }
         else {
           console.log('Status is not 200', status)
@@ -230,7 +230,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log("Question successfully updated");
           dispatch({ type: ActionTypes.REFRESH_UPDATED_QUESTION, payload: { question } });
-          dispatch({ type: ActionTypes.CLOSE_EDITING_FORM, payload: {} })
+          dispatch({ type: ActionTypes.CLOSE_FORM, payload: {} })
         }
         else {
           console.log('Status is not 200', status)

@@ -4,7 +4,7 @@ import { useCategoryContext } from '../Provider'
 import { useGlobalState } from '../../global/GlobalProvider'
 
 import CategoryForm from "./CategoryForm";
-import { ICategory } from "../types";
+import { FormMode, ICategory } from "../types";
 
 const Edit = () => {
     const globalState = useGlobalState();
@@ -34,7 +34,7 @@ const Edit = () => {
     return (
         <CategoryForm
             initialValues={formValues}
-            isEdit={true}
+            mode={FormMode.editing}
             submitForm={submitForm}
         >
             Update Category

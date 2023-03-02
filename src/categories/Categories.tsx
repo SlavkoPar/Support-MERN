@@ -8,7 +8,7 @@ import { QuestionProvider } from "../questions/QuestionProvider";
 
 import List from "./Components/CategoryList";
 // import Add from "./Components/Add";
-import CategoryFormView from "./Components/CategoryFormView";
+import CategoryView from "./Components/CategoryView";
 import Edit from "./Components/Edit";
 import { initialCategory } from "./reducer";
 
@@ -42,7 +42,7 @@ const Providered = () => {
                     {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                     {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                     <div className="d-none d-md-block">
-                        {state.mode === FORM_MODES.VIEW && <CategoryFormView />}
+                        {state.mode === FORM_MODES.VIEW && <CategoryView />}
                         {state.mode === FORM_MODES.EDIT && <Edit />}
                     </div>
 
