@@ -1,52 +1,45 @@
 import { Types } from "mongoose";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons'
 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalState } from '../../global/GlobalProvider'
-import { ActionTypes, FORM_MODES } from "../types";
+import { ActionTypes, FORM_MODES, ICategory } from "../types";
 import { useCategoryContext, useCategoryDispatch } from '../Provider'
-import { useHover } from '../../common/components/useHover';
-import { ICategory } from '../types'
-
-import CategoryList from "./CategoryList";
+import List from "./CategoryList";
 import Add from "./Add";
 import Edit from "./Edit";
-import CategoryFormView from "./CategoryFormView";
+//import QuestionQuestionsView from "./QuestionQuestionsView";
+import { useHover } from '../../common/components/useHover';
 import AddQuestion from "../../questions/Components/Add";
-import QuestionList from "./QuestionList";
 
-const CategoryRow = ({ category }: { category: ICategory }) => {
-    const { _id, title, level, inViewing, inEditing, inAdding, questions } = category;
+import { IQuestion } from '../../questions/types'
+
+const QuestionRow = ({ category, question }: { category: ICategory, question: IQuestion }) => {
+    const { _id, title, level, inEditing, inAdding  } = question;
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
-    const { state, viewCategory: viewCategory, editCategory, deleteCategory } = useCategoryContext();
+    const { state, /*viewQuestion,*/editQuestion, deleteQuestion } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
     const [isExpanded, setIsExpanded] = useState(false);
 
     const del = () => {
-        deleteCategory(_id!);
+        deleteQuestion(_id!);
     };
 
-    const expand = () => {
-        const refresh = isExpanded;
-        setIsExpanded(!isExpanded);
-        if (refresh)
-            dispatch({ type: ActionTypes.CLEAN_SUB_TREE, payload: { category } })
-    }
-
+   
     const edit = (_id: Types.ObjectId) => {
         // Load data from server and reinitialize category
-        editCategory(_id);
+        editQuestion(_id);
     }
 
-    const onSelectCategory = (_id: Types.ObjectId) => {
+    const onSelectQuestion = (_id: Types.ObjectId) => {
         // Load data from server and reinitialize category
-        viewCategory(_id);
+        //uh//viewQuestionQuestions(_id);
     }
 
     const [hoverRef, hoverProps] = useHover();
@@ -62,32 +55,26 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                         variant={variant}
                         className="py-1 px-1"
                         as="li"
+                        style={{backgroundColor: 'yellow'}}
                     >
                         <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
                             <Button
                                 variant='link'
                                 size="sm"
                                 className="py-0 px-1"
-                                onClick={expand}
                                 title="Expand"
                             >
-                                <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} color='orange' size='lg' />
+                                <FontAwesomeIcon icon={faQuestion} color='teal' size='sm' />
                             </Button>
                             <Button
                                 variant='link'
                                 size="sm"
                                 className="py-0 mx-1 text-decoration-none"
                                 title={_id!.toString()}
-                                onClick={() => onSelectCategory(_id!)}
+                                onClick={() => onSelectQuestion(_id!)}
                             >
                                 {title}
                             </Button>
-
-                            {questions && questions.length > 0 &&
-                                <Badge bg="primary" pill>
-                                    {questions.length}
-                                </Badge>
-                            }
 
                             {canEdit && hoverProps.isHovered &&
                                 <Button variant='link' size="sm" className="ms-1 py-0 px-1"
@@ -107,7 +94,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                             }
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
+                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubQuestion" >
                                     <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
                                         onClick={() => {
                                             dispatch({
@@ -143,31 +130,8 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                     </ListGroup.Item>
                 )
             }
-
-            {!inAdding && (isExpanded || inEditing) &&
-                <ListGroup.Item
-                    className="py-0 px-0"
-                    variant={variant}
-                    as="li"
-                >
-                    {isExpanded &&
-                        <>
-                            <CategoryList level={level + 1} parentCategory={_id!} />
-                            <QuestionList level={level + 1} parentCategory={_id!} />
-                        </>
-                    }
-
-                    {(inEditing || inViewing) &&
-                        // <div class="d-lg-none">hide on lg and wider screens</div>
-                        <div className="mx-3 d-md-none">
-                            {inEditing && <Edit />}
-                            {inViewing && <CategoryFormView />}
-                        </div>
-                    }
-                </ListGroup.Item>
-            }
         </>
     );
 };
 
-export default CategoryRow;
+export default QuestionRow;
