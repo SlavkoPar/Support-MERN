@@ -2,7 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## MERN
+## MERN Stack
 MERN stands for MongoDB, Express, React, Node, after the four key technologies that make up the stack.\
 MongoDB — document database.\
 Express(.js) — Node.js web framework.\
