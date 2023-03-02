@@ -22,7 +22,7 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
-    const { state, /*viewQuestion,*/editQuestion, deleteQuestion } = useCategoryContext();
+    const { state, viewQuestion, editQuestion, deleteQuestion } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -39,7 +39,7 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
 
     const onSelectQuestion = (_id: Types.ObjectId) => {
         // Load data from server and reinitialize category
-        //uh//viewQuestionQuestions(_id);
+        viewQuestion(_id);
     }
 
     const [hoverRef, hoverProps] = useHover();

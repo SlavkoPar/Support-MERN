@@ -13,7 +13,10 @@ export const FORM_MODES = {
 	EDIT: 'EDIT',
 	DELETE: 'DELETE',
 	// questions
-	ADD_QUESTION: 'ADD_QUESTION'
+	ADD_QUESTION: 'ADD_QUESTION',
+	VIEW_QUESTION: 'VIEW_QUESTION',
+	EDIT_QUESTION: 'EDIT_QUESTION',
+	DELETE_QUESTION: 'DELETE_QUESTION',
 }
 
 export enum FormMode {
@@ -62,6 +65,7 @@ export interface ICategoriesContext {
 	// questions
 	getCategoryQuestions: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
 	createQuestion: (question: IQuestion) => void,
+	viewQuestion: (_id: Types.ObjectId) => void,
 	editQuestion: (_id: Types.ObjectId) => void,
 	updateQuestion:  (question: IQuestion) => void,
 	deleteQuestion: (_id: Types.ObjectId) => void
@@ -75,6 +79,12 @@ export interface ICategoryFormProps {
 	children: string
 }
 
+export interface IQuestionFormProps {
+	initialValues: IQuestion;
+	isEdit: boolean;
+	submitForm: (question: IQuestion) => void,
+	children: string
+  }
 
 export enum ActionTypes {
 	SET_LOADING = 'SET_LOADING',
@@ -94,12 +104,12 @@ export enum ActionTypes {
 	// questions
 	SET_CATEGORY_QUESTIONS = 'SET_CATEGORY_QUESTIONS',
 	ADD_QUESTION = 'ADD_QUESTION',
+	VIEW_QUESTION = 'VIEW_QUESTION',
 	EDIT_QUESTION = 'EDIT_QUESTION',
 
-	REFRESH_ADDED_QUESTION = 'REFRESH_ADDED_QUESTION',
-	REFRESH_UPDATED_QUESTION = 'REFRESH_UPDATED_QUESTION',
-	CLOSE_QUESTION_ADDING_FORM = 'CLOSE_QUESTION_ADDING_FORM',
-	CANCEL_QUESTION_ADDING_FORM = 'CANCEL_ADDING_FORM'
+	REFRESH_QUESTION = 'REFRESH_QUESTION',
+	CLOSE_QUESTION_FORM = 'CLOSE_QUESTION_FORM',
+	CANCEL_QUESTION_FORM = 'CANCEL_QUESTION_FORM'
 }
 
 
@@ -162,11 +172,15 @@ type CategoriesPayload = {
 		category: ICategory;
 	}
 
+	[ActionTypes.VIEW_QUESTION]: {
+		question: IQuestion;
+	};
+
 	[ActionTypes.EDIT_QUESTION]: {
 		question: IQuestion;
 	};
 
-	[ActionTypes.REFRESH_UPDATED_QUESTION]: {
+	[ActionTypes.REFRESH_QUESTION]: {
 		question: IQuestion;
 	};
 
@@ -174,13 +188,6 @@ type CategoriesPayload = {
 		_id: Types.ObjectId;
 	};
 
-	[ActionTypes.REFRESH_ADDED_QUESTION]: {
-		question: IQuestion;
-	};
-
-	[ActionTypes.REFRESH_UPDATED_QUESTION]: {
-		question: IQuestion;
-	};
 
 };
 

@@ -10,18 +10,18 @@ import { Select } from '../../common/components/Select';
 import { sourceOptions } from '../../common/sourceOptions'
 import { statusOptions } from '../../common/statusOptions'
 
-import { useQuestionDispatch } from "../QuestionProvider";
+import { useCategoryDispatch } from "../Provider";
 
 const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestionFormProps) => {
 
-  const dispatch = useQuestionDispatch();
+  const dispatch = useCategoryDispatch();
 
   const closeForm = () => {
-    dispatch({ type: isEdit ? ActionTypes.CLOSE_EDITING_FORM : ActionTypes.CLOSE_ADDING_FORM })
+    dispatch({ type: ActionTypes.CLOSE_FORM })
   }
 
   const cancelForm = () => {
-    dispatch({ type: isEdit ? ActionTypes.CANCEL_EDITING_FORM : ActionTypes.CANCEL_ADDING_FORM })
+    dispatch({ type: ActionTypes.CANCEL_FORM })
   }
 
   const formik = useFormik({

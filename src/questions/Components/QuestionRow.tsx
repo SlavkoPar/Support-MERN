@@ -42,6 +42,11 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
         // Load data from server and reinitialize question
         editQuestion(_id);
     }
+
+    const onSelectCategory = (_id: Types.ObjectId) => {
+        // Load data from server and reinitialize category
+        // viewCategory(_id);
+    }
     // console.log({ inEditing, isExpanded, inAdding })
     const [hoverRef, hoverProps] = useHover();
 

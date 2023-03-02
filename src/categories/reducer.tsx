@@ -166,14 +166,56 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       };
     }
 
-    case ActionTypes.REFRESH_ADDED_QUESTION: {
-      console.log('REFRESH_ADDED_QUESTION', state.categories)
+    // case ActionTypes.REFRESH_ADDED_QUESTION: {
+    //   console.log('REFRESH_ADDED_QUESTION', state.categories)
+    //   const { question } = action.payload;
+    //   return {
+    //     ...state,
+    //     categories: state.categories.map(c => c.inAdding ? { ...c, questions: [...c.questions, question], inAdding: false } : c),
+    //     loading: false
+    //   }
+    // }
+
+    case ActionTypes.VIEW_QUESTION: {
       const { question } = action.payload;
       return {
         ...state,
-        categories: state.categories.map(c => c.inAdding ? { ...c, questions: [...c.questions, question], inAdding: false } : c),
+        mode: FORM_MODES.VIEW_QUESTION,
+        categories: state.categories.map(c => c._id === question.parentCategory
+          ? { ...c, inViewing: true }
+          : c
+        ),
         loading: false
-      }
+      };
+    }
+
+    case ActionTypes.EDIT_QUESTION: {
+      const { question } = action.payload;
+      return {
+        ...state,
+        mode: FORM_MODES.EDIT_QUESTION,
+        categories: state.categories.map(c => c._id === question.parentCategory
+          ? { ...c, inEditing: true }
+          : c
+        ),
+        loading: false
+      };
+    }
+
+    case ActionTypes.REFRESH_QUESTION: {
+      const { question } = action.payload;
+      return {
+        ...state,
+        //mode: FORM_MODES.EDIT_QUESTION,
+        categories: state.categories.map(c => c._id === question.parentCategory
+          ? { 
+            ...c, 
+            questions: c.questions.map(q => q._id === question._id ? question : q)
+          }
+          : c
+        ),
+        loading: false
+      };
     }
 
     default:

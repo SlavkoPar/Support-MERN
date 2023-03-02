@@ -183,7 +183,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Question successfully created')
-          dispatch({ type: ActionTypes.REFRESH_ADDED_QUESTION, payload: { question: data } });
+          dispatch({ type: ActionTypes.REFRESH_QUESTION, payload: { question: data } }); // ActionTypes.REFRESH_ADDED_QUESTION
           // TODO setting inAdding: false will close the form
           //dispatch({ type: ActionTypes.CLOSE_QUESTION_ADDING_FORM, payload: {} })
         }
@@ -202,6 +202,23 @@ export const Provider: React.FC<Props> = ({ children }) => {
         dispatch({ type: ActionTypes.SET_ERROR, payload: error });
       });
   }, []);
+
+  const viewQuestion = useCallback((_id: Types.ObjectId) => {
+    const url = `${hostPort}/questions/get-question/${_id}`
+    console.log(`FETCHING --->>> ${url}`)
+    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    axios
+      .get(url)
+      .then(({ data: question }) => {
+        console.log(question)
+        dispatch({ type: ActionTypes.REFRESH_QUESTION, payload: { question } }); // ActionTypes.VIEW_QUESTION
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: ActionTypes.SET_ERROR, payload: error });
+      });
+  }, []);
+
 
   const editQuestion = useCallback((_id: Types.ObjectId) => {
     const url = `${hostPort}/questions/get-question/${_id}`
@@ -229,7 +246,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data: question }) => {
         if (status === 200) {
           console.log("Question successfully updated");
-          dispatch({ type: ActionTypes.REFRESH_UPDATED_QUESTION, payload: { question } });
+          dispatch({ type: ActionTypes.REFRESH_QUESTION, payload: { question } });
           dispatch({ type: ActionTypes.CLOSE_FORM, payload: {} })
         }
         else {
@@ -264,7 +281,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const contextValue: ICategoriesContext = { state: state, 
     getSubCategories, createCategory, viewCategory: viewCategory, editCategory, updateCategory, deleteCategory,
-    getCategoryQuestions, createQuestion, editQuestion, updateQuestion, deleteQuestion
+    getCategoryQuestions, createQuestion, viewQuestion, editQuestion, updateQuestion, deleteQuestion
   }
   return (
     <CategoriesContext.Provider value={contextValue}>
