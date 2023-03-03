@@ -1,9 +1,7 @@
 import { Types } from 'mongoose';
 
-import { IDateAndBy } from '../global/types';
+import { ActionMap, IDateAndBy } from '../global/types';
 import { AxiosError } from 'axios';
-import { ActionMap } from '../global/types'
-import { IQuestion } from '../questions/types';
 
 export const FORM_MODES = {
 	UNDEFINED: undefined,
@@ -23,6 +21,28 @@ export enum FormMode {
 	viewing,
 	adding,
 	editing
+}
+
+export interface IAnswer {
+	_id?: Types.ObjectId
+}
+
+export interface IQuestion {
+	_id?: Types.ObjectId,
+	title: string,
+	level: number,
+	parentCategory: Types.ObjectId,
+	words: string[],
+	answers: IAnswer[],
+	source: number,
+	status: number,
+	created?: IDateAndBy,
+	createdBy?: string,
+	modified?: IDateAndBy,
+	modifiedBy?: string,
+	inViewing?: boolean,
+	inEditing?: boolean,
+	inAdding?: boolean
 }
 
 export interface ICategory {
@@ -81,7 +101,7 @@ export interface ICategoryFormProps {
 
 export interface IQuestionFormProps {
 	initialValues: IQuestion;
-	isEdit: boolean;
+	mode: FormMode;
 	submitForm: (question: IQuestion) => void,
 	children: string
   }
@@ -113,7 +133,7 @@ export enum ActionTypes {
 }
 
 
-type CategoriesPayload = {
+export type CategoriesPayload = {
 	[ActionTypes.SET_CATEGORIES]: {
 		categories: ICategory[];
 	};
@@ -191,5 +211,5 @@ type CategoriesPayload = {
 
 };
 
-export type CategoriesActions =
+export type CategoriesActions =	
 	ActionMap<CategoriesPayload>[keyof ActionMap<CategoriesPayload>];

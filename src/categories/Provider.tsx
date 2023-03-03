@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 import { hostPort } from '../global/GlobalProvider'
-import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext, IParentInfo } from './types';
+import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext, IParentInfo, CategoriesActions, CategoriesPayload, FormMode } from './types';
 import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
-import { IQuestion } from '../questions/types';
+import { IQuestion } from './types';
+import { ActionMap } from '../global/types';
 
 const initialState: ICategoriesState = {
   mode: FORM_MODES.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
@@ -206,14 +207,14 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const viewQuestion = useCallback((_id: Types.ObjectId) => {
     const url = `${hostPort}/questions/get-question/${_id}`
     console.log(`FETCHING --->>> ${url}`)
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    // dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
       .get(url)
       .then(({ data: question }) => {
         console.log(question)
-        dispatch({ type: ActionTypes.REFRESH_QUESTION, payload: { question } }); // ActionTypes.VIEW_QUESTION
+        dispatch({ type: ActionTypes.VIEW_QUESTION, payload: { question } });
       })
-      .catch((error) => {
+      .catch((error) => { 
         console.log(error);
         dispatch({ type: ActionTypes.SET_ERROR, payload: error });
       });

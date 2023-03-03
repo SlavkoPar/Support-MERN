@@ -9,28 +9,31 @@ import { FormMode, ICategory } from "../types";
 import { IQuestion } from "../types";
 //import ProductForm from "../../questions/Components/ProductForm";
 import CategoryForm from "./CategoryForm";
+import { initialQuestion } from "../reducer";
+import QuestionForm from "./QuestionForm";
 
-const CategoryView = () => {
+const QuestionView = () => {
     const globalState = useGlobalState();
     const { state, updateCategory } = useCategoryContext();
     const category = state.categories.find(c=>c.inViewing);
+    const question = category!.questions.find(q => q.inViewing )
 
-    const [formValues, setFormValues] = useState<ICategory>(category!);
+    const [formValues, setFormValues] = useState<IQuestion>(question??initialQuestion);
 
     useEffect(() => {
         //category.modifiedBy_userName = category.modifiedBy_user.userName;
-        setFormValues(category!);
-    }, [category]);
+        setFormValues(question!);
+    }, [question]);
 
     return (
-        <CategoryForm
+        <QuestionForm
             initialValues={formValues}
             mode={FormMode.viewing}
             submitForm={() => {}}
         >
             Update Category
-        </CategoryForm>
+        </QuestionForm>
     );
 }
 
-export default CategoryView;
+export default QuestionView;

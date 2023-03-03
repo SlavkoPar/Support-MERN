@@ -127,7 +127,7 @@ const pipeline = [
     $project: {
       title: 1,
       level: 1,
-      parentQuestion: 1,
+      parentCategory: 1,
       created: 1,
       createdBy: 1,
       modified: 1,
@@ -163,7 +163,7 @@ router.get('/:id', async (req, res, next) => {
   questionSchema.aggregate([
     {
       $match: {
-        parentQuestion: req.params.id !== 'null' ? ObjectId(req.params.id) : null
+        parentCategory: req.params.id !== 'null' ? ObjectId(req.params.id) : null
       } 
     },
     ...pipeline

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { Form, FormGroup, CloseButton } from "react-bootstrap";
 import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
 import { FormButtons } from "../../common/FormButtons"
-import { ActionTypes, IQuestionFormProps } from "../types";
+import { ActionTypes, FormMode, IQuestionFormProps } from "../types";
 
 import { Select } from '../../common/components/Select';
 import { sourceOptions } from '../../common/sourceOptions'
@@ -12,7 +12,12 @@ import { statusOptions } from '../../common/statusOptions'
 
 import { useCategoryDispatch } from "../Provider";
 
-const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestionFormProps) => {
+const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFormProps) => {
+
+  const viewing = mode === FormMode.viewing;
+  const editing = mode === FormMode.editing;
+  const adding = mode === FormMode.adding;
+
 
   const dispatch = useCategoryDispatch();
 
@@ -91,7 +96,7 @@ const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestion
             options={sourceOptions}
             onChange={(e, value) => {
               formik.setFieldValue('source', value)
-                .then(() => { if (isEdit) formik.submitForm() })
+                .then(() => { if (editing) formik.submitForm() })
             }}
             value={formik.values.source}
             disabled={isDisabled}
@@ -112,7 +117,7 @@ const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestion
             //onChange={formik.handleChange}
             onChange={(e, value) => {
               formik.setFieldValue('status', value)
-                .then(() => { if (isEdit) formik.submitForm() })
+                .then(() => { if (editing) formik.submitForm() })
             }}
             value={formik.values.status}
             disabled={isDisabled}
@@ -124,7 +129,7 @@ const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestion
           </Form.Text>
         </Form.Group>
 
-        {isEdit &&
+        {(viewing || editing) &&
           <CreatedModifiedForm
             created={initialValues.created}
             createdBy={initialValues.createdBy}
@@ -132,11 +137,13 @@ const QuestionForm = ({ isEdit, initialValues, submitForm, children }: IQuestion
             modifiedBy={initialValues.modifiedBy}
           />
         }
-        <FormButtons
-          cancelForm={cancelForm}
-          handleSubmit={formik.handleSubmit}
-          title={children}
-        />
+        {(editing || adding) &&
+          <FormButtons
+            cancelForm={cancelForm}
+            handleSubmit={formik.handleSubmit}
+            title={children}
+          />
+        }
       </Form>
     </div >
   );

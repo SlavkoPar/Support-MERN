@@ -13,9 +13,9 @@ import Add from "./Add";
 import Edit from "./Edit";
 //import QuestionQuestionsView from "./QuestionQuestionsView";
 import { useHover } from '../../common/components/useHover';
-import AddQuestion from "../../questions/Components/Add";
+import AddQuestion from "./AddQuestion";
 
-import { IQuestion } from '../../questions/types'
+import { IQuestion } from '../types'
 
 const QuestionRow = ({ category, question }: { category: ICategory, question: IQuestion }) => {
     const { _id, title, level, inEditing, inAdding  } = question;

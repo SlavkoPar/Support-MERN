@@ -4,7 +4,6 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { useGlobalState } from '../global/GlobalProvider'
 import { FORM_MODES, ActionTypes } from "./types";
 import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
-import { QuestionProvider } from "../questions/QuestionProvider";
 
 import List from "./Components/CategoryList";
 // import Add from "./Components/Add";

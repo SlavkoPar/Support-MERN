@@ -29,6 +29,7 @@ export interface IQuestion {
 	createdBy?: string,
 	modified?: IDateAndBy,
 	modifiedBy?: string,
+	inViewing?: boolean,
 	inEditing?: boolean,
 	inAdding?: boolean
 }

@@ -1,8 +1,22 @@
 import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
 import { Types } from 'mongoose';
-import { AxiosError } from "axios";
-import { IQuestion } from "../questions/types";
-import { initialQuestion } from "../questions/reducer";
+import { IQuestion } from "./types";
+
+export const initialQuestion: IQuestion = {
+  // temp _id for inAdding, to server as list key
+  // it will be removed on submitForm
+  // real _id will be given by the MongoDB 
+  parentCategory: new Types.ObjectId('000000000000000000000000'),
+  _id: new Types.ObjectId('000000000000000000000000'),
+  title: '',
+  level: 0,
+  words: [],
+	answers: [],
+	source: 0,
+	status: 0
+}
+
+
 
 export const initialCategory: ICategory = {
   // temp _id for inAdding, to server as list key
@@ -182,7 +196,12 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         ...state,
         mode: FORM_MODES.VIEW_QUESTION,
         categories: state.categories.map(c => c._id === question.parentCategory
-          ? { ...c, inViewing: true }
+          ? { ...c, 
+              questions: c.questions.map(q => q._id === question._id ? {
+                ...question,
+                inViewing: true
+              } : q),
+            inViewing: true }
           : c
         ),
         loading: false
@@ -195,13 +214,16 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         ...state,
         mode: FORM_MODES.EDIT_QUESTION,
         categories: state.categories.map(c => c._id === question.parentCategory
-          ? { ...c, inEditing: true }
+          ? { ...c, 
+            questions: c.questions.map(q => q._id === question._id ? {...question, inEditing: true} : q),
+            inEditing: true }
           : c
         ),
         loading: false
       };
     }
 
+    /*
     case ActionTypes.REFRESH_QUESTION: {
       const { question } = action.payload;
       return {
@@ -210,13 +232,15 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         categories: state.categories.map(c => c._id === question.parentCategory
           ? { 
             ...c, 
-            questions: c.questions.map(q => q._id === question._id ? question : q)
+            questions: c.questions.map(q => q._id === question._id ? question : q,
+              in??????
           }
           : c
         ),
         loading: false
       };
     }
+    */
 
     default:
       return state;  // TODO throw error

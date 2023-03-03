@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons'
 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
@@ -15,8 +15,9 @@ import CategoryList from "./CategoryList";
 import Add from "./Add";
 import Edit from "./Edit";
 import CategoryView from "./CategoryView";
-import AddQuestion from "../../questions/Components/Add";
+import AddQuestion from "../Components/AddQuestion";
 import QuestionList from "./QuestionList";
+import QuestionView from "./QuestionView";
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inViewing, inEditing, inAdding, questions } = category;
@@ -48,8 +49,92 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
         // Load data from server and reinitialize category
         viewCategory(_id);
     }
-
     const [hoverRef, hoverProps] = useHover();
+
+    const row1 = <ListGroup.Item
+        variant={variant}
+        className="py-1 px-1"
+        as="li"
+    >
+        <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
+            <Button
+                variant='link'
+                size="sm"
+                className="py-0 px-1"
+                onClick={expand}
+                title="Expand"
+            >
+                <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} color='orange' size='lg' />
+            </Button>
+            <Button
+                variant='link'
+                size="sm"
+                className="py-0 mx-1 text-decoration-none"
+                title={_id!.toString()}
+                onClick={() => onSelectCategory(_id!)}
+            >
+                {title}
+            </Button>
+
+            {questions && questions.length > 0 &&
+                <Badge bg="primary" pill>
+                    {questions.length} <FontAwesomeIcon icon={faQuestion} size='sm' />
+                </Badge>
+            }
+
+            {canEdit && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
+                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
+                    onClick={() => edit(_id!)}
+                >
+                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
+                </Button>
+            }
+
+            {canEdit && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{ border: '1px solid orange' }}
+                    onClick={del}
+                >
+                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
+                </Button>
+            }
+
+            {canEdit && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
+                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
+                        onClick={() => {
+                            dispatch({
+                                type: ActionTypes.ADD,
+                                payload: {
+                                    parentCategory: category._id,
+                                    level: category.level
+                                }
+                            })
+                            if (!isExpanded)
+                                setIsExpanded(true)
+                        }}
+                    />
+                </Button>
+            }
+
+            {canEdit && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
+                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
+                        onClick={() => {
+                            dispatch({
+                                type: ActionTypes.ADD_QUESTION,
+                                payload: { category }
+                            })
+                            if (!isExpanded)
+                                setIsExpanded(true)
+                        }}
+                    />
+                </Button>
+            }
+
+        </div>
+    </ListGroup.Item>
+
     return (
         <>
             {inAdding ? (
@@ -58,93 +143,11 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                     : <Add category={category} inLine={true} />
             )
                 : (
-                    <ListGroup.Item
-                        variant={variant}
-                        className="py-1 px-1"
-                        as="li"
-                    >
-                        <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
-                            <Button
-                                variant='link'
-                                size="sm"
-                                className="py-0 px-1"
-                                onClick={expand}
-                                title="Expand"
-                            >
-                                <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} color='orange' size='lg' />
-                            </Button>
-                            <Button
-                                variant='link'
-                                size="sm"
-                                className="py-0 mx-1 text-decoration-none"
-                                title={_id!.toString()}
-                                onClick={() => onSelectCategory(_id!)}
-                            >
-                                {title}
-                            </Button>
-
-                            {questions && questions.length > 0 &&
-                                <Badge bg="primary" pill>
-                                    {questions.length}
-                                </Badge>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
-                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                    onClick={() => edit(_id!)}
-                                >
-                                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
-                                </Button>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{ border: '1px solid orange' }}
-                                    onClick={del}
-                                >
-                                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
-                                </Button>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
-                                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
-                                        onClick={() => {
-                                            dispatch({
-                                                type: ActionTypes.ADD,
-                                                payload: {
-                                                    parentCategory: category._id,
-                                                    level: category.level
-                                                }
-                                            })
-                                            if (!isExpanded)
-                                                setIsExpanded(true)
-                                        }}
-                                    />
-                                </Button>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
-                                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
-                                        onClick={() => {
-                                            dispatch({
-                                                type: ActionTypes.ADD_QUESTION,
-                                                payload: { category }
-                                            })
-                                            if (!isExpanded)
-                                                setIsExpanded(true)
-                                        }}
-                                    />
-                                </Button>
-                            }
-
-                        </div>
-                    </ListGroup.Item>
+                    {row1}
                 )
             }
 
-            {!inAdding && (isExpanded || inEditing) &&
+            {!inAdding && (isExpanded || inEditing) && // row2
                 <ListGroup.Item
                     className="py-0 px-0"
                     variant={variant}
@@ -159,9 +162,10 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
 
                     {(inEditing || inViewing) &&
                         // <div class="d-lg-none">hide on lg and wider screens</div>
-                        <div className="mx-3 d-md-none">
+                        <div className="mx-3 d-md-none border">
                             {inEditing && <Edit />}
-                            {inViewing && <CategoryView />}
+                            {inViewing && state.mode === FORM_MODES.VIEW && <CategoryView />}
+                            {inViewing && state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />}
                         </div>
                     }
                 </ListGroup.Item>
