@@ -15,9 +15,9 @@ import CategoryList from "./CategoryList";
 import Add from "./Add";
 import Edit from "./Edit";
 import CategoryView from "./CategoryView";
-import AddQuestion from "../Components/AddQuestion";
-import QuestionList from "./QuestionList";
-import QuestionView from "./QuestionView";
+import AddQuestion from "./questions/AddQuestion";
+import QuestionList from "./questions/QuestionList";
+import QuestionView from "./questions/QuestionView";
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inViewing, inEditing, inAdding, questions } = category;
@@ -51,12 +51,8 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     }
     const [hoverRef, hoverProps] = useHover();
 
-    const row1 = <ListGroup.Item
-        variant={variant}
-        className="py-1 px-1"
-        as="li"
-    >
-        <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
+    const Row1 =
+        <>
             <Button
                 variant='link'
                 size="sm"
@@ -76,13 +72,15 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 {title}
             </Button>
 
-            {questions && questions.length > 0 &&
+            {
+                questions && questions.length > 0 &&
                 <Badge bg="primary" pill>
                     {questions.length} <FontAwesomeIcon icon={faQuestion} size='sm' />
                 </Badge>
             }
 
-            {canEdit && hoverProps.isHovered &&
+            {
+                canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-1 py-0 px-1"
                     //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
                     onClick={() => edit(_id!)}
@@ -91,7 +89,8 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 </Button>
             }
 
-            {canEdit && hoverProps.isHovered &&
+            {
+                canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{ border: '1px solid orange' }}
                     onClick={del}
                 >
@@ -99,7 +98,8 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 </Button>
             }
 
-            {canEdit && hoverProps.isHovered &&
+            {
+                canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
                     <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
                         onClick={() => {
@@ -117,7 +117,8 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 </Button>
             }
 
-            {canEdit && hoverProps.isHovered &&
+            {
+                canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
                     <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
                         onClick={() => {
@@ -131,9 +132,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                     />
                 </Button>
             }
-
-        </div>
-    </ListGroup.Item>
+        </>
 
     return (
         <>
@@ -143,7 +142,15 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                     : <Add category={category} inLine={true} />
             )
                 : (
-                    {row1}
+                    <ListGroup.Item
+                        variant={variant}
+                        className="py-1 px-1"
+                        as="li"
+                    >
+                        <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
+                            {Row1}
+                        </div>
+                    </ListGroup.Item>
                 )
             }
 

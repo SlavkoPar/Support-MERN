@@ -11,9 +11,9 @@ export const initialQuestion: IQuestion = {
   title: '',
   level: 0,
   words: [],
-	answers: [],
-	source: 0,
-	status: 0
+  answers: [],
+  source: 0,
+  status: 0
 }
 
 
@@ -61,7 +61,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
     }
 
     case ActionTypes.SET_ERROR: {
-      const {error} = action.payload;
+      const { error } = action.payload;
       return { ...state, error, loading: false };
     }
 
@@ -134,37 +134,37 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
     }
 
     case ActionTypes.DELETE: {
-      const {_id} = action.payload;
+      const { _id } = action.payload;
       return {
         ...state,
         mode: FORM_MODES.NULL,
         categories: state.categories.filter(c => c._id !== _id)
       };
     }
-    
+
     case ActionTypes.CANCEL_FORM:
-     case ActionTypes.CLOSE_FORM: {
-        return {
-          ...state,
-          mode: FORM_MODES.NULL,
-          categories: state.categories.map(c => ({ ...c, inViewing: false, inEditing: false, inAdding: false, }))
-        };
-      }
+    case ActionTypes.CLOSE_FORM: {
+      return {
+        ...state,
+        mode: FORM_MODES.NULL,
+        categories: state.categories.map(c => ({ ...c, inViewing: false, inEditing: false, inAdding: false, }))
+      };
+    }
 
 
     case ActionTypes.ADD_QUESTION: {
       const { category } = action.payload;
-      const {_id, level } = category;
+      const { _id, level } = category;
       const question: IQuestion = {
         ...initialQuestion,
         parentCategory: _id!,
         level,
-        title : 'New Product'
+        title: 'New Product'
       }
       return {
         ...state,
         categories: state.categories.map(c => c._id === _id
-          ? { ...c, questions: [...c.questions??[], question], inAdding: true}
+          ? { ...c, questions: [...c.questions ?? [], question], inAdding: true }
           : c),
         mode: FORM_MODES.ADD_QUESTION
       };
@@ -194,31 +194,52 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       const { question } = action.payload;
       return {
         ...state,
-        mode: FORM_MODES.VIEW_QUESTION,
         categories: state.categories.map(c => c._id === question.parentCategory
-          ? { ...c, 
-              questions: c.questions.map(q => q._id === question._id ? {
-                ...question,
-                inViewing: true
-              } : q),
-            inViewing: true }
-          : c
+          ? {
+            ...c,
+            questions: c.questions.map(q => q._id === question._id ? {
+              ...question,
+              inViewing: true
+            }
+              : {
+                ...q,
+                inViewing: false
+              }),
+            inViewing: true
+          }
+          : {
+            ...c,
+            inViewing: false
+          }
         ),
+        mode: FORM_MODES.VIEW_QUESTION,
         loading: false
-      };
+      }
     }
 
     case ActionTypes.EDIT_QUESTION: {
       const { question } = action.payload;
       return {
         ...state,
-        mode: FORM_MODES.EDIT_QUESTION,
         categories: state.categories.map(c => c._id === question.parentCategory
-          ? { ...c, 
-            questions: c.questions.map(q => q._id === question._id ? {...question, inEditing: true} : q),
-            inEditing: true }
-          : c
+          ? {
+            ...c,
+            questions: c.questions.map(q => q._id === question._id ? {
+              ...question,
+              inEditing: true
+            }
+              : {
+                ...q,
+                inEditing: false
+              }),
+            inEditing: true
+          }
+          : {
+            ...c,
+            inEditing: false
+          }
         ),
+        mode: FORM_MODES.EDIT_QUESTION,
         loading: false
       };
     }

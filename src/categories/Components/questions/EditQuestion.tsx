@@ -1,17 +1,20 @@
 //import { useParams } from 'react-router-dom'
 import React, { useState, useEffect } from "react";
-import { useQuestionContext } from '../QuestionProvider'
-import { useGlobalState } from '../../global/GlobalProvider'
+import { useCategoryContext } from '../../Provider'
+import { useGlobalState } from '../../../global/GlobalProvider'
 
 import QuestionForm from "./QuestionForm";
-import { IQuestion } from "../types";
+import { FormMode, IQuestion } from "../../types";
+import { initialQuestion } from "../../reducer";
 
-const Edit = () => {
+const EditQuestion = () => {
     const globalState = useGlobalState();
-    const { state, updateQuestion } = useQuestionContext();
-    const question = state.questions.find(c=>c.inEditing);
-
-    const [formValues, setFormValues] = useState<IQuestion>(question!);
+    const { state, updateQuestion } = useCategoryContext();
+    //const question = state.categories.find(c=>c.inEditing);
+    const category = state.categories.find(c=>c.inEditing);
+    const question = category!.questions.find(q => q.inEditing )
+    
+    const [formValues, setFormValues] = useState<IQuestion>(question??initialQuestion);
 
     const submitForm = (questionObject: IQuestion) => {
         const object: IQuestion = {
@@ -34,7 +37,7 @@ const Edit = () => {
     return (
         <QuestionForm
             initialValues={formValues}
-            isEdit={true}
+            mode={FormMode.editing}
             submitForm={submitForm}
         >
             Update Question
@@ -42,4 +45,4 @@ const Edit = () => {
     );
 };
 
-export default Edit;
+export default EditQuestion;

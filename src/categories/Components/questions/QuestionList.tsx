@@ -3,9 +3,9 @@ import { Types } from 'mongoose';
 
 import { ListGroup } from "react-bootstrap";
 import QuestionRow from "./QuestionRow";
-import { ICategory, IParentInfo } from "../types";
-import { useCategoryContext } from "../Provider";
-import { IQuestion } from "../types";
+import { ICategory, IQuestion, IParentInfo } from "../../types";
+import { useCategoryContext } from "../../Provider";
+import {  } from "../../types";
 
 const QuestionList = ({ parentCategory, level }: IParentInfo) => {
     const { state, getCategoryQuestions } = useCategoryContext();

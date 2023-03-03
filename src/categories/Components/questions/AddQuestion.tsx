@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useCategoryContext } from '../../categories/Provider'
-import { useGlobalContext, useGlobalState } from '../../global/GlobalProvider'
+import { useCategoryContext } from '../../Provider'
+import { useGlobalContext, useGlobalState } from '../../../global/GlobalProvider'
 
 import QuestionForm from "./QuestionForm";
-import InLineQuestionForm from "./InLineQuestionForm";
-import { IQuestion } from "../types";
-import { initialQuestion } from "../reducer";
-import { ICategory } from "../../categories/types";
+//import InLineQuestionForm from "./InLineQuestionForm";
+import { FormMode, IQuestion } from "../../types";
+import { initialQuestion } from "../../reducer";
+import { ICategory } from "../../types";
 
 // const Add = ({ category, question, inLine } : { category: ICategory, question: IQuestion, inLine: boolean}) => {
 const Add = ({ category, inLine }: { category: ICategory, inLine: boolean }) => {
@@ -40,23 +40,13 @@ const Add = ({ category, inLine }: { category: ICategory, inLine: boolean }) => 
 
     return (
         <>
-            {inLine ?
-                <InLineQuestionForm
-                    initialValues={formValues}
-                    isEdit={false}
-                    submitForm={submitForm}
-                >
-                    Create
-                </InLineQuestionForm>
-                :
-                <QuestionForm
-                    initialValues={formValues}
-                    isEdit={false}
-                    submitForm={submitForm}
-                >
-                    Create Question
-                </QuestionForm >
-            }
+            <QuestionForm
+                initialValues={formValues}
+                mode={FormMode.adding}
+                submitForm={submitForm}
+            >
+                Create Question
+            </QuestionForm >
         </>
     )
 }

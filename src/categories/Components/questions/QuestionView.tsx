@@ -1,15 +1,13 @@
 //import { useParams } from 'react-router-dom'
 import React, { useState, useEffect } from "react";
-import { useCategoryContext } from '../Provider'
-import { useGlobalState } from '../../global/GlobalProvider'
+import { useCategoryContext } from '../../Provider'
+import { useGlobalState } from '../../../global/GlobalProvider'
 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
-import { FormMode, ICategory } from "../types";
-import { IQuestion } from "../types";
+import { FormMode, ICategory, IQuestion } from "../../types";
 //import ProductForm from "../../questions/Components/ProductForm";
-import CategoryForm from "./CategoryForm";
-import { initialQuestion } from "../reducer";
+import { initialQuestion } from "../../reducer";
 import QuestionForm from "./QuestionForm";
 
 const QuestionView = () => {
@@ -31,7 +29,7 @@ const QuestionView = () => {
             mode={FormMode.viewing}
             submitForm={() => {}}
         >
-            Update Category
+            Update Question
         </QuestionForm>
     );
 }

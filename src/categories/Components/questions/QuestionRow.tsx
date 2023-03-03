@@ -5,17 +5,13 @@ import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus, faQ
 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
-import { useGlobalState } from '../../global/GlobalProvider'
-import { ActionTypes, FORM_MODES, ICategory } from "../types";
-import { useCategoryContext, useCategoryDispatch } from '../Provider'
-import List from "./CategoryList";
-import Add from "./Add";
-import Edit from "./Edit";
+import { useGlobalState } from '../../../global/GlobalProvider'
+import { ActionTypes, FORM_MODES, ICategory } from "../../types";
+import { useCategoryContext, useCategoryDispatch } from '../../Provider'
 //import QuestionQuestionsView from "./QuestionQuestionsView";
-import { useHover } from '../../common/components/useHover';
-import AddQuestion from "./AddQuestion";
+import { useHover } from '../../../common/components/useHover';
 
-import { IQuestion } from '../types'
+import { IQuestion } from '../../types'
 
 const QuestionRow = ({ category, question }: { category: ICategory, question: IQuestion }) => {
     const { _id, title, level, inEditing, inAdding  } = question;
@@ -46,9 +42,10 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
     return (
         <>
             {inAdding ? (
-                state.mode === FORM_MODES.ADD_QUESTION
-                    ? <AddQuestion category={category} inLine={false} />
-                    : <Add category={category} inLine={true} />
+                // state.mode === FORM_MODES.ADD_QUESTION
+                //     ? <AddQuestion category={category} inLine={false} />
+                //     : <Add category={category} inLine={true} />
+                <div/>
             )
                 : (
                     <ListGroup.Item

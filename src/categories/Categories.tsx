@@ -10,6 +10,8 @@ import List from "./Components/CategoryList";
 import CategoryView from "./Components/CategoryView";
 import Edit from "./Components/Edit";
 import { initialCategory } from "./reducer";
+import QuestionView from "./Components/questions/QuestionView";
+import EditQuestion from "./Components/questions/EditQuestion";
 
 const Providered = () => {
 
@@ -43,6 +45,8 @@ const Providered = () => {
                     <div className="d-none d-md-block">
                         {state.mode === FORM_MODES.VIEW && <CategoryView />}
                         {state.mode === FORM_MODES.EDIT && <Edit />}
+                        {state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />}
+                        {state.mode === FORM_MODES.EDIT_QUESTION && <EditQuestion />}
                     </div>
 
                 </Col>
