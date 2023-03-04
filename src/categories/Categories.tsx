@@ -43,8 +43,8 @@ const Providered = () => {
                     {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                     {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                     <div className="d-none d-md-block">
-                        {state.mode === FORM_MODES.VIEW && <CategoryView />}
-                        {state.mode === FORM_MODES.EDIT && <Edit />}
+                        {state.mode === FORM_MODES.VIEW_CATEGORY && <CategoryView />}
+                        {state.mode === FORM_MODES.EDIT_CATEGORY && <Edit />}
                         {state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />}
                         {state.mode === FORM_MODES.EDIT_QUESTION && <EditQuestion />}
                     </div>

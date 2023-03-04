@@ -65,7 +65,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   }, []);
 
 
-  const getCategory = (_id: Types.ObjectId, type: ActionTypes.VIEW_CATEGORY | ActionTypes.EDIT) => {
+  const getCategory = (_id: Types.ObjectId, type: ActionTypes.VIEW_CATEGORY | ActionTypes.EDIT_CATEGORY | ActionTypes.SET_CATEGORY) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     // dispatch({ type: ActionTypes.SET_LOADING })
@@ -86,7 +86,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   }, []);
 
   const editCategory = useCallback((_id: Types.ObjectId) => {
-    getCategory(_id, ActionTypes.EDIT)
+    getCategory(_id, ActionTypes.EDIT_CATEGORY)
   }, []);
 
   const updateCategory = useCallback((category: ICategory) => {
@@ -151,19 +151,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   */
 
   const getCategoryQuestions = useCallback(({parentCategory:_id, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
-    const url = `${hostPort}/categories/get-category/${_id}`
-    console.log(`FETCHING --->>> ${url}`)
-    // dispatch({ type: ActionTypes.SET_LOADING })
-    axios
-      .get(url)
-      .then(({ data: category }) => {
-        console.log(category)
-        dispatch({ type: ActionTypes.VIEW_CATEGORY, payload: { category } });
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({ type: ActionTypes.SET_ERROR, payload: error });
-      });
+      getCategory(_id!, ActionTypes.SET_CATEGORY)  // ne zovemo vise VIEW_CATEGORY, a SET_CATEGORY Ide preko _id
   }, []);
  
   const createQuestion = useCallback((question: IQuestion) => {

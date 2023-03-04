@@ -47,20 +47,20 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
 
   // eslint-disable-next-line no-self-compare
   // const nameRef = useRef<HTMLAreaElement | null>(null);
-  const nameRef = useRef<HTMLTextAreaElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     nameRef.current!.focus()
   }, [nameRef])
 
   return (
-    <div className="form-wrapper">
+    <div className="form-wrapper p-2"  style={{ border: '1px solid navy', borderRadius: '5px' }}>
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
           <Form.Control
-            as="textarea"
+            as="input"
             name="title"
             ref={nameRef}
             onChange={formik.handleChange}
@@ -72,7 +72,6 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
             value={formik.values.title}
             style={{ width: '100%' }}
             disabled={viewing}
-            rows={2}
             placeholder={'New Category'}
           />
           <Form.Text className="text-danger">

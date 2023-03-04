@@ -22,6 +22,7 @@ import QuestionView from "./questions/QuestionView";
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inViewing, inEditing, inAdding, questions } = category;
 
+    console.log (title, inViewing, inEditing, inAdding)
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
     const { state, viewCategory, editCategory, deleteCategory } = useCategoryContext();
@@ -73,15 +74,13 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 {title}
             </Button>
 
-            {
-                questions && questions.length > 0 &&
+            { questions && questions.length > 0 &&
                 <Badge bg="primary" pill>
                     {questions.length} <FontAwesomeIcon icon={faQuestion} size='sm' />
                 </Badge>
             }
 
-            {
-                canEdit && hoverProps.isHovered &&
+            { canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-1 py-0 px-1"
                     //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
                     onClick={() => edit(_id!)}
@@ -90,8 +89,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 </Button>
             }
 
-            {
-                canEdit && hoverProps.isHovered &&
+            { canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
                     onClick={del}
                 >
@@ -99,8 +97,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 </Button>
             }
 
-            {
-                canEdit && hoverProps.isHovered &&
+            { canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
                     <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
                         onClick={() => {
@@ -118,8 +115,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 </Button>
             }
 
-            {
-                canEdit && hoverProps.isHovered &&
+            { canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
                     <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
                         onClick={() => {
@@ -155,7 +151,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 )
             }
 
-            {!inAdding && (isExpanded || inEditing) && // row2
+            {!inAdding && (isExpanded || inViewing || inEditing) && // row2
                 <ListGroup.Item
                     className="py-0 px-0"
                     variant={variant}
@@ -170,10 +166,10 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
 
                     {(inEditing || inViewing) &&
                         // <div class="d-lg-none">hide on lg and wider screens</div>
-                        <div className="mx-3 d-md-none border">
-                            {inEditing && <Edit />}
-                            {inViewing && state.mode === FORM_MODES.VIEW && <CategoryView />}
-                            {inViewing && state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />}
+                        <div className="ms-4 d-md-none border">
+                            {inEditing && state.mode === FORM_MODES.EDIT_CATEGORY && <Edit />}
+                            {inViewing && state.mode === FORM_MODES.VIEW_CATEGORY && <CategoryView />}
+                            {/* {inViewing && state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />} */}
                         </div>
                     }
                 </ListGroup.Item>

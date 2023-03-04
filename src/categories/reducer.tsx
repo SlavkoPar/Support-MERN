@@ -85,13 +85,13 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       };
     }
 
-
     case ActionTypes.SET_CATEGORY: {
       const { category } = action.payload;
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        categories: state.categories.map(c => c.inEditing || c.inAdding ? category : c), // doesn't contain isEditing 
+        //categories: state.categories.map(c => c.inEditing || c.inAdding ? category : c), 
+        categories: state.categories.map(c => c._id === category._id ? category : c), // category doesn't contain inViewving, inEditing, inAdding 
         loading: false
       }
     }
@@ -100,26 +100,24 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       const { category } = action.payload;
       return {
         ...state,
-        category,
         categories: state.categories.map(c => c._id === category._id
           ? { ...category, inViewing: true } // category.questions are inside of object
           : { ...c, inViewing: false }
         ),
-        mode: FORM_MODES.VIEW,
+        mode: FORM_MODES.VIEW_CATEGORY,
         loading: false
       };
     }
 
-    case ActionTypes.EDIT: {
+    case ActionTypes.EDIT_CATEGORY: {
       const { category } = action.payload;
       return {
         ...state,
-        mode: FORM_MODES.EDIT,
-        category,
         categories: state.categories.map(c => c._id === category._id
           ? { ...category, inEditing: true }
           : c
         ),
+        mode: FORM_MODES.EDIT_CATEGORY,
         loading: false
       };
     }

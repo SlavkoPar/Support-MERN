@@ -12,9 +12,11 @@ import { useCategoryContext, useCategoryDispatch } from '../../Provider'
 import { useHover } from '../../../common/components/useHover';
 
 import { IQuestion } from '../../types'
+import QuestionView from "./QuestionView";
+import EditQuestion from "./EditQuestion";
 
 const QuestionRow = ({ category, question }: { category: ICategory, question: IQuestion }) => {
-    const { _id, title, level, inEditing, inAdding  } = question;
+    const { _id, title, level, inViewing, inEditing, inAdding } = question;
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
@@ -27,7 +29,7 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
         deleteQuestion(_id!);
     };
 
-   
+
     const edit = (_id: Types.ObjectId) => {
         // Load data from server and reinitialize category
         editQuestion(_id);
@@ -45,14 +47,14 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
                 // state.mode === FORM_MODES.ADD_QUESTION
                 //     ? <AddQuestion category={category} inLine={false} />
                 //     : <Add category={category} inLine={true} />
-                <div/>
+                <div />
             )
                 : (
                     <ListGroup.Item
                         variant={variant}
                         className="py-1 px-1"
                         as="li"
-                        style={{backgroundColor: 'lightcyan'}}
+                        style={{ backgroundColor: 'lightcyan' }}
                     >
                         <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
                             <Button
@@ -93,6 +95,22 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
                         </div>
                     </ListGroup.Item>
                 )
+            }
+
+            {!inAdding && (isExpanded || inEditing) && // row2
+                <ListGroup.Item
+                    className="py-0 px-0"
+                    variant={variant}
+                    as="li"
+                >
+                    {(inEditing || inViewing) &&
+                        // <div class="d-lg-none">hide on lg and wider screens</div>
+                        <div className="mx-3 d-md-none border">
+                            {inViewing && state.mode === FORM_MODES.EDIT_QUESTION && <EditQuestion />}
+                            {inViewing && state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />}
+                        </div>
+                    }
+                </ListGroup.Item>
             }
         </>
     );

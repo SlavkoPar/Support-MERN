@@ -7,8 +7,8 @@ export const FORM_MODES = {
 	UNDEFINED: undefined,
 	NULL: null,
 	ADD: 'ADD',
-	VIEW: 'VIEW',
-	EDIT: 'EDIT',
+	VIEW_CATEGORY: 'VIEW_CATEGORY',
+	EDIT_CATEGORY: 'EDIT_CATEGORY',
 	DELETE: 'DELETE',
 	// questions
 	ADD_QUESTION: 'ADD_QUESTION',
@@ -114,7 +114,7 @@ export enum ActionTypes {
 	ADD = 'ADD',
 	SET_CATEGORY = 'SET_CATEGORY',
 	VIEW_CATEGORY = 'VIEW_CATEGORY',
-	EDIT = 'EDIT',
+	EDIT_CATEGORY = 'EDIT_CATEGORY',
 	DELETE = 'DELETE',
 
 	CLOSE_FORM = 'CLOSE_FORM',
@@ -144,7 +144,7 @@ export type CategoriesPayload = {
 		category: ICategory;
 	};
 
-	[ActionTypes.EDIT]: {
+	[ActionTypes.EDIT_CATEGORY]: {
 		category: ICategory;
 	};
 

@@ -60,7 +60,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
   const isDisabled = false; // !canEdit;
 
   return (
-    <div className="form-wrapper px-3 py-3 my-3" style={{ border: '1px solid silver', borderRadius: '5px' }}>
+    <div className="form-wrapper px-3 py-3 my-3" style={{ border: '1px solid navy', borderRadius: '5px' }}>
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">
