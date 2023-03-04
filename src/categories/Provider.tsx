@@ -27,7 +27,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const getSubCategories = useCallback(({ parentCategory, level }: IParentInfo) => {
     const urlCategories = `${hostPort}/categories/${parentCategory}`
     console.log('FETCHING --->>> getCategories', level, parentCategory)
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .get(urlCategories)
       .then(({ data }) => {
@@ -40,14 +40,14 @@ export const Provider: React.FC<Props> = ({ children }) => {
   }, []);
 
   const createCategory = useCallback((category: ICategory) => {
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
+    dispatch({ type: ActionTypes.SET_LOADING }) // TODO treba li ovo 
     axios
       .post(`${hostPort}/categories/create-category`, category)
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Category successfully created')
           dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, payload: { category: data } });
-          dispatch({ type: ActionTypes.CLOSE_FORM, payload: {} })
+          dispatch({ type: ActionTypes.CLOSE_FORM })
         }
         else {
           console.log('Status is not 200', status)
@@ -69,7 +69,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const viewCategory = useCallback((_id: Types.ObjectId) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
-    // dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    // dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .get(url)
       .then(({ data: category }) => {
@@ -85,7 +85,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const editCategory = useCallback((_id: Types.ObjectId) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .get(url)
       .then(({ data: category }) => {
@@ -100,7 +100,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
 
   const updateCategory = useCallback((category: ICategory) => {
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    dispatch({ type: ActionTypes.SET_LOADING })
     const url = `${hostPort}/categories/update-category/${category._id}`
     console.log(`UPDATING --->>> ${url}`)
     axios
@@ -109,7 +109,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log("Category successfully updated");
           dispatch({ type: ActionTypes.REFRESH_UPDATED_CATEGORY, payload: { category } });
-          dispatch({ type: ActionTypes.CLOSE_FORM, payload: {} })
+          dispatch({ type: ActionTypes.CLOSE_FORM })
         }
         else {
           console.log('Status is not 200', status)
@@ -147,7 +147,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   /*const getQuestions = useCallback(({ parentCategory, level }: IParentInfo) => {
     const urlQuestions = `${hostPort}/questions/${parentCategory}`
     console.log('FETCHING --->>> getQuestions', level, parentCategory)
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .get(urlQuestions)
       .then(({ data }) => {
@@ -163,7 +163,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const getCategoryQuestions = useCallback(({parentCategory:_id, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
-    // dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    // dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .get(url)
       .then(({ data: category }) => {
@@ -176,9 +176,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
  
-
   const createQuestion = useCallback((question: IQuestion) => {
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
+    dispatch({ type: ActionTypes.SET_LOADING }) // TODO treba li ovo 
     axios
       .post(`${hostPort}/questions/create-question`, question)
       .then(({ status, data }) => {
@@ -186,7 +185,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
           console.log('Question successfully created')
           dispatch({ type: ActionTypes.REFRESH_QUESTION, payload: { question: data } }); // ActionTypes.REFRESH_ADDED_QUESTION
           // TODO setting inAdding: false will close the form
-          //dispatch({ type: ActionTypes.CLOSE_QUESTION_ADDING_FORM, payload: {} })
+          //dispatch({ type: ActionTypes.CLOSE_QUESTION_ADDING_FORM })
         }
         else {
           console.log('Status is not 200', status)
@@ -204,42 +203,34 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  const viewQuestion = useCallback((_id: Types.ObjectId) => {
+  
+  const getQuestion = (_id: Types.ObjectId, actionType: ActionTypes.VIEW_QUESTION | ActionTypes.EDIT_QUESTION) => {  // keyof ActionMap<CategoriesPayload>
     const url = `${hostPort}/questions/get-question/${_id}`
     console.log(`FETCHING --->>> ${url}`)
-    // dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    // dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .get(url)
-      .then(({ data: question }) => {
+      .then(({ data }) => {
+        const question: IQuestion = data;
         console.log(question)
-        dispatch({ type: ActionTypes.VIEW_QUESTION, payload: { question } });
+        dispatch({ type: actionType, payload: { question } });
       })
       .catch((error) => { 
         console.log(error);
         dispatch({ type: ActionTypes.SET_ERROR, payload: error });
       });
-  }, []);
+  };
 
+  const viewQuestion = useCallback((_id: Types.ObjectId) => {
+    getQuestion(_id,  ActionTypes.VIEW_QUESTION);
+  }, []);
 
   const editQuestion = useCallback((_id: Types.ObjectId) => {
-    const url = `${hostPort}/questions/get-question/${_id}`
-    console.log(`FETCHING --->>> ${url}`)
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
-    axios
-      .get(url)
-      .then(({ data: question }) => {
-        console.log(question)
-        dispatch({ type: ActionTypes.EDIT_QUESTION, payload: { question } });
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({ type: ActionTypes.SET_ERROR, payload: error });
-      });
+        getQuestion(_id,  ActionTypes.EDIT_QUESTION);
   }, []);
 
-
   const updateQuestion = useCallback((question: IQuestion) => {
-    dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
+    dispatch({ type: ActionTypes.SET_LOADING })
     const url = `${hostPort}/questions/update-question/${question._id}`
     console.log(`UPDATING --->>> ${url}`)
     axios
@@ -248,7 +239,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log("Question successfully updated");
           dispatch({ type: ActionTypes.REFRESH_QUESTION, payload: { question } });
-          dispatch({ type: ActionTypes.CLOSE_FORM, payload: {} })
+          dispatch({ type: ActionTypes.CLOSE_FORM })
         }
         else {
           console.log('Status is not 200', status)

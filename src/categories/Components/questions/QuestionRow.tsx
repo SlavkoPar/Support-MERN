@@ -78,48 +78,15 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
                                     //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
                                     onClick={() => edit(_id!)}
                                 >
-                                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
+                                    <FontAwesomeIcon icon={faEdit} size='lg' />
                                 </Button>
                             }
 
                             {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{ border: '1px solid orange' }}
+                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
                                     onClick={del}
                                 >
-                                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
-                                </Button>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubQuestion" >
-                                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
-                                        onClick={() => {
-                                            dispatch({
-                                                type: ActionTypes.ADD,
-                                                payload: {
-                                                    parentCategory: category._id,
-                                                    level: category.level
-                                                }
-                                            })
-                                            if (!isExpanded)
-                                                setIsExpanded(true)
-                                        }}
-                                    />
-                                </Button>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
-                                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
-                                        onClick={() => {
-                                            dispatch({
-                                                type: ActionTypes.ADD_QUESTION,
-                                                payload: { category }
-                                            })
-                                            if (!isExpanded)
-                                                setIsExpanded(true)
-                                        }}
-                                    />
+                                    <FontAwesomeIcon icon={faRemove} size='lg' />
                                 </Button>
                             }
 

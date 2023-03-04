@@ -128,17 +128,15 @@ export enum ActionTypes {
 	EDIT_QUESTION = 'EDIT_QUESTION',
 
 	REFRESH_QUESTION = 'REFRESH_QUESTION',
-	CLOSE_QUESTION_FORM = 'CLOSE_QUESTION_FORM',
-	CANCEL_QUESTION_FORM = 'CANCEL_QUESTION_FORM'
+	DELETE_QUESTION = 'DELETE_QUESTION'
 }
 
 
 export type CategoriesPayload = {
+	[ActionTypes.SET_LOADING]: undefined;
+
 	[ActionTypes.SET_CATEGORIES]: {
 		categories: ICategory[];
-	};
-
-	[ActionTypes.SET_LOADING]: {
 	};
 
 	[ActionTypes.ADD]: IParentInfo;
@@ -163,17 +161,11 @@ export type CategoriesPayload = {
 		category: ICategory;
 	};
 
-	[ActionTypes.CLOSE_FORM]: {
-	};
+	[ActionTypes.CLOSE_FORM]: undefined;
 
-	[ActionTypes.CANCEL_FORM]: {
-	};
+	[ActionTypes.CANCEL_FORM]: undefined;
 
 	[ActionTypes.REFRESH_ADDED_CATEGORY]: {
-		category: ICategory;
-	};
-
-	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
 		category: ICategory;
 	};
 
@@ -204,7 +196,7 @@ export type CategoriesPayload = {
 		question: IQuestion;
 	};
 
-	[ActionTypes.DELETE]: {
+	[ActionTypes.DELETE_QUESTION]: {
 		_id: Types.ObjectId;
 	};
 

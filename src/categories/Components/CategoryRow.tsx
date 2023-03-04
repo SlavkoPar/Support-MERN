@@ -65,6 +65,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
             <Button
                 variant='link'
                 size="sm"
+                style={{ color: "orange" }}
                 className="py-0 mx-1 text-decoration-none"
                 title={_id!.toString()}
                 onClick={() => onSelectCategory(_id!)}
@@ -91,10 +92,10 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
 
             {
                 canEdit && hoverProps.isHovered &&
-                <Button variant='link' size="sm" className="ms-1 py-0 mx-1" style={{ border: '1px solid orange' }}
+                <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
                     onClick={del}
                 >
-                    <FontAwesomeIcon icon={faRemove} color='orange' size='sm' />
+                    <FontAwesomeIcon icon={faRemove} color='orange' size='lg' />
                 </Button>
             }
 

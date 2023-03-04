@@ -217,6 +217,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
     }
 
+    case ActionTypes.REFRESH_QUESTION:
     case ActionTypes.EDIT_QUESTION: {
       const { question } = action.payload;
       return {
@@ -244,25 +245,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       };
     }
 
-    /*
-    case ActionTypes.REFRESH_QUESTION: {
-      const { question } = action.payload;
-      return {
-        ...state,
-        //mode: FORM_MODES.EDIT_QUESTION,
-        categories: state.categories.map(c => c._id === question.parentCategory
-          ? { 
-            ...c, 
-            questions: c.questions.map(q => q._id === question._id ? question : q,
-              in??????
-          }
-          : c
-        ),
-        loading: false
-      };
-    }
-    */
-
+     
     default:
       return state;  // TODO throw error
   }
