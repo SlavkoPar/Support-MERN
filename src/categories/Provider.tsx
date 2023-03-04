@@ -1,11 +1,10 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 import { hostPort } from '../global/GlobalProvider'
-import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext, IParentInfo, CategoriesActions, CategoriesPayload, FormMode } from './types';
+import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext, IParentInfo } from './types';
 import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 import { IQuestion } from './types';
-import { ActionMap } from '../global/types';
 
 const initialState: ICategoriesState = {
   mode: FORM_MODES.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
@@ -65,8 +64,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   }, []);
 
-  // it is the sam3 as editCategory but with readonly CategoyForm
-  const viewCategory = useCallback((_id: Types.ObjectId) => {
+
+  const getCategory = (_id: Types.ObjectId, type: ActionTypes.VIEW_CATEGORY | ActionTypes.EDIT) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     // dispatch({ type: ActionTypes.SET_LOADING })
@@ -74,30 +73,21 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .get(url)
       .then(({ data: category }) => {
         console.log(category)
-        dispatch({ type: ActionTypes.VIEW_CATEGORY, payload: { category } });
+        dispatch({ type, payload: { category } });
       })
       .catch((error) => {
         console.log(error);
         dispatch({ type: ActionTypes.SET_ERROR, payload: error });
       });
+  };
+
+  const viewCategory = useCallback((_id: Types.ObjectId) => {
+    getCategory(_id, ActionTypes.VIEW_CATEGORY)
   }, []);
 
   const editCategory = useCallback((_id: Types.ObjectId) => {
-    const url = `${hostPort}/categories/get-category/${_id}`
-    console.log(`FETCHING --->>> ${url}`)
-    dispatch({ type: ActionTypes.SET_LOADING })
-    axios
-      .get(url)
-      .then(({ data: category }) => {
-        console.log(category)
-        dispatch({ type: ActionTypes.EDIT, payload: { category } });
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({ type: ActionTypes.SET_ERROR, payload: error });
-      });
+    getCategory(_id, ActionTypes.EDIT)
   }, []);
-
 
   const updateCategory = useCallback((category: ICategory) => {
     dispatch({ type: ActionTypes.SET_LOADING })
@@ -204,7 +194,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   }, []);
 
   
-  const getQuestion = (_id: Types.ObjectId, actionType: ActionTypes.VIEW_QUESTION | ActionTypes.EDIT_QUESTION) => {  // keyof ActionMap<CategoriesPayload>
+  const getQuestion = (_id: Types.ObjectId, type: ActionTypes.VIEW_QUESTION | ActionTypes.EDIT_QUESTION) => {
     const url = `${hostPort}/questions/get-question/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     // dispatch({ type: ActionTypes.SET_LOADING })
@@ -213,7 +203,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ data }) => {
         const question: IQuestion = data;
         console.log(question)
-        dispatch({ type: actionType, payload: { question } });
+        dispatch({ type, payload: { question } });
       })
       .catch((error) => { 
         console.log(error);
