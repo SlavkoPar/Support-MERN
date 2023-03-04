@@ -112,8 +112,7 @@ export enum ActionTypes {
 	CLEAN_SUB_TREE = 'CLEAN_SUB_TREE',
 	SET_ERROR = 'SET_ERROR',
 	ADD = 'ADD',
-	REFRESH_ADDED_CATEGORY = 'REFRESH_ADDED_CATEGORY',
-	REFRESH_UPDATED_CATEGORY = 'REFRESH_UPDATED_CATEGORY',
+	SET_CATEGORY = 'SET_CATEGORY',
 	VIEW_CATEGORY = 'VIEW_CATEGORY',
 	EDIT = 'EDIT',
 	DELETE = 'DELETE',
@@ -127,7 +126,7 @@ export enum ActionTypes {
 	VIEW_QUESTION = 'VIEW_QUESTION',
 	EDIT_QUESTION = 'EDIT_QUESTION',
 
-	REFRESH_QUESTION = 'REFRESH_QUESTION',
+	SET_QUESTION = 'SET_QUESTION',
 	DELETE_QUESTION = 'DELETE_QUESTION'
 }
 
@@ -149,7 +148,7 @@ export type CategoriesPayload = {
 		category: ICategory;
 	};
 
-	[ActionTypes.REFRESH_UPDATED_CATEGORY]: {
+	[ActionTypes.SET_CATEGORY]: {
 		category: ICategory;
 	};
 
@@ -164,10 +163,6 @@ export type CategoriesPayload = {
 	[ActionTypes.CLOSE_FORM]: undefined;
 
 	[ActionTypes.CANCEL_FORM]: undefined;
-
-	[ActionTypes.REFRESH_ADDED_CATEGORY]: {
-		category: ICategory;
-	};
 
 	[ActionTypes.SET_ERROR]: {
 		error: AxiosError;
@@ -192,7 +187,7 @@ export type CategoriesPayload = {
 		question: IQuestion;
 	};
 
-	[ActionTypes.REFRESH_QUESTION]: {
+	[ActionTypes.SET_QUESTION]: {
 		question: IQuestion;
 	};
 

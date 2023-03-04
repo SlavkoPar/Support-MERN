@@ -85,22 +85,13 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       };
     }
 
-    case ActionTypes.REFRESH_ADDED_CATEGORY: {
-      console.log('REFRESH_ADDED_CATEGORY', state.categories)
-      const { category } = action.payload;
-      return {
-        ...state,
-        categories: state.categories.map(c => c.inAdding ? category : c),
-        loading: false
-      }
-    }
 
-    case ActionTypes.REFRESH_UPDATED_CATEGORY: {
+    case ActionTypes.SET_CATEGORY: {
       const { category } = action.payload;
       return {
         ...state,
         mode: FORM_MODES.NULL,
-        categories: state.categories.map(c => c.inEditing ? category : c), // doesn't contain isEditing 
+        categories: state.categories.map(c => c.inEditing || c.inAdding ? category : c), // doesn't contain isEditing 
         loading: false
       }
     }
@@ -217,7 +208,28 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
     }
 
-    case ActionTypes.REFRESH_QUESTION:
+    case ActionTypes.SET_QUESTION:
+      const { question } = action.payload;
+      return {
+        ...state,
+        categories: state.categories.map(c => c._id === question.parentCategory
+          ? {
+            ...c,
+            questions: c.questions.map(q => q._id === question._id ? {
+              ...question
+            }
+              : {
+                ...q,
+              }),
+          }
+          : {
+            ...c,
+          }
+        ),
+        mode: FORM_MODES.NULL,
+        loading: false
+      };
+
     case ActionTypes.EDIT_QUESTION: {
       const { question } = action.payload;
       return {
@@ -245,7 +257,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       };
     }
 
-     
+
     default:
       return state;  // TODO throw error
   }

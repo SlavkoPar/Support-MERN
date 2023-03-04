@@ -45,7 +45,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Category successfully created')
-          dispatch({ type: ActionTypes.REFRESH_ADDED_CATEGORY, payload: { category: data } });
+          dispatch({ type: ActionTypes.SET_CATEGORY, payload: { category: data } });
           dispatch({ type: ActionTypes.CLOSE_FORM })
         }
         else {
@@ -98,7 +98,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data: category }) => {
         if (status === 200) {
           console.log("Category successfully updated");
-          dispatch({ type: ActionTypes.REFRESH_UPDATED_CATEGORY, payload: { category } });
+          dispatch({ type: ActionTypes.SET_CATEGORY, payload: { category } });
           dispatch({ type: ActionTypes.CLOSE_FORM })
         }
         else {
@@ -173,9 +173,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Question successfully created')
-          dispatch({ type: ActionTypes.REFRESH_QUESTION, payload: { question: data } }); // ActionTypes.REFRESH_ADDED_QUESTION
+          dispatch({ type: ActionTypes.SET_QUESTION, payload: { question: data } }); // TODO check setting inViewing, inEditing, inAdding to false
           // TODO setting inAdding: false will close the form
-          //dispatch({ type: ActionTypes.CLOSE_QUESTION_ADDING_FORM })
         }
         else {
           console.log('Status is not 200', status)
@@ -228,7 +227,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data: question }) => {
         if (status === 200) {
           console.log("Question successfully updated");
-          dispatch({ type: ActionTypes.REFRESH_QUESTION, payload: { question } });
+          dispatch({ type: ActionTypes.SET_QUESTION, payload: { question } });
           dispatch({ type: ActionTypes.CLOSE_FORM })
         }
         else {
