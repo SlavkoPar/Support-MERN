@@ -100,8 +100,6 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
                     <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
                         onClick={() => {
-                            if (!isExpanded)
-                                setIsExpanded(true);
                             dispatch({
                                 type: ActionTypes.ADD_CATEGORY,
                                 payload: {
@@ -109,6 +107,8 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                     level: category.level
                                 }
                             })
+                            if (!isExpanded)
+                                setIsExpanded(true);
                         }}
                     />
                 </Button>
@@ -132,26 +132,19 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
 
     return (
         <>
-            {inAdding ? (
-                // state.mode === FormModes.AddingCategory 
-                //     ? <AddCategory category={category} inLine={true} />
-                //     : state.mode === FormModes.AddingQuestion
-                //         ? <AddQuestion />
-                //         : null
-                null
-            )
-                : (
-                    <ListGroup.Item
-                        variant={variant}
-                        className="py-1 px-1"
-                        as="li"
-                    >
-                        <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
-                            {Row1}
-                        </div>
-                    </ListGroup.Item>
-                )
-            }
+
+            <ListGroup.Item
+                variant={variant}
+                className="py-1 px-1"
+                as="li"
+            >
+                <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
+                    {inAdding
+                        ? <AddCategory category={category} inLine={true} />
+                        : Row1
+                    }
+                </div>
+            </ListGroup.Item>
 
             {!inAdding && (isExpanded || inViewing || inEditing) && // row2
                 <ListGroup.Item
@@ -171,7 +164,9 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                                 </div>
                             }
 
-                            <QuestionList level={level + 1} parentCategory={_id!} />
+                            {state.mode !== FormModes.AddingCategory &&
+                                <QuestionList level={level + 1} parentCategory={_id!} />
+                            }
                         </>
                     }
 

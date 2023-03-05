@@ -16,13 +16,11 @@ export const initialQuestion: IQuestion = {
   status: 0
 }
 
-
-
 export const initialCategory: ICategory = {
   // temp _id for inAdding, to server as list key
   // it will be removed on submitForm
   // real _id will be given by the MongoDB 
-  _id: new Types.ObjectId('000000000000000000000000'),
+  _id: new Types.ObjectId("000000000000000000000000"),
   title: '',
   level: 0,
   parentCategory: null,
@@ -40,11 +38,11 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
 
     case ActionTypes.SET_CATEGORIES: {
-      console.log(state.categories)
-      console.log(action.payload.categories)
+      const { categories } = action.payload;
+      console.log(state.categories, 'Payload categories: ', categories, state.categories.concat(categories) )
       return {
         ...state,
-        categories: state.categories.concat(action.payload.categories),
+        categories: state.categories.concat(categories),
         loading: false
       };
     }
@@ -69,14 +67,14 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       const { parentCategory, level } = action.payload;
       const category: ICategory = {
         ...initialCategory,
-        title: '',
+        title: 'New Category',
         level: level + 1,
         parentCategory,
         inAdding: true
       }
       return {
         ...state,
-        categories: [...state.categories, category],
+        categories: [category, ...state.categories],
         mode: FormModes.AddingCategory
       };
     }

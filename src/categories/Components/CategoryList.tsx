@@ -15,7 +15,7 @@ const CategoryList = ({ parentCategory, level }: IParentInfo) => {
     // console.log('level, parentCategory:', level, parentCategory)
     const cats = state.categories.filter(c => c.parentCategory === parentCategory);
     // console.log('length:', cats.length)
-    // cats.forEach(c => console.log(c.parentCategory, c.title));
+    cats.forEach(c => console.log(c._id, c.parentCategory, c.title));
 
     return (
         <div className={level>1?'ms-4':''}>

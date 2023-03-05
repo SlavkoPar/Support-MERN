@@ -26,7 +26,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const getSubCategories = useCallback(({ parentCategory, level }: IParentInfo) => {
     const urlCategories = `${hostPort}/categories/${parentCategory}`
     console.log('FETCHING --->>> getCategories', level, parentCategory)
-    dispatch({ type: ActionTypes.SET_LOADING })
+    //dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .get(urlCategories)
       .then(({ data }) => {
