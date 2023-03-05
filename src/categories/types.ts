@@ -93,6 +93,7 @@ export interface ICategoriesContext {
 }
 
 export interface ICategoryFormProps {
+	inLine: boolean;
 	initialValues: ICategory;
 	//isEdit: boolean;
 	mode: FormMode;

@@ -10,7 +10,7 @@ import { IQuestion } from "../types";
 //import ProductForm from "../../questions/Components/ProductForm";
 import CategoryForm from "./CategoryForm";
 
-const CategoryView = () => {
+const ViewCategory = ({ inLine }: {inLine: boolean}) => {
     const globalState = useGlobalState();
     const { state, updateCategory } = useCategoryContext();
     const category = state.categories.find(c=>c.inViewing);
@@ -24,6 +24,7 @@ const CategoryView = () => {
 
     return (
         <CategoryForm
+            inLine={inLine}
             initialValues={formValues}
             mode={FormMode.viewing}
             submitForm={() => {}}
@@ -33,4 +34,4 @@ const CategoryView = () => {
     );
 }
 
-export default CategoryView;
+export default ViewCategory;

@@ -14,8 +14,7 @@ import { ICategory } from '../types'
 import CategoryList from "./CategoryList";
 import AddCategory from "./AddCategory";
 import EditCategory from "./EditCategory";
-import CategoryView from "./CategoryView";
-import AddQuestion from "./questions/AddQuestion";
+import ViewCategory from "./ViewCategory";
 import QuestionList from "./questions/QuestionList";
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
@@ -132,16 +131,25 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
 
     return (
         <>
-
             <ListGroup.Item
                 variant={variant}
                 className="py-1 px-1"
                 as="li"
             >
                 <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
-                    {inAdding
-                        ? <AddCategory category={category} inLine={true} />
-                        : Row1
+                    {inAdding ? (
+                        <AddCategory category={category} inLine={true} />
+                    )
+                        : (inEditing || inViewing) ? (
+                            // <div class="d-lg-none">hide on lg and wider screens</div>
+                            <div className="ms-0 d-md-none">
+                                {inEditing && <EditCategory inLine={true} />}
+                                {inViewing && <ViewCategory inLine={true} />}
+                            </div>
+                        )
+                            : (
+                                Row1
+                            )
                     }
                 </div>
             </ListGroup.Item>
@@ -156,13 +164,14 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                         <>
                             <CategoryList level={level + 1} parentCategory={_id!} />
 
+                            {/* 
                             {(inEditing || inViewing) &&
                                 // <div class="d-lg-none">hide on lg and wider screens</div>
                                 <div className="ms-4 d-md-none border">
                                     {inEditing && state.mode === FormModes.EditingCategory && <EditCategory />}
                                     {inViewing && state.mode === FormModes.ViewingCategory && <CategoryView />}
                                 </div>
-                            }
+                            } */}
 
                             {state.mode !== FormModes.AddingCategory &&
                                 <QuestionList level={level + 1} parentCategory={_id!} />
@@ -170,13 +179,13 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                         </>
                     }
 
-                    {!isExpanded && (inEditing || inViewing) &&
+                    {/* {!isExpanded && (inEditing || inViewing) &&
                         // <div class="d-lg-none">hide on lg and wider screens</div>
                         <div className="ms-4 d-md-none border">
                             {inEditing && state.mode === FormModes.EditingCategory && <EditCategory />}
                             {inViewing && state.mode === FormModes.ViewingCategory && <CategoryView />}
                         </div>
-                    }
+                    } */}
                 </ListGroup.Item>
             }
         </>

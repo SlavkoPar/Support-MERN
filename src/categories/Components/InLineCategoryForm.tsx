@@ -13,7 +13,7 @@ import { ActionTypes, FormMode, ICategoryFormProps } from "../types";
 
 import { useCategoryDispatch } from "../Provider";
 
-const InLineCategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFormProps) => {
+const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children }: ICategoryFormProps) => {
 
   const viewing = mode === FormMode.viewing;
   const editing = mode === FormMode.editing;

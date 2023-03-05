@@ -7,7 +7,7 @@ import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
 
 import List from "./Components/CategoryList";
 // import Add from "./Components/Add";
-import CategoryView from "./Components/CategoryView";
+import ViewCategory from "./Components/ViewCategory";
 import EditCategory from "./Components/EditCategory";
 import { initialCategory } from "./reducer";
 import ViewQuestion from "./Components/questions/ViewQuestion";
@@ -44,8 +44,8 @@ const Providered = () => {
                     {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                     {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                     <div className="d-none d-md-block">
-                        {state.mode === FormModes.ViewingCategory && <CategoryView />}
-                        {state.mode === FormModes.EditingCategory && <EditCategory />}
+                        {state.mode === FormModes.ViewingCategory && <ViewCategory inLine={false} />}
+                        {state.mode === FormModes.EditingCategory && <EditCategory inLine={false} />}
                         {/* {state.mode === FORM_MODES.ADD_QUESTION && <AddQuestion category={null} />} */}
                         {state.mode === FormModes.ViewingQuestion && <ViewQuestion />}
                         {state.mode === FormModes.EditingQuestion && <EditQuestion />}

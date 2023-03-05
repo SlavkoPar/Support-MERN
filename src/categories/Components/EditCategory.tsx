@@ -6,7 +6,7 @@ import { useGlobalState } from '../../global/GlobalProvider'
 import CategoryForm from "./CategoryForm";
 import { FormMode, ICategory } from "../types";
 
-const EditCategory = () => {
+const EditCategory = ({ inLine }: {inLine: boolean}) => {
     const globalState = useGlobalState();
     const { state, updateCategory } = useCategoryContext();
     const category = state.categories.find(c=>c.inEditing);
@@ -33,6 +33,7 @@ const EditCategory = () => {
 
     return (
         <CategoryForm
+            inLine={inLine}
             initialValues={formValues}
             mode={FormMode.editing}
             submitForm={submitForm}

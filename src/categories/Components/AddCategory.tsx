@@ -30,6 +30,7 @@ const AddCategory = ({ category, inLine } : { category: ICategory, inLine: boole
         <>
             {inLine ?
                 <InLineCategoryForm
+                    inLine={true}
                     initialValues={formValues}
                     //isEdit={false}
                     mode={FormMode.adding}
@@ -39,6 +40,7 @@ const AddCategory = ({ category, inLine } : { category: ICategory, inLine: boole
                 </InLineCategoryForm>
                 :
                 <CategoryForm
+                    inLine={false}
                     initialValues={formValues}
                     //isEdit={false}
                     mode={FormMode.adding}
