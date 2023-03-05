@@ -9,18 +9,18 @@ import { initialQuestion } from "../../reducer";
 import { ICategory } from "../../types";
 
 // const Add = ({ category, question, inLine } : { category: ICategory, question: IQuestion, inLine: boolean}) => {
-const Add = ({ category, inLine }: { category: ICategory, inLine: boolean }) => {
+const AddQuestion = () => { //{ category }: { category: ICategory }) => {
     const globalState = useGlobalState();
+
+    const { state, createQuestion } = useCategoryContext();
+    const category = state.categories.find(c=>c.inAdding);
 
     const question: IQuestion = {
         ...initialQuestion,
-        parentCategory: category._id!
-
-
+        parentCategory: category!._id!
     }
     const [formValues] = useState(question)
 
-    const { state, createQuestion } = useCategoryContext();
 
     const submitForm = (questionObject: IQuestion) => {
         delete questionObject.inAdding;
@@ -51,4 +51,4 @@ const Add = ({ category, inLine }: { category: ICategory, inLine: boolean }) => 
     )
 }
 
-export default Add
+export default AddQuestion

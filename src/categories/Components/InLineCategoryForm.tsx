@@ -50,18 +50,13 @@ const InLineCategoryForm = ({ mode, initialValues, submitForm, children }: ICate
   });
 
   const formRef = useRef<HTMLFormElement>(null);
-  const titleRef = useRef<HTMLTextAreaElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     titleRef.current!.focus()
   }, [titleRef])
 
-
-
   return (
-    // <CloseButton onClick={closeForm} />
-
-
     <ListGroup.Item
       variant={variant}
       className="py-1 px-1"
@@ -81,7 +76,7 @@ const InLineCategoryForm = ({ mode, initialValues, submitForm, children }: ICate
           <Form.Group controlId="title">
             {/* <Form.Label>Title</Form.Label> */}
             <Form.Control
-              as="textarea"
+              as="input"
               name="title"
               ref={titleRef}
               onChange={formik.handleChange}
@@ -93,7 +88,6 @@ const InLineCategoryForm = ({ mode, initialValues, submitForm, children }: ICate
 
               value={formik.values.title}
               style={{ width: '100%' }}
-              rows={2}
               placeholder={'New Category'}
             />
             <Form.Text className="text-danger">

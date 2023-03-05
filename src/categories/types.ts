@@ -3,18 +3,19 @@ import { Types } from 'mongoose';
 import { ActionMap, IDateAndBy } from '../global/types';
 import { AxiosError } from 'axios';
 
-export const FORM_MODES = {
+export const FormModes = {
 	UNDEFINED: undefined,
 	NULL: null,
-	ADD: 'ADD',
-	VIEW_CATEGORY: 'VIEW_CATEGORY',
-	EDIT_CATEGORY: 'EDIT_CATEGORY',
-	DELETE: 'DELETE',
+	AddingCategory: 'AddingCategory',
+	ViewingCategory: 'ViewingCategory',
+	EditingCategory: 'EditingCategory',
+	DeletingCategory: 'DeletingCategory',
+	//////////////////////////////////////
 	// questions
-	ADD_QUESTION: 'ADD_QUESTION',
-	VIEW_QUESTION: 'VIEW_QUESTION',
-	EDIT_QUESTION: 'EDIT_QUESTION',
-	DELETE_QUESTION: 'DELETE_QUESTION',
+	AddingQuestion: 'AddingQuestion',
+	ViewingQuestion: 'ViewingQuestion',
+	EditingQuestion: 'EditingQuestion',
+	DeletingQuestion: 'DeletingQuestion',
 }
 
 export enum FormMode {
@@ -111,7 +112,7 @@ export enum ActionTypes {
 	SET_CATEGORIES = 'SET_CATEGORIES',
 	CLEAN_SUB_TREE = 'CLEAN_SUB_TREE',
 	SET_ERROR = 'SET_ERROR',
-	ADD = 'ADD',
+	ADD_CATEGORY = 'ADD_CATEGORY',
 	SET_CATEGORY = 'SET_CATEGORY',
 	VIEW_CATEGORY = 'VIEW_CATEGORY',
 	EDIT_CATEGORY = 'EDIT_CATEGORY',
@@ -121,7 +122,6 @@ export enum ActionTypes {
 	CANCEL_FORM = 'CANCEL_FORM',
 
 	// questions
-	SET_CATEGORY_QUESTIONS = 'SET_CATEGORY_QUESTIONS',
 	ADD_QUESTION = 'ADD_QUESTION',
 	VIEW_QUESTION = 'VIEW_QUESTION',
 	EDIT_QUESTION = 'EDIT_QUESTION',
@@ -138,7 +138,7 @@ export type CategoriesPayload = {
 		categories: ICategory[];
 	};
 
-	[ActionTypes.ADD]: IParentInfo;
+	[ActionTypes.ADD_CATEGORY]: IParentInfo;
 
 	[ActionTypes.VIEW_CATEGORY]: {
 		category: ICategory;
@@ -170,10 +170,6 @@ export type CategoriesPayload = {
 
 	/////////////
 	// questions
-	[ActionTypes.SET_CATEGORY_QUESTIONS]: {
-		parentCategory: Types.ObjectId | null,
-		questions: IQuestion[];
-	};
 
 	[ActionTypes.ADD_QUESTION]: {
 		category: ICategory;

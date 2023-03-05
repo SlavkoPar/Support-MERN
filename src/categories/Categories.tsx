@@ -2,16 +2,17 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
 import { useGlobalState } from '../global/GlobalProvider'
-import { FORM_MODES, ActionTypes } from "./types";
+import { FormModes, ActionTypes } from "./types";
 import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
 
 import List from "./Components/CategoryList";
 // import Add from "./Components/Add";
 import CategoryView from "./Components/CategoryView";
-import Edit from "./Components/Edit";
+import EditCategory from "./Components/EditCategory";
 import { initialCategory } from "./reducer";
-import QuestionView from "./Components/questions/QuestionView";
+import ViewQuestion from "./Components/questions/ViewQuestion";
 import EditQuestion from "./Components/questions/EditQuestion";
+import AddQuestion from "./Components/questions/AddQuestion";
 
 const Providered = () => {
 
@@ -23,7 +24,7 @@ const Providered = () => {
         <Container>
             <Button variant="secondary" size="sm" type="button"
                 onClick={() => dispatch({
-                    type: ActionTypes.ADD,
+                    type: ActionTypes.ADD_CATEGORY,
                     payload: {
                         parentCategory: null,
                         level: 0
@@ -43,10 +44,11 @@ const Providered = () => {
                     {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                     {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                     <div className="d-none d-md-block">
-                        {state.mode === FORM_MODES.VIEW_CATEGORY && <CategoryView />}
-                        {state.mode === FORM_MODES.EDIT_CATEGORY && <Edit />}
-                        {state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />}
-                        {state.mode === FORM_MODES.EDIT_QUESTION && <EditQuestion />}
+                        {state.mode === FormModes.ViewingCategory && <CategoryView />}
+                        {state.mode === FormModes.EditingCategory && <EditCategory />}
+                        {/* {state.mode === FORM_MODES.ADD_QUESTION && <AddQuestion category={null} />} */}
+                        {state.mode === FormModes.ViewingQuestion && <ViewQuestion />}
+                        {state.mode === FormModes.EditingQuestion && <EditQuestion />}
                     </div>
 
                 </Col>

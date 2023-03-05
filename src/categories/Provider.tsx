@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 import { hostPort } from '../global/GlobalProvider'
-import { ActionTypes, FORM_MODES, ICategory, ICategoriesState, ICategoriesContext, IParentInfo } from './types';
+import { ActionTypes, FormModes, ICategory, ICategoriesState, ICategoriesContext, IParentInfo } from './types';
 import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 import { IQuestion } from './types';
 
 const initialState: ICategoriesState = {
-  mode: FORM_MODES.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
+  mode: FormModes.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
   loading: false,
   categories: []
 }
@@ -134,21 +134,6 @@ export const Provider: React.FC<Props> = ({ children }) => {
   /////////////
   // Questions
   //
-  /*const getQuestions = useCallback(({ parentCategory, level }: IParentInfo) => {
-    const urlQuestions = `${hostPort}/questions/${parentCategory}`
-    console.log('FETCHING --->>> getQuestions', level, parentCategory)
-    dispatch({ type: ActionTypes.SET_LOADING })
-    axios
-      .get(urlQuestions)
-      .then(({ data }) => {
-        dispatch({ type: ActionTypes.SET_CATEGORY_QUESTIONS, payload: { parentCategory, questions: data.fromQuestions } });
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch({ type: ActionTypes.SET_ERROR, payload: error });
-      });
-  }, []);
-  */
 
   const getCategoryQuestions = useCallback(({parentCategory:_id, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
       getCategory(_id!, ActionTypes.SET_CATEGORY)  // ne zovemo vise VIEW_CATEGORY, a SET_CATEGORY Ide preko _id

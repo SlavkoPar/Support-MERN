@@ -6,7 +6,7 @@ import { useGlobalState } from '../../global/GlobalProvider'
 import CategoryForm from "./CategoryForm";
 import { FormMode, ICategory } from "../types";
 
-const Edit = () => {
+const EditCategory = () => {
     const globalState = useGlobalState();
     const { state, updateCategory } = useCategoryContext();
     const category = state.categories.find(c=>c.inEditing);
@@ -42,4 +42,4 @@ const Edit = () => {
     );
 };
 
-export default Edit;
+export default EditCategory;

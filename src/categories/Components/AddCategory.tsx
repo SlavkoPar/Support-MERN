@@ -6,12 +6,10 @@ import CategoryForm from "./CategoryForm";
 import InLineCategoryForm from "./InLineCategoryForm";
 import { FormMode, ICategory } from "../types";
 
-const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
+const AddCategory = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
     const globalState = useGlobalState();
-
-    const [formValues] = useState(category)
-
     const { state, createCategory } = useCategoryContext();
+    const [formValues] = useState(category)
 
     const submitForm = (categoryObject: ICategory) => {
         delete categoryObject.inAdding;
@@ -53,4 +51,4 @@ const Add = ({ category, inLine } : { category: ICategory, inLine: boolean}) => 
     )
 }
 
-export default Add
+export default AddCategory

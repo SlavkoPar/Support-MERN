@@ -6,24 +6,26 @@ import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus, faQ
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalState } from '../../../global/GlobalProvider'
-import { ActionTypes, FORM_MODES, ICategory } from "../../types";
+import { ActionTypes, FormModes, ICategory } from "../../types";
 import { useCategoryContext, useCategoryDispatch } from '../../Provider'
 //import QuestionQuestionsView from "./QuestionQuestionsView";
 import { useHover } from '../../../common/components/useHover';
 
 import { IQuestion } from '../../types'
-import QuestionView from "./QuestionView";
+import ViewQuestion from "./ViewQuestion";
 import EditQuestion from "./EditQuestion";
+import AddQuestion from "./AddQuestion";
 
 const QuestionRow = ({ category, question }: { category: ICategory, question: IQuestion }) => {
     const { _id, title, level, inViewing, inEditing, inAdding } = question;
+
+    console.log('---> Q:', title, inViewing, inEditing, inAdding)
+
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
     const { state, viewQuestion, editQuestion, deleteQuestion } = useCategoryContext();
     const dispatch = useCategoryDispatch();
-
-    const [isExpanded, setIsExpanded] = useState(false);
 
     const del = () => {
         deleteQuestion(_id!);
@@ -44,60 +46,57 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
     return (
         <>
             {inAdding ? (
-                // state.mode === FORM_MODES.ADD_QUESTION
-                //     ? <AddQuestion category={category} inLine={false} />
-                //     : <Add category={category} inLine={true} />
-                <div />
+                state.mode === FormModes.AddingQuestion && <AddQuestion />
             )
-                : (
-                    <ListGroup.Item
-                        variant={variant}
-                        className="py-1 px-1"
-                        as="li"
-                        style={{ backgroundColor: 'lightcyan' }}
-                    >
-                        <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
-                            <Button
-                                variant='link'
-                                size="sm"
-                                className="py-0 px-1"
-                                title="Expand"
+            : (
+                <ListGroup.Item
+                    variant={variant}
+                    className="py-1 px-1"
+                    as="li"
+                    style={{ backgroundColor: 'lightcyan' }}
+                >
+                    <div ref={hoverRef} className="d-flex justify-content-start align-items-center">
+                        <Button
+                            variant='link'
+                            size="sm"
+                            className="py-0 px-1"
+                            title="Expand"
+                        >
+                            <FontAwesomeIcon icon={faQuestion} color='teal' size='sm' />
+                        </Button>
+                        <Button
+                            variant='link'
+                            size="sm"
+                            className="py-0 mx-1 text-decoration-none"
+                            title={_id!.toString()}
+                            onClick={() => onSelectQuestion(_id!)}
+                        >
+                            {title}
+                        </Button>
+
+                        {canEdit && hoverProps.isHovered &&
+                            <Button variant='link' size="sm" className="ms-1 py-0 px-1"
+                                //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
+                                onClick={() => edit(_id!)}
                             >
-                                <FontAwesomeIcon icon={faQuestion} color='teal' size='sm' />
+                                <FontAwesomeIcon icon={faEdit} size='lg' />
                             </Button>
-                            <Button
-                                variant='link'
-                                size="sm"
-                                className="py-0 mx-1 text-decoration-none"
-                                title={_id!.toString()}
-                                onClick={() => onSelectQuestion(_id!)}
+                        }
+
+                        {canEdit && hoverProps.isHovered &&
+                            <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
+                                onClick={del}
                             >
-                                {title}
+                                <FontAwesomeIcon icon={faRemove} size='lg' />
                             </Button>
+                        }
 
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
-                                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                    onClick={() => edit(_id!)}
-                                >
-                                    <FontAwesomeIcon icon={faEdit} size='lg' />
-                                </Button>
-                            }
-
-                            {canEdit && hoverProps.isHovered &&
-                                <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
-                                    onClick={del}
-                                >
-                                    <FontAwesomeIcon icon={faRemove} size='lg' />
-                                </Button>
-                            }
-
-                        </div>
-                    </ListGroup.Item>
-                )
+                    </div>
+                </ListGroup.Item>
+            )
             }
 
-            {!inAdding && (isExpanded || inEditing) && // row2
+            {!inAdding && (inViewing || inEditing) && // row2
                 <ListGroup.Item
                     className="py-0 px-0"
                     variant={variant}
@@ -105,9 +104,9 @@ const QuestionRow = ({ category, question }: { category: ICategory, question: IQ
                 >
                     {(inEditing || inViewing) &&
                         // <div class="d-lg-none">hide on lg and wider screens</div>
-                        <div className="mx-3 d-md-none border">
-                            {inViewing && state.mode === FORM_MODES.EDIT_QUESTION && <EditQuestion />}
-                            {inViewing && state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />}
+                        <div className="mx-0 d-md-none border">
+                            {inViewing && state.mode === FormModes.ViewingQuestion && <ViewQuestion />}
+                            {inEditing && state.mode === FormModes.EditingQuestion && <EditQuestion />}
                         </div>
                     }
                 </ListGroup.Item>

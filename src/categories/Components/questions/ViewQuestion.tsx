@@ -10,11 +10,11 @@ import { FormMode, ICategory, IQuestion } from "../../types";
 import { initialQuestion } from "../../reducer";
 import QuestionForm from "./QuestionForm";
 
-const QuestionView = () => {
+const ViewQuestion = () => {
     const globalState = useGlobalState();
     const { state, updateCategory } = useCategoryContext();
     const category = state.categories.find(c=>c.inViewing);
-    const question = category!.questions.find(q => q.inViewing )
+    const question = category!.questions.find(q => q.inViewing)
 
     const [formValues, setFormValues] = useState<IQuestion>(question??initialQuestion);
 
@@ -34,4 +34,4 @@ const QuestionView = () => {
     );
 }
 
-export default QuestionView;
+export default ViewQuestion;

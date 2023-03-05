@@ -1,4 +1,4 @@
-import { FORM_MODES, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
+import { FormModes, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
 import { Types } from 'mongoose';
 import { IQuestion } from "./types";
 
@@ -65,23 +65,19 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return { ...state, error, loading: false };
     }
 
-    case ActionTypes.ADD: {
+    case ActionTypes.ADD_CATEGORY: {
       const { parentCategory, level } = action.payload;
-      const categories: ICategory[] = [
-        {
-          ...initialCategory,
-          title: '',
-          level: level + 1,
-          parentCategory,
-          inAdding: true
-        },
-        ...state.categories
-      ]
-      console.log('ADD', categories)
+      const category: ICategory = {
+        ...initialCategory,
+        title: '',
+        level: level + 1,
+        parentCategory,
+        inAdding: true
+      }
       return {
         ...state,
-        mode: FORM_MODES.ADD,
-        categories
+        categories: [...state.categories, category],
+        mode: FormModes.AddingCategory
       };
     }
 
@@ -89,7 +85,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       const { category } = action.payload;
       return {
         ...state,
-        mode: FORM_MODES.NULL,
+        mode: FormModes.NULL,
         //categories: state.categories.map(c => c.inEditing || c.inAdding ? category : c), 
         categories: state.categories.map(c => c._id === category._id ? category : c), // category doesn't contain inViewving, inEditing, inAdding 
         loading: false
@@ -104,7 +100,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
           ? { ...category, inViewing: true } // category.questions are inside of object
           : { ...c, inViewing: false }
         ),
-        mode: FORM_MODES.VIEW_CATEGORY,
+        mode: FormModes.ViewingCategory,
         loading: false
       };
     }
@@ -117,7 +113,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
           ? { ...category, inEditing: true }
           : c
         ),
-        mode: FORM_MODES.EDIT_CATEGORY,
+        mode: FormModes.EditingCategory,
         loading: false
       };
     }
@@ -126,7 +122,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       const { _id } = action.payload;
       return {
         ...state,
-        mode: FORM_MODES.NULL,
+        mode: FormModes.NULL,
         categories: state.categories.filter(c => c._id !== _id)
       };
     }
@@ -135,7 +131,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
     case ActionTypes.CLOSE_FORM: {
       return {
         ...state,
-        mode: FORM_MODES.NULL,
+        mode: FormModes.NULL,
         categories: state.categories.map(c => ({ ...c, inViewing: false, inEditing: false, inAdding: false, }))
       };
     }
@@ -155,19 +151,10 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         categories: state.categories.map(c => c._id === _id
           ? { ...c, questions: [...c.questions ?? [], question], inAdding: true }
           : c),
-        mode: FORM_MODES.ADD_QUESTION
+        mode: FormModes.AddingQuestion
       };
     }
 
-    case ActionTypes.SET_CATEGORY_QUESTIONS: {
-      const { parentCategory, questions } = action.payload;
-      return {
-        ...state,
-        categories: state.categories.map(c => c._id === parentCategory // TODO what if null
-          ? { ...c, questions }
-          : c)
-      };
-    }
 
     // case ActionTypes.REFRESH_ADDED_QUESTION: {
     //   console.log('REFRESH_ADDED_QUESTION', state.categories)
@@ -201,7 +188,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
             inViewing: false
           }
         ),
-        mode: FORM_MODES.VIEW_QUESTION,
+        mode: FormModes.ViewingQuestion,
         loading: false
       }
     }
@@ -224,7 +211,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
             ...c,
           }
         ),
-        mode: FORM_MODES.NULL,
+        mode: FormModes.NULL,
         loading: false
       };
 
@@ -250,7 +237,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
             inEditing: false
           }
         ),
-        mode: FORM_MODES.EDIT_QUESTION,
+        mode: FormModes.EditingQuestion,
         loading: false
       };
     }

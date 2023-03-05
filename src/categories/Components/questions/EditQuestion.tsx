@@ -10,9 +10,8 @@ import { initialQuestion } from "../../reducer";
 const EditQuestion = () => {
     const globalState = useGlobalState();
     const { state, updateQuestion } = useCategoryContext();
-    //const question = state.categories.find(c=>c.inEditing);
     const category = state.categories.find(c=>c.inEditing);
-    const question = category!.questions.find(q => q.inEditing )
+    const question = category!.questions.find(q => q.inEditing)
     
     const [formValues, setFormValues] = useState<IQuestion>(question??initialQuestion);
 

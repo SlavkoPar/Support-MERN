@@ -6,23 +6,22 @@ import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus, faQ
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalState } from '../../global/GlobalProvider'
-import { ActionTypes, FORM_MODES } from "../types";
+import { ActionTypes, FormModes } from "../types";
 import { useCategoryContext, useCategoryDispatch } from '../Provider'
 import { useHover } from '../../common/components/useHover';
 import { ICategory } from '../types'
 
 import CategoryList from "./CategoryList";
-import Add from "./Add";
-import Edit from "./Edit";
+import AddCategory from "./AddCategory";
+import EditCategory from "./EditCategory";
 import CategoryView from "./CategoryView";
 import AddQuestion from "./questions/AddQuestion";
 import QuestionList from "./questions/QuestionList";
-import QuestionView from "./questions/QuestionView";
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inViewing, inEditing, inAdding, questions } = category;
 
-    console.log (title, inViewing, inEditing, inAdding)
+    console.log('C:', title, inViewing, inEditing, inAdding)
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
     const { state, viewCategory, editCategory, deleteCategory } = useCategoryContext();
@@ -74,13 +73,13 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 {title}
             </Button>
 
-            { questions && questions.length > 0 &&
+            {questions && questions.length > 0 &&
                 <Badge bg="primary" pill>
                     {questions.length} <FontAwesomeIcon icon={faQuestion} size='sm' />
                 </Badge>
             }
 
-            { canEdit && hoverProps.isHovered &&
+            {canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-1 py-0 px-1"
                     //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
                     onClick={() => edit(_id!)}
@@ -89,7 +88,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 </Button>
             }
 
-            { canEdit && hoverProps.isHovered &&
+            {canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
                     onClick={del}
                 >
@@ -97,34 +96,34 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 </Button>
             }
 
-            { canEdit && hoverProps.isHovered &&
+            {canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
                     <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
                         onClick={() => {
+                            if (!isExpanded)
+                                setIsExpanded(true);
                             dispatch({
-                                type: ActionTypes.ADD,
+                                type: ActionTypes.ADD_CATEGORY,
                                 payload: {
                                     parentCategory: category._id,
                                     level: category.level
                                 }
                             })
-                            if (!isExpanded)
-                                setIsExpanded(true)
                         }}
                     />
                 </Button>
             }
 
-            { canEdit && hoverProps.isHovered &&
+            {canEdit && hoverProps.isHovered &&
                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
-                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
+                    <FontAwesomeIcon icon={faPlus} color='blue' size='lg'
                         onClick={() => {
                             dispatch({
                                 type: ActionTypes.ADD_QUESTION,
                                 payload: { category }
                             })
-                            if (!isExpanded)
-                                setIsExpanded(true)
+                            //if (!isExpanded)
+                            //    setIsExpanded(true)
                         }}
                     />
                 </Button>
@@ -134,9 +133,12 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     return (
         <>
             {inAdding ? (
-                state.mode === FORM_MODES.ADD_QUESTION
-                    ? <AddQuestion category={category} inLine={false} />
-                    : <Add category={category} inLine={true} />
+                // state.mode === FormModes.AddingCategory 
+                //     ? <AddCategory category={category} inLine={true} />
+                //     : state.mode === FormModes.AddingQuestion
+                //         ? <AddQuestion />
+                //         : null
+                null
             )
                 : (
                     <ListGroup.Item
@@ -160,16 +162,24 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                     {isExpanded &&
                         <>
                             <CategoryList level={level + 1} parentCategory={_id!} />
+
+                            {(inEditing || inViewing) &&
+                                // <div class="d-lg-none">hide on lg and wider screens</div>
+                                <div className="ms-4 d-md-none border">
+                                    {inEditing && state.mode === FormModes.EditingCategory && <EditCategory />}
+                                    {inViewing && state.mode === FormModes.ViewingCategory && <CategoryView />}
+                                </div>
+                            }
+
                             <QuestionList level={level + 1} parentCategory={_id!} />
                         </>
                     }
 
-                    {(inEditing || inViewing) &&
+                    {!isExpanded && (inEditing || inViewing) &&
                         // <div class="d-lg-none">hide on lg and wider screens</div>
                         <div className="ms-4 d-md-none border">
-                            {inEditing && state.mode === FORM_MODES.EDIT_CATEGORY && <Edit />}
-                            {inViewing && state.mode === FORM_MODES.VIEW_CATEGORY && <CategoryView />}
-                            {/* {inViewing && state.mode === FORM_MODES.VIEW_QUESTION && <QuestionView />} */}
+                            {inEditing && state.mode === FormModes.EditingCategory && <EditCategory />}
+                            {inViewing && state.mode === FormModes.ViewingCategory && <CategoryView />}
                         </div>
                     }
                 </ListGroup.Item>
