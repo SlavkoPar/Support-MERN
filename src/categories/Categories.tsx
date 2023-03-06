@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
 import { useGlobalState } from '../global/GlobalProvider'
-import { FormModes, ActionTypes } from "./types";
+import { Mode, ActionTypes } from "./types";
 import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
 
 import List from "./Components/CategoryList";
@@ -44,11 +44,11 @@ const Providered = () => {
                     {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                     {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
                     <div className="d-none d-md-block">
-                        {state.mode === FormModes.ViewingCategory && <ViewCategory inLine={false} />}
-                        {state.mode === FormModes.EditingCategory && <EditCategory inLine={false} />}
+                        {state.mode === Mode.ViewingCategory && <ViewCategory inLine={false} />}
+                        {state.mode === Mode.EditingCategory && <EditCategory inLine={false} />}
                         {/* {state.mode === FORM_MODES.ADD_QUESTION && <AddQuestion category={null} />} */}
-                        {state.mode === FormModes.ViewingQuestion && <ViewQuestion />}
-                        {state.mode === FormModes.EditingQuestion && <EditQuestion />}
+                        {state.mode === Mode.ViewingQuestion && <ViewQuestion inLine={false} />}
+                        {state.mode === Mode.EditingQuestion && <EditQuestion inLine={false} />}
                     </div>
 
                 </Col>

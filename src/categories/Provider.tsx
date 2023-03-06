@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 import { hostPort } from '../global/GlobalProvider'
-import { ActionTypes, FormModes, ICategory, ICategoriesState, ICategoriesContext, IParentInfo } from './types';
+import { ActionTypes, Mode, ICategory, ICategoriesState, ICategoriesContext, IParentInfo } from './types';
 import { reducer } from './reducer';
 import axios, { AxiosError } from "axios";
 import { IQuestion } from './types';
 
 const initialState: ICategoriesState = {
-  mode: FormModes.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
+  mode: Mode.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
   loading: false,
   categories: []
 }
@@ -45,8 +45,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Category successfully created')
-          dispatch({ type: ActionTypes.SET_CATEGORY, payload: { category: data } });
-          dispatch({ type: ActionTypes.CLOSE_FORM })
+          dispatch({ type: ActionTypes.SET_ADDED_CATEGORY, payload: { category: data } });
+          dispatch({ type: ActionTypes.CLOSE_CATEGORY_FORM })
         }
         else {
           console.log('Status is not 200', status)
@@ -65,7 +65,12 @@ export const Provider: React.FC<Props> = ({ children }) => {
   }, []);
 
 
-  const getCategory = (_id: Types.ObjectId, type: ActionTypes.VIEW_CATEGORY | ActionTypes.EDIT_CATEGORY | ActionTypes.SET_CATEGORY) => {
+  const getCategory = ( _id: Types.ObjectId,
+     type: 
+      ActionTypes.VIEW_CATEGORY |
+      ActionTypes.EDIT_CATEGORY |
+      ActionTypes.SET_CATEGORY_KEEP_MODE
+  ) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     // dispatch({ type: ActionTypes.SET_LOADING })
@@ -99,7 +104,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log("Category successfully updated");
           dispatch({ type: ActionTypes.SET_CATEGORY, payload: { category } });
-          dispatch({ type: ActionTypes.CLOSE_FORM })
+          dispatch({ type: ActionTypes.CLOSE_CATEGORY_FORM })
         }
         else {
           console.log('Status is not 200', status)
@@ -136,7 +141,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   //
 
   const getCategoryQuestions = useCallback(({parentCategory:_id, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
-      getCategory(_id!, ActionTypes.SET_CATEGORY)  // ne zovemo vise VIEW_CATEGORY, a SET_CATEGORY Ide preko _id
+      getCategory(_id!, ActionTypes.SET_CATEGORY_KEEP_MODE)
   }, []);
  
   const createQuestion = useCallback((question: IQuestion) => {
@@ -201,7 +206,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log("Question successfully updated");
           dispatch({ type: ActionTypes.SET_QUESTION, payload: { question } });
-          dispatch({ type: ActionTypes.CLOSE_FORM })
+          dispatch({ type: ActionTypes.CLOSE_QUESTION_FORM })
         }
         else {
           console.log('Status is not 200', status)

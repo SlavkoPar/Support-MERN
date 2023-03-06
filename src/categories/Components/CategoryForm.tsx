@@ -17,11 +17,11 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
   const dispatch = useCategoryDispatch();
 
   const closeForm = () => {
-    dispatch({ type: ActionTypes.CLOSE_FORM })
+    dispatch({ type: ActionTypes.CLOSE_CATEGORY_FORM })
   }
 
   const cancelForm = () => {
-    dispatch({ type: ActionTypes.CANCEL_FORM })
+    dispatch({ type: ActionTypes.CANCEL_CATEGORY_FORM })
   }
 
   const formik = useFormik({

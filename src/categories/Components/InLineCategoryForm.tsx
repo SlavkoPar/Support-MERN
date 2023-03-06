@@ -25,7 +25,7 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
   const{ authUser, isAuthenticated, variant, bg } = useGlobalState();
 
   const cancelForm = () => {
-    dispatch({ type: ActionTypes.CANCEL_FORM })
+    dispatch({ type: ActionTypes.CANCEL_CATEGORY_FORM })
   }
 
   const formik = useFormik({
@@ -57,11 +57,11 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
   }, [titleRef])
 
   return (
-    <ListGroup.Item
-      variant={variant}
-      className="py-1 px-1"
-      as="li"
-    >
+    // <ListGroup.Item
+    //   variant={variant}
+    //   className="py-1 px-1 w-100 border-0"
+    //   as="li"
+    // >
       <div className="d-flex justify-content-start align-items-center">  {/* title={_id!.toString()} */}
         {/* <Button
           variant='link'
@@ -85,10 +85,10 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
               // if (isEdit && formik.initialValues.title !== formik.values.title)
               // formik.submitForm();
               //}}
-
               value={formik.values.title}
-              style={{ width: '100%' }}
+              style={{ color: 'orange', width: '100%' }}
               placeholder={'New Category'}
+              size="sm"
             />
             <Form.Text className="text-danger">
               {formik.touched.title && formik.errors.title ? (
@@ -104,7 +104,7 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
           title={children}
         />
       </div>
-    </ListGroup.Item>
+    // </ListGroup.Item>
   );
 };
 

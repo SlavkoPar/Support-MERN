@@ -7,7 +7,7 @@ import QuestionForm from "./QuestionForm";
 import { FormMode, IQuestion } from "../../types";
 import { initialQuestion } from "../../reducer";
 
-const EditQuestion = () => {
+const EditQuestion = ({ inLine }: {inLine: boolean}) => {
     const globalState = useGlobalState();
     const { state, updateQuestion } = useCategoryContext();
     const category = state.categories.find(c=>c.inEditing);

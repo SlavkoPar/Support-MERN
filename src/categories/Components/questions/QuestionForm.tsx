@@ -21,11 +21,11 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
   const dispatch = useCategoryDispatch();
 
   const closeForm = () => {
-    dispatch({ type: ActionTypes.CLOSE_FORM })
+    dispatch({ type: ActionTypes.CLOSE_QUESTION_FORM })
   }
 
   const cancelForm = () => {
-    dispatch({ type: ActionTypes.CANCEL_FORM })
+    dispatch({ type: ActionTypes.CANCEL_QUESTION_FORM })
   }
 
   const formik = useFormik({
@@ -60,7 +60,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
   const isDisabled = false; // !canEdit;
 
   return (
-    <div className="form-wrapper px-3 py-0 my-0 mb-1" style={{ border: '1px solid navy', borderRadius: '5px' }}>
+    <div className="form-wrapper px-3 py-0 my-0 mb-1 w-100" style={{ border: '1px solid navy', borderRadius: '5px' }}>
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">
@@ -76,9 +76,10 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
             //     formik.submitForm();
             // }}
             value={formik.values.title}
-            style={{ width: '100%' }}
             rows={2}
             placeholder={'New Question'}
+            className="text-primary w-100"
+            
           />
           <Form.Text className="text-danger">
             {formik.touched.title && formik.errors.title ? (
@@ -99,6 +100,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
             }}
             value={formik.values.source}
             disabled={isDisabled}
+            classes="text-primary"
           />
           <Form.Text className="text-danger">
             {formik.touched.source && formik.errors.source ? (
@@ -120,6 +122,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
             }}
             value={formik.values.status}
             disabled={isDisabled}
+            classes="text-primary"
           />
           <Form.Text className="text-danger">
             {formik.touched.status && formik.errors.status ? (

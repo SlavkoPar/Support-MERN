@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 import { ActionMap, IDateAndBy } from '../global/types';
 import { AxiosError } from 'axios';
 
-export const FormModes = {
+export const Mode = {
 	UNDEFINED: undefined,
 	NULL: null,
 	AddingCategory: 'AddingCategory',
@@ -115,12 +115,14 @@ export enum ActionTypes {
 	SET_ERROR = 'SET_ERROR',
 	ADD_CATEGORY = 'ADD_CATEGORY',
 	SET_CATEGORY = 'SET_CATEGORY',
+	SET_CATEGORY_KEEP_MODE = 'SET_CATEGORY_KEEP_MODE',
+	SET_ADDED_CATEGORY = 'SET_ADDED_CATEGORY',
 	VIEW_CATEGORY = 'VIEW_CATEGORY',
 	EDIT_CATEGORY = 'EDIT_CATEGORY',
 	DELETE = 'DELETE',
 
-	CLOSE_FORM = 'CLOSE_FORM',
-	CANCEL_FORM = 'CANCEL_FORM',
+	CLOSE_CATEGORY_FORM = 'CLOSE_CATEGORY_FORM',
+	CANCEL_CATEGORY_FORM = 'CANCEL_CATEGORY_FORM',
 
 	// questions
 	ADD_QUESTION = 'ADD_QUESTION',
@@ -128,7 +130,10 @@ export enum ActionTypes {
 	EDIT_QUESTION = 'EDIT_QUESTION',
 
 	SET_QUESTION = 'SET_QUESTION',
-	DELETE_QUESTION = 'DELETE_QUESTION'
+	DELETE_QUESTION = 'DELETE_QUESTION',
+
+	CLOSE_QUESTION_FORM = 'CLOSE_QUESTION_FORM',
+	CANCEL_QUESTION_FORM = 'CANCEL_QUESTION_FORM'
 }
 
 
@@ -153,6 +158,15 @@ export type CategoriesPayload = {
 		category: ICategory;
 	};
 
+	[ActionTypes.SET_CATEGORY_KEEP_MODE]: {
+		category: ICategory;
+	};
+
+
+	[ActionTypes.SET_ADDED_CATEGORY]: {
+		category: ICategory;
+	};
+
 	[ActionTypes.DELETE]: {
 		_id: Types.ObjectId;
 	};
@@ -161,9 +175,9 @@ export type CategoriesPayload = {
 		category: ICategory;
 	};
 
-	[ActionTypes.CLOSE_FORM]: undefined;
+	[ActionTypes.CLOSE_CATEGORY_FORM]: undefined;
 
-	[ActionTypes.CANCEL_FORM]: undefined;
+	[ActionTypes.CANCEL_CATEGORY_FORM]: undefined;
 
 	[ActionTypes.SET_ERROR]: {
 		error: AxiosError;
@@ -192,6 +206,9 @@ export type CategoriesPayload = {
 		_id: Types.ObjectId;
 	};
 
+	[ActionTypes.CLOSE_QUESTION_FORM]: undefined;
+
+	[ActionTypes.CANCEL_QUESTION_FORM]: undefined;
 
 };
 

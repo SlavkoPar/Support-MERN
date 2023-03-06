@@ -8,7 +8,8 @@ type Props<T extends OptionValue> = {
     onChange: (e: React.FormEvent<HTMLSelectElement>, value: T) => void;
     id: string,
     name: string,
-    disabled?: boolean
+    disabled?: boolean,
+    classes: string
 };
 
 export function Select<T extends OptionValue>(props: Props<T>) {
@@ -26,6 +27,7 @@ export function Select<T extends OptionValue>(props: Props<T>) {
             onChange={handleOnChange}
             disabled={disabled}
             size="sm"
+            className={props.classes}
         >
             {props.options.map(option => (
                 <option key={option.value} value={option.value}>

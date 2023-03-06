@@ -10,7 +10,7 @@ import { FormMode, ICategory, IQuestion } from "../../types";
 import { initialQuestion } from "../../reducer";
 import QuestionForm from "./QuestionForm";
 
-const ViewQuestion = () => {
+const ViewQuestion = ({ inLine }: {inLine: boolean}) => {
     const globalState = useGlobalState();
     const { state, updateCategory } = useCategoryContext();
     const category = state.categories.find(c=>c.inViewing);

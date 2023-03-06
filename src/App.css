@@ -52,8 +52,8 @@ body h3 {
 
 .form-wrapper,
 .table-wrapper {
-  max-width: 500px;
-  margin: 0 auto;
+  /* max-width: 500px;
+  margin: 0 auto; */
 }
 
 .table-wrapper {

@@ -1,4 +1,4 @@
-import { FormModes, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
+import { Mode, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
 import { Types } from 'mongoose';
 import { IQuestion } from "./types";
 
@@ -39,7 +39,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
 
     case ActionTypes.SET_CATEGORIES: {
       const { categories } = action.payload;
-      console.log(state.categories, 'Payload categories: ', categories, state.categories.concat(categories) )
+      console.log(state.categories, 'Payload categories: ', categories, state.categories.concat(categories))
       return {
         ...state,
         categories: state.categories.concat(categories),
@@ -75,20 +75,52 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         categories: [category, ...state.categories],
-        mode: FormModes.AddingCategory
+        mode: Mode.AddingCategory
       };
+    }
+
+    case ActionTypes.SET_ADDED_CATEGORY: {
+      const { category } = action.payload;
+      // category doesn't contain inViewving, inEditing, inAdding 
+      return {
+        ...state,
+        categories: state.categories.map(c => c.inAdding ? category : c),
+        mode: Mode.NULL,
+        loading: false
+      }
     }
 
     case ActionTypes.SET_CATEGORY: {
       const { category } = action.payload;
+      // category doesn't contain inViewving, inEditing, inAdding 
       return {
         ...state,
-        mode: FormModes.NULL,
-        //categories: state.categories.map(c => c.inEditing || c.inAdding ? category : c), 
-        categories: state.categories.map(c => c._id === category._id ? category : c), // category doesn't contain inViewving, inEditing, inAdding 
+        categories: state.categories.map(c => c._id === category._id ? category : c),
+        mode: Mode.NULL,
         loading: false
       }
     }
+
+    case ActionTypes.SET_CATEGORY_KEEP_MODE: { //  TODO avoid: , inAdding: c.inAdding
+      const { category } = action.payload;
+      const cat = state.categories.find(c => c._id === category._id)
+      const questionInAdding = cat!.questions?.find(q => q.inAdding);
+      // category doesn't contain inViewing, inEditing, inAdding 
+      return {
+        ...state,
+        categories: state.categories.map(c => c._id === category._id
+          ? { 
+            ...category, 
+            questions: questionInAdding ? [questionInAdding!, ...category.questions] : category.questions, 
+            inAdding: c.inAdding 
+          }
+          : c
+        ),
+        // mode: Mode.NULL,  keep mode
+        loading: false
+      }
+    }
+
 
     case ActionTypes.VIEW_CATEGORY: {
       const { category } = action.payload;
@@ -98,7 +130,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
           ? { ...category, inViewing: true } // category.questions are inside of object
           : { ...c, inViewing: false }
         ),
-        mode: FormModes.ViewingCategory,
+        mode: Mode.ViewingCategory,
         loading: false
       };
     }
@@ -111,7 +143,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
           ? { ...category, inEditing: true }
           : c
         ),
-        mode: FormModes.EditingCategory,
+        mode: Mode.EditingCategory,
         loading: false
       };
     }
@@ -120,20 +152,22 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       const { _id } = action.payload;
       return {
         ...state,
-        mode: FormModes.NULL,
+        mode: Mode.NULL,
         categories: state.categories.filter(c => c._id !== _id)
       };
     }
 
-    case ActionTypes.CANCEL_FORM:
-    case ActionTypes.CLOSE_FORM: {
+    case ActionTypes.CANCEL_CATEGORY_FORM:
+    case ActionTypes.CLOSE_CATEGORY_FORM: {
+      const categories = state.mode === Mode.AddingCategory
+        ? state.categories.filter(c => !c.inAdding)
+        : state.categories
       return {
         ...state,
-        mode: FormModes.NULL,
-        categories: state.categories.map(c => ({ ...c, inViewing: false, inEditing: false, inAdding: false, }))
+        mode: Mode.NULL,
+        categories: categories.map(c => ({ ...c, inViewing: false, inEditing: false, inAdding: false }))
       };
     }
-
 
     case ActionTypes.ADD_QUESTION: {
       const { category } = action.payload;
@@ -142,14 +176,15 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         ...initialQuestion,
         parentCategory: _id!,
         level,
-        title: 'New Product'
+        title: 'New Question',
+        inAdding: true
       }
       return {
         ...state,
         categories: state.categories.map(c => c._id === _id
           ? { ...c, questions: [...c.questions ?? [], question], inAdding: true }
           : c),
-        mode: FormModes.AddingQuestion
+        mode: Mode.AddingQuestion
       };
     }
 
@@ -186,7 +221,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
             inViewing: false
           }
         ),
-        mode: FormModes.ViewingQuestion,
+        mode: Mode.ViewingQuestion,
         loading: false
       }
     }
@@ -209,7 +244,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
             ...c,
           }
         ),
-        mode: FormModes.NULL,
+        mode: Mode.NULL,
         loading: false
       };
 
@@ -235,8 +270,39 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
             inEditing: false
           }
         ),
-        mode: FormModes.EditingQuestion,
+        mode: Mode.EditingQuestion,
         loading: false
+      };
+    }
+
+    case ActionTypes.CANCEL_QUESTION_FORM:
+    case ActionTypes.CLOSE_QUESTION_FORM: {
+      let questions: IQuestion[] = [];
+      if (state.mode === Mode.AddingQuestion) { 
+        const category = state.categories.find(c => c.inAdding)
+        questions = category!.questions.filter(q => !q.inAdding)
+      }
+      else if (state.mode === Mode.ViewingQuestion) {
+        const category = state.categories.find(c => c.inViewing)
+        questions = category!.questions.map(q => q.inViewing
+          ? { ...q, inViewing: false }
+          : q)
+          console.log('ARGH VIEWING', questions)
+      }
+      else if (state.mode === Mode.EditingQuestion) {
+        const category = state.categories.find(c => c.inEditing)
+        questions = category!.questions.map(q => q.inEditing
+          ? { ...q, inEditing: false }
+          : q)
+          console.log('ARGH EDITING', questions)
+      }
+      return {
+        ...state,
+        categories: state.categories.map(c => c.inAdding || c.inViewing || c.inEditing
+          ? { ...c, questions, inAdding: false, inEditing: false, inViewing: false }
+          : c
+        ),
+        mode: Mode.NULL,
       };
     }
 
