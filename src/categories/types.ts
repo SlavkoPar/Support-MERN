@@ -206,9 +206,13 @@ export type CategoriesPayload = {
 		_id: Types.ObjectId;
 	};
 
-	[ActionTypes.CLOSE_QUESTION_FORM]: undefined;
+	[ActionTypes.CLOSE_QUESTION_FORM]: {
+		question: IQuestion;
+	};
 
-	[ActionTypes.CANCEL_QUESTION_FORM]: undefined;
+	[ActionTypes.CANCEL_QUESTION_FORM]: {
+		question: IQuestion;
+	};
 
 };
 

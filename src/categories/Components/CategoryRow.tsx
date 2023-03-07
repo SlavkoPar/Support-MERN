@@ -55,7 +55,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     return (
         <>
             <ListGroup.Item
-                variant={variant}
+                variant={"primary"}
                 className="py-1 px-1 w-100"
                 as="li"
             >
@@ -158,7 +158,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
             {(isExpanded || inViewing || inEditing) && // Row2
                 <ListGroup.Item
                     className="py-0 px-0"
-                    variant={variant}
+                    variant={"primary"}
                     as="li"
                 >
                     {isExpanded &&

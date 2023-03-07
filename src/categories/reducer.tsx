@@ -109,10 +109,10 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return {
         ...state,
         categories: state.categories.map(c => c._id === category._id
-          ? { 
-            ...category, 
-            questions: questionInAdding ? [questionInAdding!, ...category.questions] : category.questions, 
-            inAdding: c.inAdding 
+          ? {
+            ...category,
+            questions: questionInAdding ? [questionInAdding!, ...category.questions] : category.questions,
+            inAdding: c.inAdding
           }
           : c
         ),
@@ -187,17 +187,6 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         mode: Mode.AddingQuestion
       };
     }
-
-
-    // case ActionTypes.REFRESH_ADDED_QUESTION: {
-    //   console.log('REFRESH_ADDED_QUESTION', state.categories)
-    //   const { question } = action.payload;
-    //   return {
-    //     ...state,
-    //     categories: state.categories.map(c => c.inAdding ? { ...c, questions: [...c.questions, question], inAdding: false } : c),
-    //     loading: false
-    //   }
-    // }
 
     case ActionTypes.VIEW_QUESTION: {
       const { question } = action.payload;
@@ -277,34 +266,41 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
 
     case ActionTypes.CANCEL_QUESTION_FORM:
     case ActionTypes.CLOSE_QUESTION_FORM: {
+      const { question } = action.payload;
+      const category = state.categories.find(c => c._id === question.parentCategory)
       let questions: IQuestion[] = [];
-      if (state.mode === Mode.AddingQuestion) { 
-        const category = state.categories.find(c => c.inAdding)
-        questions = category!.questions.filter(q => !q.inAdding)
-      }
-      else if (state.mode === Mode.ViewingQuestion) {
-        const category = state.categories.find(c => c.inViewing)
-        questions = category!.questions.map(q => q.inViewing
-          ? { ...q, inViewing: false }
-          : q)
-          console.log('ARGH VIEWING', questions)
-      }
-      else if (state.mode === Mode.EditingQuestion) {
-        const category = state.categories.find(c => c.inEditing)
-        questions = category!.questions.map(q => q.inEditing
-          ? { ...q, inEditing: false }
-          : q)
-          console.log('ARGH EDITING', questions)
+      switch (state.mode) {
+        case Mode.AddingQuestion: {
+          console.assert(category!.inAdding, "expected category.inAdding");
+          questions = category!.questions.filter(q => !q.inAdding)
+          break;
+        }
+
+        case Mode.ViewingQuestion: {
+          console.assert(category!.inViewing, "expected category.inViewing");
+          questions = category!.questions.map(q => ({ ...q, inViewing: false }))
+          break;
+        }
+
+        case Mode.EditingQuestion: {
+          console.assert(category!.inEditing, "expected category.inEditing");
+          questions = category!.questions.map(q => ({ ...q, inEditing: false }))
+          break;
+        }
+
+        default:
+          break;
       }
       return {
         ...state,
-        categories: state.categories.map(c => c.inAdding || c.inViewing || c.inEditing
+        categories: state.categories.map(c => c._id === question.parentCategory
           ? { ...c, questions, inAdding: false, inEditing: false, inViewing: false }
           : c
         ),
         mode: Mode.NULL,
       };
     }
+
 
 
     default:

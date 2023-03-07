@@ -21,11 +21,11 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
   const dispatch = useCategoryDispatch();
 
   const closeForm = () => {
-    dispatch({ type: ActionTypes.CLOSE_QUESTION_FORM })
+    dispatch({ type: ActionTypes.CLOSE_QUESTION_FORM, payload: {question: initialValues} })
   }
 
   const cancelForm = () => {
-    dispatch({ type: ActionTypes.CANCEL_QUESTION_FORM })
+    dispatch({ type: ActionTypes.CANCEL_QUESTION_FORM, payload: { question: initialValues } })
   }
 
   const formik = useFormik({
@@ -60,7 +60,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
   const isDisabled = false; // !canEdit;
 
   return (
-    <div className="form-wrapper px-3 py-0 my-0 mb-1 w-100" style={{ border: '1px solid navy', borderRadius: '5px' }}>
+    <div className="form-wrapper px-3 py-0 my-0 mb-1 w-100 secondary" style={{ border: '1px solid navy', borderRadius: '5px' }}>
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">

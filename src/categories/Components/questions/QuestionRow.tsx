@@ -45,7 +45,7 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
     return (
         <>
             <ListGroup.Item
-                variant={variant}
+                variant={"secondary"}
                 className="py-1 px-1"
                 as="li"
             >
@@ -60,7 +60,7 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
                         </div>
                     )
                         : (
-                            <div ref={hoverRef} className="d-flex justify-content-start align-items-center w-100" style={{border: '3px solid red'}}>
+                            <div ref={hoverRef} className="d-flex justify-content-start align-items-center w-100">
                                 <Button
                                     variant='link'
                                     size="sm"

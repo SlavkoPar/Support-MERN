@@ -62,7 +62,7 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
     //   className="py-1 px-1 w-100 border-0"
     //   as="li"
     // >
-      <div className="d-flex justify-content-start align-items-center">  {/* title={_id!.toString()} */}
+      <div className="d-flex justify-content-start align-items-center primary">  {/* title={_id!.toString()} */}
         {/* <Button
           variant='link'
           size="sm"

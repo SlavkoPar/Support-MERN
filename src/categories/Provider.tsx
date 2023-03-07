@@ -206,7 +206,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
         if (status === 200) {
           console.log("Question successfully updated");
           dispatch({ type: ActionTypes.SET_QUESTION, payload: { question } });
-          dispatch({ type: ActionTypes.CLOSE_QUESTION_FORM })
+          dispatch({ type: ActionTypes.CLOSE_QUESTION_FORM, payload: { question } })
         }
         else {
           console.log('Status is not 200', status)
