@@ -1,4 +1,4 @@
-import { IDateAndBy } from '../global/types'
+import { IDateAndBy } from 'global/types'
 
 export type OptionValue = string | number;
 

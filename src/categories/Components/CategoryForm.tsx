@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Form, CloseButton } from "react-bootstrap";
-import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
-import { FormButtons } from "../../common/FormButtons"
-import { FormMode, ActionTypes, ICategoryFormProps } from "../types";
+import { CreatedModifiedForm } from "common/CreateModifiedForm"
+import { FormButtons } from "common/FormButtons"
+import { FormMode, ActionTypes, ICategoryFormProps } from "categories/types";
 
-import { useCategoryDispatch } from "../Provider";
+import { useCategoryDispatch } from "categories/Provider";
 
 const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFormProps) => {
 

@@ -1,10 +1,7 @@
-import { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
-// import logo from './logo.svg'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuestion, faSurprise, faUser, faUserFriends, faAnchor, faDatabase } from '@fortawesome/free-solid-svg-icons'
+import { faQuestion, faSurprise, faUser, faUserFriends, faAnchor } from '@fortawesome/free-solid-svg-icons'
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -12,8 +9,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
-import { useGlobalContext, useGlobalDispatch } from './global/GlobalProvider'
-import { ROLES, GlobalActionTypes } from "./global/types";
+import { useGlobalContext, useGlobalDispatch } from 'global/GlobalProvider'
+import { ROLES, GlobalActionTypes } from "global/types";
 
 interface INavigation {
 }

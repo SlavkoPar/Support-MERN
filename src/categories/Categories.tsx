@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
-import { useGlobalState } from '../global/GlobalProvider'
 import { Mode, ActionTypes } from "./types";
 import { Provider, useCategoryContext, useCategoryDispatch } from "./Provider";
 
 import List from "./Components/CategoryList";
-// import Add from "./Components/Add";
-import ViewCategory from "./Components/ViewCategory";
-import EditCategory from "./Components/EditCategory";
-import ViewQuestion from "./Components/questions/ViewQuestion";
-import EditQuestion from "./Components/questions/EditQuestion";
+import ViewCategory from "categories/Components/ViewCategory";
+import EditCategory from "categories/Components/EditCategory";
+import ViewQuestion from "categories/Components/questions/ViewQuestion";
+import EditQuestion from "categories/Components/questions/EditQuestion";
 
 const Providered = () => {
 

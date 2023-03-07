@@ -1,8 +1,6 @@
 import { Types } from 'mongoose';
 
-import { IDateAndBy, ROLES } from '../global/types';
-
-import { IOption } from '../common/types';
+import { IDateAndBy, ROLES } from 'global/types';
 
 export const FORM_MODES = {
 	UNDEFINED: undefined,

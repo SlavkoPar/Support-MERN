@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import SelectedItem from "./SelectedItem";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretRight, faCaretDown } from '@fortawesome/free-solid-svg-icons'
-import { IOption, OptionValue } from "../types";
-
+import { IOption, OptionValue } from "common/types";
 
 type Props<T extends OptionValue> = {
   label: string;
@@ -16,7 +15,6 @@ type Props<T extends OptionValue> = {
   name: string,
   disabled?: boolean
 };
-
 
 //export function Select<T extends OptionValue>(props: Props<T>) {
 

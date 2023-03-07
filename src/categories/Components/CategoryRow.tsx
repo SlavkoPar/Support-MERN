@@ -1,15 +1,15 @@
 import { Types } from "mongoose";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWindowClose, faEdit, faRemove, faCaretRight, faCaretDown, faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faRemove, faCaretRight, faCaretDown, faPlus, faQuestion } from '@fortawesome/free-solid-svg-icons'
 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
-import { useGlobalState } from '../../global/GlobalProvider'
-import { ActionTypes, Mode } from "../types";
-import { useCategoryContext, useCategoryDispatch } from '../Provider'
-import { useHover } from '../../common/components/useHover';
-import { ICategory } from '../types'
+import { useGlobalState } from 'global/GlobalProvider'
+import { ActionTypes, Mode } from "categories/types";
+import { useCategoryContext, useCategoryDispatch } from 'categories/Provider'
+import { useHover } from 'common/components/useHover';
+import { ICategory } from 'categories/types'
 
 import CategoryList from "./CategoryList";
 import AddCategory from "./AddCategory";
@@ -142,7 +142,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 {inAdding && state.mode === Mode.AddingCategory ? (
                     <AddCategory category={category} inLine={true} />
                 )
-                    : ((inEditing && state.mode === Mode.EditingCategory) ||
+                    : ( (inEditing && state.mode === Mode.EditingCategory) ||
                         (inViewing && state.mode === Mode.ViewingCategory)) ? (
                         <>
                             {/* <div class="d-lg-none">hide on lg and wider screens</div> */}

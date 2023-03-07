@@ -1,26 +1,21 @@
 import { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Form, FormGroup, CloseButton } from "react-bootstrap";
-import { GlobalActionTypes, ILoginUser, ROLES } from "./types";
+import { Form, CloseButton } from "react-bootstrap";
+import { ILoginUser } from "global/types";
 import { useNavigate } from "react-router-dom";
 
 import './formik.css';
 
-import { useGlobalContext, useGlobalDispatch } from './GlobalProvider'
-import { IUser } from "../users/types";
-
+import { useGlobalContext } from 'global/GlobalProvider'
 
 export interface ILoginFormProps {
 }
 
-
 const RegisterForm = () => {
 
-  const { globalState, registerUser, signInUser } = useGlobalContext();
-  const { isAuthenticated, authUser } = globalState;
-
-  const dispatch = useGlobalDispatch();
+  const { globalState, registerUser } = useGlobalContext();
+  const { isAuthenticated } = globalState;
 
   let navigate = useNavigate();
   const closeForm = () => {

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useCategoryContext } from '../Provider'
-import { useGlobalState } from '../../global/GlobalProvider'
+import { useCategoryContext } from 'categories/Provider'
+import { useGlobalState } from 'global/GlobalProvider'
 
 import CategoryForm from "./CategoryForm";
 import InLineCategoryForm from "./InLineCategoryForm";
-import { FormMode, ICategory } from "../types";
+import { FormMode, ICategory } from "categories/types";
 
 const AddCategory = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
     const globalState = useGlobalState();

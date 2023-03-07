@@ -1,6 +1,5 @@
-import { Mode, ActionTypes, ICategoriesState, ICategory, IParentInfo, CategoriesActions } from "./types";
+import { Mode, ActionTypes, ICategoriesState, ICategory, IQuestion, CategoriesActions } from "categories/types";
 import { Types } from 'mongoose';
-import { IQuestion } from "./types";
 
 export const initialQuestion: IQuestion = {
   // temp _id for inAdding, to server as list key
@@ -121,7 +120,6 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         loading: false
       }
     }
-
 
     case ActionTypes.VIEW_CATEGORY: {
       const { category } = action.payload;

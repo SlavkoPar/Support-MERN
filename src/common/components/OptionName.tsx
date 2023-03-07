@@ -1,4 +1,4 @@
-import { IOption, OptionValue } from "../types";
+import { IOption, OptionValue } from "common/types";
 
 type Props<T extends OptionValue> = {
     options: IOption<T>[];

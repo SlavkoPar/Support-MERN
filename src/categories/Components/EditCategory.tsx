@@ -1,10 +1,10 @@
 //import { useParams } from 'react-router-dom'
 import { useState, useEffect } from "react";
-import { useCategoryContext } from '../Provider'
-import { useGlobalState } from '../../global/GlobalProvider'
+import { useCategoryContext } from 'categories/Provider'
+import { useGlobalState } from 'global/GlobalProvider'
 
 import CategoryForm from "./CategoryForm";
-import { FormMode, ICategory } from "../types";
+import { FormMode, ICategory } from "categories/types";
 
 const EditCategory = ({ inLine }: {inLine: boolean}) => {
     const globalState = useGlobalState();

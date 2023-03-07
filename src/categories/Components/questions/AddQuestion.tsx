@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useCategoryContext } from '../../Provider'
-import { useGlobalContext, useGlobalState } from '../../../global/GlobalProvider'
+import { useState } from "react";
+import { useCategoryContext } from 'categories/Provider'
+import { useGlobalState } from 'global/GlobalProvider'
 
 import QuestionForm from "./QuestionForm";
 import { FormMode, IQuestion } from "../../types";
@@ -9,7 +9,7 @@ import { FormMode, IQuestion } from "../../types";
 const AddQuestion = ({ question, inLine } : { question: IQuestion, inLine: boolean }) => { //{ category }: { category: ICategory }) => {
     const globalState = useGlobalState();
 
-    const { state, createQuestion } = useCategoryContext();
+    const { createQuestion } = useCategoryContext();
     const [formValues] = useState(question)
 
     const submitForm = (questionObject: IQuestion) => {

@@ -1,10 +1,9 @@
-import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
+import { createContext, useContext, useReducer, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
-import { hostPort } from '../global/GlobalProvider'
-import { ActionTypes, Mode, ICategory, ICategoriesState, ICategoriesContext, IParentInfo } from './types';
-import { reducer } from './reducer';
+import { hostPort } from 'global/GlobalProvider'
+import { ActionTypes, Mode, ICategory, IQuestion, ICategoriesState, ICategoriesContext, IParentInfo } from 'categories/types';
 import axios, { AxiosError } from "axios";
-import { IQuestion } from './types';
+import { reducer } from 'categories/reducer';
 
 const initialState: ICategoriesState = {
   mode: Mode.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 

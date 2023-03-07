@@ -7,7 +7,6 @@ interface IHoverProps {
 	isHovered: boolean;
 }
 
-// Hook
 export function useHover(): [React.RefObject<HTMLDivElement>, IHoverProps] {
 	const [hoverProps, setValue] = useState({ isHovered: isMob ? true : false });
 

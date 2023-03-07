@@ -5,11 +5,11 @@ import { faEdit, faRemove, faQuestion } from '@fortawesome/free-solid-svg-icons'
 
 import { ListGroup, Button } from "react-bootstrap";
 
-import { useGlobalState } from '../../../global/GlobalProvider'
-import { Mode } from "../../types";
-import { useCategoryContext, useCategoryDispatch } from '../../Provider'
-import { useHover } from '../../../common/components/useHover';
-import { IQuestion } from '../../types'
+import { useGlobalState } from 'global/GlobalProvider'
+import { Mode } from "categories/types";
+import { useCategoryContext } from '../../Provider'
+import { useHover } from 'common/components/useHover';
+import { IQuestion } from 'categories/types'
 
 import AddQuestion from "./AddQuestion";
 import EditQuestion from "./EditQuestion";

@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
-import { useGlobalState } from '../global/GlobalProvider'
-import { FORM_MODES, ActionTypes } from "./types";
-import { Provider, useUserContext, useUserDispatch } from "./Provider";
+import { ActionTypes } from "users/types";
+import { Provider, useUserDispatch } from "users/Provider";
 
-/* import TreeView from "./Components/TreeView";*/
-// import Add from "./Components/Add";
-/*import Edit from "./Components/Edit";*/
-import { initialUser } from "./reducer";
 
 const Providered = () => {
 
-    const globalState = useGlobalState();
-    const { store } = useUserContext();
     const dispatch = useUserDispatch();
 
     return (

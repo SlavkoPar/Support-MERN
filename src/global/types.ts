@@ -1,7 +1,7 @@
 // Define the Global State
 import { AxiosError } from 'axios';
 import { Types } from 'mongoose';
-import { IUser } from '../users/types';
+import { IUser } from 'users/types';
 
 export interface IDateAndBy {
 	date: Date,

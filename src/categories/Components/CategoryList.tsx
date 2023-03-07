@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { ListGroup } from "react-bootstrap";
 import CategoryRow from "./CategoryRow";
-import { IParentInfo } from "../types";
-import { useCategoryContext } from "../Provider";
+import { IParentInfo } from "categories/types";
+import { useCategoryContext } from "categories/Provider";
 
 const CategoryList = ({ parentCategory, level }: IParentInfo) => {
     const { state, getSubCategories } = useCategoryContext();

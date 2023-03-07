@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Types } from 'mongoose';
-
+import { useEffect } from "react";
 import { ListGroup } from "react-bootstrap";
 import QuestionRow from "./QuestionRow";
-import { ICategory, IQuestion, IParentInfo } from "../../types";
-import { useCategoryContext } from "../../Provider";
-import {  } from "../../types";
+import { ICategory, IQuestion, IParentInfo } from "categories/types";
+import { useCategoryContext } from "categories/Provider";
 
 const QuestionList = ({ parentCategory, level }: IParentInfo) => {
     const { state, getCategoryQuestions } = useCategoryContext();

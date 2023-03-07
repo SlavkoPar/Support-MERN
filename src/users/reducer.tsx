@@ -1,7 +1,7 @@
-import { FORM_MODES, ActionTypes, IUsersState, IUser, IParentInfo } from "./types";
+import { FORM_MODES, ActionTypes, IUsersState, IUser, IParentInfo } from "users/types";
 import { Types } from 'mongoose';
 import { AxiosError } from "axios";
-import { ActionMap, ROLES } from "../global/types";
+import { ActionMap, ROLES } from "global/types";
 
 export const initialUser: IUser = {
   // temp _id for inAdding, to server as list key

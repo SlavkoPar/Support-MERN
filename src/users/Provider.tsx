@@ -1,10 +1,10 @@
-import { createContext, useContext, useState, useReducer, useEffect, useCallback, Dispatch } from 'react';
+import { createContext, useContext, useReducer, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 
-import { hostPort } from '../global/GlobalProvider'
+import { hostPort } from 'global/GlobalProvider'
 
 import { ActionTypes, FORM_MODES, IUser, IUsersState, IUsersContext } from './types';
-import { reducer } from './reducer';
+import { reducer } from 'users/reducer';
 import axios, { AxiosError } from "axios";
 
 const initialState: IUsersState = {

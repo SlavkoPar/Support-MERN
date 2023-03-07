@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useCategoryContext } from '../../Provider'
-import { useGlobalState } from '../../../global/GlobalProvider'
+import { useState, useEffect } from "react";
+import { useCategoryContext } from 'categories/Provider'
+import { useGlobalState } from 'global/GlobalProvider'
 
 import QuestionForm from "./QuestionForm";
-import { FormMode, IQuestion } from "../../types";
-import { initialQuestion } from "../../reducer";
+import { FormMode, IQuestion } from "categories/types";
+import { initialQuestion } from "categories/reducer";
 
 const EditQuestion = ({ inLine }: {inLine: boolean}) => {
     const globalState = useGlobalState();

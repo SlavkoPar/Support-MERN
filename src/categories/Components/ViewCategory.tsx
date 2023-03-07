@@ -1,9 +1,8 @@
 //import { useParams } from 'react-router-dom'
-import React, { useState, useEffect } from "react";
-import { useCategoryContext } from '../Provider'
-import { useGlobalState } from '../../global/GlobalProvider'
+import { useState, useEffect } from "react";
+import { useCategoryContext } from 'categories/Provider'
 
-import { FormMode, ICategory } from "../types";
+import { FormMode, ICategory } from "categories/types";
 //import ProductForm from "../../questions/Components/ProductForm";
 import CategoryForm from "./CategoryForm";
 

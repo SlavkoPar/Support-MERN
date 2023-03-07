@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 
-import { ActionMap, IDateAndBy } from '../global/types';
+import { ActionMap, IDateAndBy } from 'global/types';
 import { AxiosError } from 'axios';
 
 export const Mode = {

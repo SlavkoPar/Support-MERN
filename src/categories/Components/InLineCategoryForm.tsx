@@ -1,11 +1,11 @@
-import { FormEvent, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Form } from "react-bootstrap";
 
 import { FormButtons } from "../../common/FormButtons"
 
-import { useGlobalState } from '../../global/GlobalProvider'
+import { useGlobalState } from 'global/GlobalProvider'
 
 import { ActionTypes, FormMode, ICategoryFormProps } from "../types";
 
@@ -17,10 +17,10 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
   const editing = mode === FormMode.editing;
   const adding = mode === FormMode.adding;
   
-  const { _id, level } = initialValues;
+  //const { _id, level } = initialValues;
 
   const dispatch = useCategoryDispatch();
-  const{ authUser, isAuthenticated, variant, bg } = useGlobalState();
+  //const{ authUser, isAuthenticated, variant, bg } = useGlobalState();
 
   const cancelForm = () => {
     dispatch({ type: ActionTypes.CANCEL_CATEGORY_FORM })

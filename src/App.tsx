@@ -2,18 +2,18 @@ import { useEffect } from 'react';
 import { Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { Navigation } from './Navigation'
-import { useGlobalContext } from './global/GlobalProvider'
+import { Navigation } from 'Navigation'
+import { useGlobalContext } from 'global/GlobalProvider'
 
 import './App.css';
 
-import Categories from "./categories/Categories"
-import Users from "./users/Users"
+import Categories from "categories/Categories"
+import Users from "users/Users"
 
-import RegisterForm from './global/RegisterForm';
-import LoginForm from './global/LoginForm';
-import Landing from './Landing';
-import About from './About';
+import RegisterForm from 'global/RegisterForm';
+import LoginForm from 'global/LoginForm';
+import Landing from 'Landing';
+import About from 'About';
 
 function App() {
 

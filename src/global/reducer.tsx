@@ -1,5 +1,5 @@
-import React, { Reducer } from 'react'
-import { initialAuthUser } from './GlobalProvider';
+import { Reducer } from 'react'
+import { initialAuthUser } from 'global/GlobalProvider';
 import { IGlobalState, GlobalActionTypes, GlobalActions, ROLES } from "./types";
 
 export const reducer: Reducer<IGlobalState, GlobalActions> = (state, action) => {

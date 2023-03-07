@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, FormGroup, Container, Row, Col } from "react-bootstrap";
-import { formatDate } from './utilities'
+import { Form, Container, Row, Col } from "react-bootstrap";
+import { formatDate } from 'common/utilities'
 import { ICreatedModifiedProps } from './types'
 
 export const CreatedModifiedForm = ({ created, createdBy, modified, modifiedBy }: ICreatedModifiedProps) => {

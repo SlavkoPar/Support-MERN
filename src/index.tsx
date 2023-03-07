@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './normalize.scss'
-import './index.css';
-import App from './App';
-import { GlobalProvider } from './global/GlobalProvider';
+import 'normalize.scss'
+import 'index.css';
+import App from 'App';
+import { GlobalProvider } from 'global/GlobalProvider';
 
 //import reportWebVitals from './reportWebVitals';
 

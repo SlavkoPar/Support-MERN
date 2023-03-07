@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons'
-import { IOption } from "../types";
+import { IOption } from "common/types";
 
 const SelectedItem: React.FunctionComponent<{option: IOption<number>, removeOption: () => void}> = ({option, removeOption}) => {
   // This holds the selected values
