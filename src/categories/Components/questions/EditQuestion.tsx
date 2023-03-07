@@ -1,4 +1,3 @@
-//import { useParams } from 'react-router-dom'
 import React, { useState, useEffect } from "react";
 import { useCategoryContext } from '../../Provider'
 import { useGlobalState } from '../../../global/GlobalProvider'
@@ -29,7 +28,6 @@ const EditQuestion = ({ inLine }: {inLine: boolean}) => {
     };
 
     useEffect(() => {
-        //question.modifiedBy_userName = question.modifiedBy_user.userName;
         setFormValues(question!);
     }, [question]);
 

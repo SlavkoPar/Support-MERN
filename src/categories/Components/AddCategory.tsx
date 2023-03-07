@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useCategoryContext } from '../Provider'
-import { useGlobalContext, useGlobalState } from '../../global/GlobalProvider'
+import { useGlobalState } from '../../global/GlobalProvider'
 
 import CategoryForm from "./CategoryForm";
 import InLineCategoryForm from "./InLineCategoryForm";
@@ -8,7 +8,7 @@ import { FormMode, ICategory } from "../types";
 
 const AddCategory = ({ category, inLine } : { category: ICategory, inLine: boolean}) => {
     const globalState = useGlobalState();
-    const { state, createCategory } = useCategoryContext();
+    const { createCategory } = useCategoryContext();
     const [formValues] = useState(category)
 
     const submitForm = (categoryObject: ICategory) => {
@@ -32,7 +32,6 @@ const AddCategory = ({ category, inLine } : { category: ICategory, inLine: boole
                 <InLineCategoryForm
                     inLine={true}
                     initialValues={formValues}
-                    //isEdit={false}
                     mode={FormMode.adding}
                     submitForm={submitForm}
                 >
@@ -42,7 +41,6 @@ const AddCategory = ({ category, inLine } : { category: ICategory, inLine: boole
                 <CategoryForm
                     inLine={false}
                     initialValues={formValues}
-                    //isEdit={false}
                     mode={FormMode.adding}
                     submitForm={submitForm}
                 >

@@ -1,9 +1,7 @@
 import { FormEvent, useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Form, ListGroup, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
+import { Form } from "react-bootstrap";
 
 import { FormButtons } from "../../common/FormButtons"
 
@@ -57,21 +55,8 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
   }, [titleRef])
 
   return (
-    // <ListGroup.Item
-    //   variant={variant}
-    //   className="py-1 px-1 w-100 border-0"
-    //   as="li"
-    // >
+
       <div className="d-flex justify-content-start align-items-center primary">  {/* title={_id!.toString()} */}
-        {/* <Button
-          variant='link'
-          size="sm"
-          className="py-0 px-1"
-          title="Expand"
-          disabled
-        >
-          <FontAwesomeIcon icon={faCaretRight} color='orange' size='lg' />
-        </Button> */}
         <Form onSubmit={formik.handleSubmit} ref={formRef}>
           <Form.Group controlId="title">
             {/* <Form.Label>Title</Form.Label> */}
@@ -104,7 +89,6 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
           title={children}
         />
       </div>
-    // </ListGroup.Item>
   );
 };
 

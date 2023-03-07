@@ -95,7 +95,6 @@ export interface ICategoriesContext {
 export interface ICategoryFormProps {
 	inLine: boolean;
 	initialValues: ICategory;
-	//isEdit: boolean;
 	mode: FormMode;
 	submitForm: (category: ICategory) => void,
 	children: string

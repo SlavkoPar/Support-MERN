@@ -20,7 +20,6 @@ import QuestionList from "./questions/QuestionList";
 const CategoryRow = ({ category }: { category: ICategory }) => {
     const { _id, title, level, inViewing, inEditing, inAdding, questions } = category;
 
-    console.log('C:', title, inViewing, inEditing, inAdding)
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
     const { state, viewCategory, editCategory, deleteCategory } = useCategoryContext();
@@ -52,6 +51,87 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
     }
     const [hoverRef, hoverProps] = useHover();
 
+    const Row1 =
+        <div ref={hoverRef} className="d-flex justify-content-start align-items-center w-100">
+            <Button
+                variant='link'
+                size="sm"
+                className="py-0 px-1"
+                onClick={expand}
+                title="Expand"
+                disabled={alreadyAdding}
+            >
+                <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} color='orange' size='lg' />
+            </Button>
+            <Button
+                variant='link'
+                size="sm"
+                style={{ color: "orange" }}
+                className="py-0 mx-1 text-decoration-none"
+                title={_id!.toString()}
+                onClick={() => onSelectCategory(_id!)}
+                disabled={alreadyAdding}
+            >
+                {title}
+            </Button>
+
+            {questions && questions.length > 0 &&
+                <Badge bg="primary" pill>
+                    {questions.length} <FontAwesomeIcon icon={faQuestion} size='sm' />
+                </Badge>
+            }
+
+            {canEdit && !alreadyAdding && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
+                    //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
+                    onClick={() => edit(_id!)}
+                >
+                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
+                </Button>
+            }
+
+            {canEdit && !alreadyAdding && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
+                    onClick={del}
+                >
+                    <FontAwesomeIcon icon={faRemove} color='orange' size='lg' />
+                </Button>
+            }
+
+            {canEdit && !alreadyAdding && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
+                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
+                        onClick={() => {
+                            dispatch({
+                                type: ActionTypes.ADD_CATEGORY,
+                                payload: {
+                                    parentCategory: category._id,
+                                    level: category.level
+                                }
+                            })
+                            if (!isExpanded)
+                                setIsExpanded(true);
+                        }}
+                    />
+                </Button>
+            }
+
+            {canEdit && !alreadyAdding && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
+                    <FontAwesomeIcon icon={faPlus} color='blue' size='lg'
+                        onClick={() => {
+                            dispatch({
+                                type: ActionTypes.ADD_QUESTION,
+                                payload: { category }
+                            })
+                            if (!isExpanded)
+                                setIsExpanded(true)
+                        }}
+                    />
+                </Button>
+            }
+        </div>
+
     return (
         <>
             <ListGroup.Item
@@ -62,94 +142,21 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 {inAdding && state.mode === Mode.AddingCategory ? (
                     <AddCategory category={category} inLine={true} />
                 )
-                    : ( (inEditing && state.mode === Mode.EditingCategory) ||
+                    : ((inEditing && state.mode === Mode.EditingCategory) ||
                         (inViewing && state.mode === Mode.ViewingCategory)) ? (
-                        // <div class="d-lg-none">hide on lg and wider screens</div>
-                        <div className="ms-0 d-md-none w-100">
-                            {inEditing && <EditCategory inLine={true} />}
-                            {inViewing && <ViewCategory inLine={true} />}
-                        </div>
+                        <>
+                            {/* <div class="d-lg-none">hide on lg and wider screens</div> */}
+                            <div className="ms-0 d-md-none w-100">
+                                {inEditing && <EditCategory inLine={true} />}
+                                {inViewing && <ViewCategory inLine={true} />}
+                            </div>
+                            <div className="d-none d-md-block">
+                                {Row1}
+                            </div>
+                        </>
                     )
                         : (
-                            <div ref={hoverRef} className="d-flex justify-content-start align-items-center w-100">
-                                <Button
-                                    variant='link'
-                                    size="sm"
-                                    className="py-0 px-1"
-                                    onClick={expand}
-                                    title="Expand"
-                                    disabled={alreadyAdding}
-                                >
-                                    <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} color='orange' size='lg' />
-                                </Button>
-                                <Button
-                                    variant='link'
-                                    size="sm"
-                                    style={{ color: "orange" }}
-                                    className="py-0 mx-1 text-decoration-none"
-                                    title={_id!.toString()}
-                                    onClick={() => onSelectCategory(_id!)}
-                                    disabled={alreadyAdding}
-                                >
-                                    {title}
-                                </Button>
-
-                                {questions && questions.length > 0 &&
-                                    <Badge bg="primary" pill>
-                                        {questions.length} <FontAwesomeIcon icon={faQuestion} size='sm' />
-                                    </Badge>
-                                }
-
-                                {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                                    <Button variant='link' size="sm" className="ms-1 py-0 px-1"
-                                        //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
-                                        onClick={() => edit(_id!)}
-                                    >
-                                        <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
-                                    </Button>
-                                }
-
-                                {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                                    <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
-                                        onClick={del}
-                                    >
-                                        <FontAwesomeIcon icon={faRemove} color='orange' size='lg' />
-                                    </Button>
-                                }
-
-                                {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                                    <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
-                                        <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
-                                            onClick={() => {
-                                                dispatch({
-                                                    type: ActionTypes.ADD_CATEGORY,
-                                                    payload: {
-                                                        parentCategory: category._id,
-                                                        level: category.level
-                                                    }
-                                                })
-                                                if (!isExpanded)
-                                                    setIsExpanded(true);
-                                            }}
-                                        />
-                                    </Button>
-                                }
-
-                                {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                                    <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
-                                        <FontAwesomeIcon icon={faPlus} color='blue' size='lg'
-                                            onClick={() => {
-                                                dispatch({
-                                                    type: ActionTypes.ADD_QUESTION,
-                                                    payload: { category }
-                                                })
-                                                if (!isExpanded)
-                                                    setIsExpanded(true)
-                                            }}
-                                        />
-                                    </Button>
-                                }
-                            </div>
+                            Row1
                         )
                 }
             </ListGroup.Item>

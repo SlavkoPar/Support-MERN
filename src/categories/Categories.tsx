@@ -9,14 +9,11 @@ import List from "./Components/CategoryList";
 // import Add from "./Components/Add";
 import ViewCategory from "./Components/ViewCategory";
 import EditCategory from "./Components/EditCategory";
-import { initialCategory } from "./reducer";
 import ViewQuestion from "./Components/questions/ViewQuestion";
 import EditQuestion from "./Components/questions/EditQuestion";
-import AddQuestion from "./Components/questions/AddQuestion";
 
 const Providered = () => {
 
-    const globalState = useGlobalState();
     const { state } = useCategoryContext();
     const dispatch = useCategoryDispatch();
 
@@ -43,14 +40,13 @@ const Providered = () => {
                 <Col xs={0} md={6}>
                     {/* {store.mode === FORM_MODES.ADD && <Add category={category??initialCategory} />} */}
                     {/* <div class="d-none d-lg-block">hide on screens smaller than lg</div> */}
-                    <div className="d-none d-md-block">
+                    <div id='div-details' className="d-none d-md-block">
                         {state.mode === Mode.ViewingCategory && <ViewCategory inLine={false} />}
                         {state.mode === Mode.EditingCategory && <EditCategory inLine={false} />}
                         {/* {state.mode === FORM_MODES.ADD_QUESTION && <AddQuestion category={null} />} */}
-                        {/* {state.mode === Mode.ViewingQuestion && <ViewQuestion inLine={false} />} */}
+                        {state.mode === Mode.ViewingQuestion && <ViewQuestion inLine={false} />}
                         {state.mode === Mode.EditingQuestion && <EditQuestion inLine={false} />}
                     </div>
-
                 </Col>
             </Row>
         </Container>

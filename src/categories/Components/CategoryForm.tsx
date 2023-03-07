@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Form, FormGroup, CloseButton } from "react-bootstrap";
+import { Form, CloseButton } from "react-bootstrap";
 import { CreatedModifiedForm } from "../../common/CreateModifiedForm"
 import { FormButtons } from "../../common/FormButtons"
 import { FormMode, ActionTypes, ICategoryFormProps } from "../types";

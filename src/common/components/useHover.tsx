@@ -13,7 +13,7 @@ export function useHover(): [React.RefObject<HTMLDivElement>, IHoverProps] {
 
 	const divRef = useRef<HTMLDivElement>(null);
 
-	const handleMouseOver = () => { console.log('unisao'); setValue({ isHovered: true })};
+	const handleMouseOver = () => setValue({ isHovered: true });
 	const handleMouseOut = () => setValue({ isHovered: false });
 
 	useEffect(
@@ -31,7 +31,7 @@ export function useHover(): [React.RefObject<HTMLDivElement>, IHoverProps] {
 					};
 				}
 			}
-		}, [] // Recall only if ref changes
+		}, []
 	);
 
 	return [divRef, hoverProps];
