@@ -105,6 +105,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       const { category } = action.payload;
       const cat = state.categories.find(c => c._id === category._id)
       const questionInAdding = cat!.questions?.find(q => q.inAdding);
+      // for adding we need copy question.inAdding to questions
       // category doesn't contain inViewing, inEditing, inAdding 
       return {
         ...state,

@@ -16,7 +16,8 @@ const ViewQuestion = ({ inLine }: {inLine: boolean}) => {
     const category = state.categories.find(c=>c.inViewing);
     const question = category!.questions.find(q => q.inViewing)
 
-    const [formValues, setFormValues] = useState<IQuestion>(question??initialQuestion);
+    // const [formValues, setFormValues] = useState<IQuestion>(question??initialQuestion);
+    const [formValues, setFormValues] = useState<IQuestion>(question!);
 
     useEffect(() => {
         //category.modifiedBy_userName = category.modifiedBy_user.userName;

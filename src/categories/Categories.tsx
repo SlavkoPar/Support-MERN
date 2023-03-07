@@ -47,7 +47,7 @@ const Providered = () => {
                         {state.mode === Mode.ViewingCategory && <ViewCategory inLine={false} />}
                         {state.mode === Mode.EditingCategory && <EditCategory inLine={false} />}
                         {/* {state.mode === FORM_MODES.ADD_QUESTION && <AddQuestion category={null} />} */}
-                        {state.mode === Mode.ViewingQuestion && <ViewQuestion inLine={false} />}
+                        {/* {state.mode === Mode.ViewingQuestion && <ViewQuestion inLine={false} />} */}
                         {state.mode === Mode.EditingQuestion && <EditQuestion inLine={false} />}
                     </div>
 
