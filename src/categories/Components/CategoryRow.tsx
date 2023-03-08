@@ -18,7 +18,7 @@ import ViewCategory from "./ViewCategory";
 import QuestionList from "./questions/QuestionList";
 
 const CategoryRow = ({ category }: { category: ICategory }) => {
-    const { _id, title, level, inViewing, inEditing, inAdding, questions } = category;
+    const { _id, title, level, inViewing, inEditing, inAdding, numOfQuestions } = category;
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
@@ -75,14 +75,14 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 {title}
             </Button>
 
-            {questions && questions.length > 0 &&
-                <Badge bg="primary" pill>
-                    {questions.length} <FontAwesomeIcon icon={faQuestion} size='sm' />
+            {numOfQuestions! > 0 &&
+                <Badge bg="secondary" pill>
+                    {numOfQuestions!} <FontAwesomeIcon icon={faQuestion} size='sm' />
                 </Badge>
             }
 
             {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
+                <Button variant='link' size="sm" className="ms-1 py-0 px-0"
                     //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
                     onClick={() => edit(_id!)}
                 >

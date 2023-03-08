@@ -22,6 +22,34 @@ router.post("/create-category", (req, res, next) => {
 const arrPipeline = [
   {
     $lookup: {
+      from: "questions",
+      localField: "_id",
+      foreignField: "parentCategory",
+      pipeline: [
+        {
+          $project: {
+            _id: 1,
+          },
+        },
+      ],
+      as: "fromQuestions",
+    },
+  },
+  {
+    $project: {
+      title: 1,
+      level: 1,
+      parentCategory: 1,
+      created: 1,
+      createdBy: 1,
+      modified: 1,
+      modifiedBy: 1,
+      numOfQuestions: { $size: "$fromQuestions"}
+    },
+  },
+
+  {
+    $lookup: {
       from: "users",
       let: {
         searchId: {
@@ -132,8 +160,10 @@ const arrPipeline = [
       createdBy: 1,
       modified: 1,
       modifiedBy: 1,
+      numOfQuestions: 1
     },
   },
+  
 ]
 
 
@@ -168,7 +198,28 @@ router.get('/:id', async (req, res, next) => {
         parentCategory: req.params.id !== 'null' ? ObjectId(req.params.id) : null
       }
     },
-    ...arrPipeline
+    ...arrPipeline,
+    {
+      $lookup: {
+        from: "questions",
+        localField: "_id",
+        foreignField: "parentCategory",
+        pipeline: [
+          {
+            $project: {
+              _id: 1
+              //title: 1,
+              //parentCategory: 1,
+              //created: 1,
+              // createdBy: 1,
+              // modified: 1,
+              // modifiedBy: 1,
+            },
+          },
+        ],
+        as: "questions",
+      },
+    }       
   ], (error, data) => {
     if (error) {
       console.log(error)

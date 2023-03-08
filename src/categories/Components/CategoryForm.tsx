@@ -54,7 +54,7 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
   }, [nameRef])
 
   return (
-    <div className="form-wrapper p-2 primary" style={{ border: '1px solid navy', borderRadius: '5px' }}>
+    <div className="form-wrapper p-2 bg-primary" style={{ border: '1px solid navy', borderRadius: '5px' }}>
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">

@@ -51,6 +51,7 @@ export interface ICategory {
 	title: string,
 	level: number,
 	questions: IQuestion[],
+	numOfQuestions?: number,
 	parentCategory: Types.ObjectId | null,
 	isExpanded?: boolean,
 	created?: IDateAndBy,
