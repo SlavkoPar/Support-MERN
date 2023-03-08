@@ -40,24 +40,21 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
     const [hoverRef, hoverProps] = useHover();
     
     const Row1 =
-        <div ref={hoverRef} className="d-flex justify-content-start align-items-center w-100">
+        <div ref={hoverRef} className="d-flex justify-content-start align-items-center w-100 text-secondary">
             <Button
                 variant='link'
                 size="sm"
                 className="py-0 px-1"
-                title="Expand"
-                disabled={alreadyAdding}
             >
                 <FontAwesomeIcon
                     icon={faQuestion}
-                    className="text-primary"
-                    size='lg'
+                    size='sm'
                 />
             </Button>
             <Button
                 variant='link'
                 size="sm"
-                className="py-0 mx-1 text-decoration-none text-primary"
+                className="py-0 mx-1 text-decoration-none text-secondary"
                 title={_id!.toString()}
                 onClick={() => onSelectQuestion(_id!)}
                 disabled={alreadyAdding}
@@ -66,19 +63,19 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
             </Button>
 
             {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                <Button variant='link' size="sm" className="ms-1 py-0 px-1"
+                <Button variant='link' size="sm" className="ms-1 py-0 px-1 text-secondary"
                     //onClick={() => { dispatch({ type: ActionTypes.EDIT, question }) }}>
                     onClick={() => edit(_id!)}
                 >
-                    <FontAwesomeIcon icon={faEdit} className="text-primary" size='lg' />
+                    <FontAwesomeIcon icon={faEdit} size='lg' />
                 </Button>
             }
 
             {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
+                <Button variant='link' size="sm" className="ms-1 py-0 mx-1 text-secondary"
                     onClick={del}
                 >
-                    <FontAwesomeIcon icon={faRemove} className="text-primary" size='lg' />
+                    <FontAwesomeIcon icon={faRemove} size='lg' />
                 </Button>
             }
         </div>
@@ -92,7 +89,7 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
             {inAdding && state.mode === Mode.AddingQuestion ? (
                 <AddQuestion question={question} inLine={true} />
             )
-                : ((inEditing && state.mode === Mode.EditingQuestion) ||
+                : ( (inEditing && state.mode === Mode.EditingQuestion) ||
                     (inViewing && state.mode === Mode.ViewingQuestion)) ? (
                     <>
                         {/* <div class="d-lg-none">hide on lg and wider screens</div> */}

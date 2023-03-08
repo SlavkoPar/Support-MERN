@@ -8,8 +8,8 @@ type IProps = {
 
 export const FormButtons = ({ cancelForm, title, handleSubmit }: IProps) => {
   return (
-    <div className="my-0" 
-      style={{ padding: 0, margin: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}
+    <div className="my-0 p-1" 
+      style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}
     >
       <Button variant="danger" size="sm" type="button" className="ms-2" style={{borderRadius: '3px'}} onClick={cancelForm} >
         Cancel

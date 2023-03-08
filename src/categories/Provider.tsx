@@ -6,7 +6,7 @@ import axios, { AxiosError } from "axios";
 import { reducer } from 'categories/reducer';
 
 const initialState: ICategoriesState = {
-  mode: Mode.NULL, // TODO provjeri ove MODESSSSSSSSSSSSSSSSSSSSS 
+  mode: Mode.NULL,
   loading: false,
   categories: []
 }
@@ -24,12 +24,12 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const getSubCategories = useCallback(({ parentCategory, level }: IParentInfo) => {
     const urlCategories = `${hostPort}/categories/${parentCategory}`
-    console.log('FETCHING --->>> getCategories', level, parentCategory)
+    console.log('FETCHING --->>> getSubCategories', level, parentCategory)
     //dispatch({ type: ActionTypes.SET_LOADING })
     axios
       .get(urlCategories)
       .then(({ data }) => {
-        dispatch({ type: ActionTypes.SET_CATEGORIES, payload: { categories: data } });
+        dispatch({ type: ActionTypes.SET_SUB_CATEGORIES, payload: { categories: data } });
       })
       .catch((error) => {
         console.log(error);
@@ -68,7 +68,8 @@ export const Provider: React.FC<Props> = ({ children }) => {
      type: 
       ActionTypes.VIEW_CATEGORY |
       ActionTypes.EDIT_CATEGORY |
-      ActionTypes.SET_CATEGORY_KEEP_MODE
+      ActionTypes.SET_CATEGORY |
+      ActionTypes.SET_CATEGORY_IN_ADDING
   ) => {
     const url = `${hostPort}/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
@@ -139,8 +140,10 @@ export const Provider: React.FC<Props> = ({ children }) => {
   // Questions
   //
 
-  const getCategoryQuestions = useCallback(({parentCategory:_id, level}: { parentCategory: Types.ObjectId | null, level: number }) => {
-      getCategory(_id!, ActionTypes.SET_CATEGORY_KEEP_MODE)
+
+  const getCategoryQuestions = useCallback(({parentCategory: _id, level, inAdding} : IParentInfo ) => {
+      getCategory(_id!, inAdding ? ActionTypes.SET_CATEGORY_IN_ADDING : ActionTypes.SET_CATEGORY)
+        //(state.mode === Mode.AddingCategory || state.mode === Mode.AddingQuestion) 
   }, []);
  
   const createQuestion = useCallback((question: IQuestion) => {
@@ -237,7 +240,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       });
   };
 
-  const contextValue: ICategoriesContext = { state: state, 
+  const contextValue: ICategoriesContext = { state, 
     getSubCategories, createCategory, viewCategory: viewCategory, editCategory, updateCategory, deleteCategory,
     getCategoryQuestions, createQuestion, viewQuestion, editQuestion, updateQuestion, deleteQuestion
   }

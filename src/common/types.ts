@@ -14,4 +14,5 @@ export type ICreatedModifiedProps = {
     createdBy?: string,
     modified?: IDateAndBy,
     modifiedBy?: string
+    classes?: string 
   }

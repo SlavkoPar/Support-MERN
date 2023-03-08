@@ -60,7 +60,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
   const isDisabled = false; // !canEdit;
 
   return (
-    <div className="form-wrapper px-3 py-0 my-0 mb-1 w-100 bg-secondary" style={{ border: '1px solid navy', borderRadius: '5px' }}>
+    <div className="form-wrapper px-3 py-0 my-0 mb-1 w-100 " style={{ border: '1px solid navy', borderRadius: '5px' }}>
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">
@@ -77,7 +77,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
             // }}
             value={formik.values.title}
             rows={2}
-            placeholder={'New Question'}
+            placeholder='New Question'
             className="text-primary w-100"
             
           />
@@ -137,6 +137,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
             createdBy={initialValues.createdBy}
             modified={initialValues.modified}
             modifiedBy={initialValues.modifiedBy}
+            classes="text-primary"
           />
         }
         {(editing || adding) &&

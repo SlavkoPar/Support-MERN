@@ -54,13 +54,14 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
   }, [nameRef])
 
   return (
-    <div className="form-wrapper p-2 bg-primary" style={{ border: '1px solid navy', borderRadius: '5px' }}>
+    <div className="form-wrapper p-2" style={{ border: '1px solid navy', borderRadius: '5px' }}>
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">
           <Form.Label>Title</Form.Label>
           <Form.Control
             as="input"
+            placeholder="New Category"
             name="title"
             ref={nameRef}
             onChange={formik.handleChange}
@@ -72,7 +73,6 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
             value={formik.values.title}
             style={{ width: '100%' }}
             disabled={viewing}
-            placeholder={'New Category'}
           />
           <Form.Text className="text-danger">
             {formik.touched.title && formik.errors.title ? (
@@ -81,12 +81,21 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
           </Form.Text>
         </Form.Group>
 
+        <Form.Group>
+          <Form.Label>Number of Questions </Form.Label>
+          <div className="text-secondary">{formik.values.numOfQuestions}</div>
+          {/* <div className="p-1 bg-dark text-white">{createdBy}, {formatDate(created.date)}</div> */}
+        </Form.Group>
+
+
+
         {(viewing || editing) &&
           <CreatedModifiedForm
             created={initialValues.created}
             createdBy={initialValues.createdBy}
             modified={initialValues.modified}
             modifiedBy={initialValues.modifiedBy}
+            classes="text-secondary"
           />
         }
 

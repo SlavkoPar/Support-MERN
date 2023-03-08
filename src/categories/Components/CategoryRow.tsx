@@ -61,12 +61,11 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 title="Expand"
                 disabled={alreadyAdding}
             >
-                <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} color='orange' size='lg' />
+                <FontAwesomeIcon icon={isExpanded ? faCaretDown : faCaretRight} size='lg' />
             </Button>
             <Button
                 variant='link'
                 size="sm"
-                style={{ color: "orange" }}
                 className="py-0 mx-1 text-decoration-none"
                 title={_id!.toString()}
                 onClick={() => onSelectCategory(_id!)}
@@ -76,7 +75,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
             </Button>
 
             {numOfQuestions! > 0 &&
-                <Badge bg="secondary" pill>
+                <Badge pill bg="secondary">
                     {numOfQuestions!} <FontAwesomeIcon icon={faQuestion} size='sm' />
                 </Badge>
             }
@@ -86,7 +85,7 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                     //onClick={() => { dispatch({ type: ActionTypes.EDIT, category }) }}>
                     onClick={() => edit(_id!)}
                 >
-                    <FontAwesomeIcon icon={faEdit} color='orange' size='lg' />
+                    <FontAwesomeIcon icon={faEdit} size='lg' />
                 </Button>
             }
 
@@ -94,16 +93,16 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 <Button variant='link' size="sm" className="ms-1 py-0 mx-1"
                     onClick={del}
                 >
-                    <FontAwesomeIcon icon={faRemove} color='orange' size='lg' />
+                    <FontAwesomeIcon icon={faRemove} size='lg' />
                 </Button>
             }
 
             {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add SubCategory" >
-                    <FontAwesomeIcon icon={faPlus} color='orange' size='lg'
+                <Button variant='link' size="sm" className="ms-2 py-0 mx-1 text-primary" title="Add SubCategory" >
+                    <FontAwesomeIcon icon={faPlus} size='lg'
                         onClick={() => {
                             dispatch({
-                                type: ActionTypes.ADD_CATEGORY,
+                                type: ActionTypes.ADD_SUB_CATEGORY,
                                 payload: {
                                     parentCategory: category._id,
                                     level: category.level
@@ -117,15 +116,12 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
             }
 
             {canEdit && !alreadyAdding && hoverProps.isHovered &&
-                <Button variant='link' size="sm" className="ms-2 py-0 mx-1" title="Add Question" >
-                    <FontAwesomeIcon icon={faPlus} color='blue' size='lg'
+                <Button variant='link' size="sm" className="ms-2 py-0 mx-1 text-secondary" title="Add Question" >
+                    <FontAwesomeIcon icon={faPlus} size='lg'
                         onClick={() => {
-                            dispatch({
-                                type: ActionTypes.ADD_QUESTION,
-                                payload: { category }
-                            })
+                            dispatch({ type: ActionTypes.ADD_QUESTION, payload: { category } })
                             if (!isExpanded)
-                                setIsExpanded(true)
+                                setIsExpanded(true);
                         }}
                     />
                 </Button>

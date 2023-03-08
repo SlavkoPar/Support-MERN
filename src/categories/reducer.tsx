@@ -36,7 +36,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         loading: true
       }
 
-    case ActionTypes.SET_CATEGORIES: {
+    case ActionTypes.SET_SUB_CATEGORIES: {
       const { categories } = action.payload;
       console.log(state.categories, 'Payload categories: ', categories, state.categories.concat(categories))
       return {
@@ -62,11 +62,11 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       return { ...state, error, loading: false };
     }
 
-    case ActionTypes.ADD_CATEGORY: {
+    case ActionTypes.ADD_SUB_CATEGORY: {
       const { parentCategory, level } = action.payload;
       const category: ICategory = {
         ...initialCategory,
-        title: 'New Category',
+        title: '',
         level: level + 1,
         parentCategory,
         inAdding: true
@@ -90,8 +90,7 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
     }
 
     case ActionTypes.SET_CATEGORY: {
-      const { category } = action.payload;
-      // category doesn't contain inViewving, inEditing, inAdding 
+      const { category } = action.payload; // category doesn't contain inViewving, inEditing, inAdding 
       return {
         ...state,
         categories: state.categories.map(c => c._id === category._id ? category : c),
@@ -100,26 +99,24 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
       }
     }
 
-    case ActionTypes.SET_CATEGORY_KEEP_MODE: { //  TODO avoid: , inAdding: c.inAdding
-      const { category } = action.payload;
-      const cat = state.categories.find(c => c._id === category._id)
-      const questionInAdding = cat!.questions?.find(q => q.inAdding);
-      // for adding we need copy question.inAdding to questions
-      // category doesn't contain inViewing, inEditing, inAdding 
+    case ActionTypes.SET_CATEGORY_IN_ADDING: {
+      const { category } = action.payload; // category doesn't contain inViewving, inEditing, inAdding 
+      const { questions } = category;
+      const categoryInAdding = state.categories.find(c => c.inAdding); // TODO Proveri da li uvek dolaze questions
+      console.assert(categoryInAdding, "Expected category.inAdding")
+      const questionInAdding = categoryInAdding!.questions?.find(q => q.inAdding);
+      if (questionInAdding) {
+        questions.unshift(questionInAdding);
+        console.assert(state.mode === Mode.AddingQuestion, "expected Mode.AddingQuestion")
+      }
       return {
         ...state,
-        categories: state.categories.map(c => c._id === category._id
-          ? {
-            ...category,
-            questions: questionInAdding ? [questionInAdding!, ...category.questions] : category.questions,
-            inAdding: c.inAdding
-          }
-          : c
-        ),
-        // mode: Mode.NULL,  keep mode
+        categories: state.categories.map(c => c._id === category._id ? { ...category, questions } : c),
+        // keep mode
         loading: false
       }
     }
+
 
     case ActionTypes.VIEW_CATEGORY: {
       const { category } = action.payload;
@@ -175,13 +172,13 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         ...initialQuestion,
         parentCategory: _id!,
         level,
-        title: 'New Question',
+        title: '',
         inAdding: true
       }
       return {
         ...state,
         categories: state.categories.map(c => c._id === _id
-          ? { ...c, questions: [...c.questions ?? [], question], inAdding: true }
+          ? { ...c, questions: [question, ...c.questions ?? []], inAdding: true }
           : c),
         mode: Mode.AddingQuestion
       };
@@ -299,8 +296,6 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
         mode: Mode.NULL,
       };
     }
-
-
 
     default:
       return state;  // TODO throw error

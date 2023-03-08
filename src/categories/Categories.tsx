@@ -19,7 +19,7 @@ const Providered = () => {
         <Container>
             <Button variant="secondary" size="sm" type="button"
                 onClick={() => dispatch({
-                    type: ActionTypes.ADD_CATEGORY,
+                    type: ActionTypes.ADD_SUB_CATEGORY,
                     payload: {
                         parentCategory: null,
                         level: 0

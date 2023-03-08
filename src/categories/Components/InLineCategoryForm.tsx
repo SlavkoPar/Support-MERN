@@ -71,8 +71,8 @@ const InLineCategoryForm = ({ inLine, mode, initialValues, submitForm, children 
               // formik.submitForm();
               //}}
               value={formik.values.title}
-              style={{ color: 'orange', width: '100%' }}
-              placeholder={'New Category'}
+              style={{ width: '100%' }}
+              placeholder="New Category"
               size="sm"
             />
             <Form.Text className="text-danger">

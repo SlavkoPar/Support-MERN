@@ -65,7 +65,8 @@ export interface ICategory {
 
 export interface IParentInfo {
 	parentCategory: Types.ObjectId | null,
-	level: number
+	level: number,
+	inAdding?: boolean
 }
 
 export interface ICategoriesState {
@@ -77,7 +78,7 @@ export interface ICategoriesState {
 
 export interface ICategoriesContext {
 	state: ICategoriesState,
-	getSubCategories: ({ parentCategory, level }: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	getSubCategories: ({ parentCategory, level }: IParentInfo) => void,
 	createCategory: (category: ICategory) => void,
 	viewCategory: (_id: Types.ObjectId) => void,
 	editCategory: (_id: Types.ObjectId) => void,
@@ -85,7 +86,7 @@ export interface ICategoriesContext {
 	deleteCategory: (_id: Types.ObjectId) => void,
 	//////////////
 	// questions
-	getCategoryQuestions: ({parentCategory, level}: { parentCategory: Types.ObjectId | null, level: number }) => void,
+	getCategoryQuestions: ({parentCategory, level, inAdding}: IParentInfo) => void,
 	createQuestion: (question: IQuestion) => void,
 	viewQuestion: (_id: Types.ObjectId) => void,
 	editQuestion: (_id: Types.ObjectId) => void,
@@ -110,12 +111,12 @@ export interface IQuestionFormProps {
 
 export enum ActionTypes {
 	SET_LOADING = 'SET_LOADING',
-	SET_CATEGORIES = 'SET_CATEGORIES',
+	SET_SUB_CATEGORIES = 'SET_SUB_CATEGORIES',
 	CLEAN_SUB_TREE = 'CLEAN_SUB_TREE',
 	SET_ERROR = 'SET_ERROR',
-	ADD_CATEGORY = 'ADD_CATEGORY',
+	ADD_SUB_CATEGORY = 'ADD_SUB_CATEGORY',
 	SET_CATEGORY = 'SET_CATEGORY',
-	SET_CATEGORY_KEEP_MODE = 'SET_CATEGORY_KEEP_MODE',
+	SET_CATEGORY_IN_ADDING = 'SET_CATEGORY_IN_ADDING',
 	SET_ADDED_CATEGORY = 'SET_ADDED_CATEGORY',
 	VIEW_CATEGORY = 'VIEW_CATEGORY',
 	EDIT_CATEGORY = 'EDIT_CATEGORY',
@@ -140,11 +141,11 @@ export enum ActionTypes {
 export type CategoriesPayload = {
 	[ActionTypes.SET_LOADING]: undefined;
 
-	[ActionTypes.SET_CATEGORIES]: {
+	[ActionTypes.SET_SUB_CATEGORIES]: {
 		categories: ICategory[];
 	};
 
-	[ActionTypes.ADD_CATEGORY]: IParentInfo;
+	[ActionTypes.ADD_SUB_CATEGORY]: IParentInfo;
 
 	[ActionTypes.VIEW_CATEGORY]: {
 		category: ICategory;
@@ -158,10 +159,9 @@ export type CategoriesPayload = {
 		category: ICategory;
 	};
 
-	[ActionTypes.SET_CATEGORY_KEEP_MODE]: {
+	[ActionTypes.SET_CATEGORY_IN_ADDING]: {
 		category: ICategory;
 	};
-
 
 	[ActionTypes.SET_ADDED_CATEGORY]: {
 		category: ICategory;

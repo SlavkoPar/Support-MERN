@@ -1,28 +1,20 @@
 import { useEffect } from "react";
 import { ListGroup } from "react-bootstrap";
 import QuestionRow from "./QuestionRow";
-import { ICategory, IQuestion, IParentInfo } from "categories/types";
+import { ICategory, IQuestion, IParentInfo, Mode } from "categories/types";
 import { useCategoryContext } from "categories/Provider";
 
 const QuestionList = ({ parentCategory, level }: IParentInfo) => {
     const { state, getCategoryQuestions } = useCategoryContext();
+    const inAdding = state.mode === Mode.AddingCategory || state.mode === Mode.AddingQuestion;
     useEffect(() => {
-        console.log('Zovem getQuestions', level, parentCategory)
-        getCategoryQuestions({ parentCategory, level });
-    }, [level, getCategoryQuestions, parentCategory]);
+        getCategoryQuestions({ parentCategory, level, inAdding });
+    }, [level, getCategoryQuestions, parentCategory, inAdding]);
 
     // console.log('level, parentCategory:', level, parentCategory)
     const category = state.categories.find(c => c._id === parentCategory);
     const questions  = category!.questions??[]; 
-    // console.log('length:', cats.length)
-    // cats.forEach(c => console.log(c.parentCategory, c.title));
-    const cat: ICategory = {  // TODO uvedi ICategoryParams
-        _id: parentCategory??undefined,
-        level: 12345,
-        title: '',
-        parentCategory: null,
-        questions: []
-    }
+   
     return (
         <div className={`ms-0`}>
             <>

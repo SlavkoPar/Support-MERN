@@ -3,7 +3,7 @@ import { Form, Container, Row, Col } from "react-bootstrap";
 import { formatDate } from 'common/utilities'
 import { ICreatedModifiedProps } from './types'
 
-export const CreatedModifiedForm = ({ created, createdBy, modified, modifiedBy }: ICreatedModifiedProps) => {
+export const CreatedModifiedForm = ({ created, createdBy, modified, modifiedBy, classes }: ICreatedModifiedProps) => {
   return (
     <Container className="my-1">
       <Row>
@@ -16,7 +16,7 @@ export const CreatedModifiedForm = ({ created, createdBy, modified, modifiedBy }
 
                 <Form.Group>
                   <Form.Label>Created By: </Form.Label>
-                  <div className="text-muted">{createdBy}, {formatDate(created.date)}</div>
+                  <div className={classes}>{createdBy}, {formatDate(created.date)}</div>
                   {/* <div className="p-1 bg-dark text-white">{createdBy}, {formatDate(created.date)}</div> */}
                 </Form.Group>
                 {/* <Form.Group controlId="created_By_userName">
