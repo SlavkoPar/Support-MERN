@@ -1,13 +1,12 @@
 import { Types } from "mongoose";
-import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faRemove, faQuestion } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faRemove, faQuestion, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { ListGroup, Button } from "react-bootstrap";
 
 import { useGlobalState } from 'global/GlobalProvider'
-import { Mode } from "categories/types";
-import { useCategoryContext } from '../../Provider'
+import { ActionTypes, ICategoryInfo, Mode } from "categories/types";
+import { useCategoryContext, useCategoryDispatch } from 'categories/Provider'
 import { useHover } from 'common/components/useHover';
 import { IQuestion } from 'categories/types'
 
@@ -16,11 +15,13 @@ import EditQuestion from "./EditQuestion";
 import ViewQuestion from "./ViewQuestion";
 
 const QuestionRow = ({ question }: { question: IQuestion }) => {
-    const { _id, title, inViewing, inEditing, inAdding } = question;
+    const { _id, parentCategory, level, title, inViewing, inEditing, inAdding } = question;
 
     const { canEdit, isDarkMode, variant, bg } = useGlobalState();
 
     const { state, viewQuestion, editQuestion, deleteQuestion } = useCategoryContext();
+    const dispatch = useCategoryDispatch();
+
 
     const alreadyAdding = state.mode === Mode.AddingQuestion;
 
@@ -38,7 +39,7 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
         viewQuestion(_id);
     }
     const [hoverRef, hoverProps] = useHover();
-    
+
     const Row1 =
         <div ref={hoverRef} className="d-flex justify-content-start align-items-center w-100 text-secondary">
             <Button
@@ -78,6 +79,17 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
                     <FontAwesomeIcon icon={faRemove} size='lg' />
                 </Button>
             }
+
+            {canEdit && !alreadyAdding && hoverProps.isHovered &&
+                <Button variant='link' size="sm" className="ms-2 py-0 mx-1 text-secondary" title="Add Question" >
+                    <FontAwesomeIcon icon={faPlus} size='lg'
+                        onClick={() => {
+                            const categoryInfo: ICategoryInfo = { _id: parentCategory, level}
+                            dispatch({ type: ActionTypes.ADD_QUESTION, payload: { categoryInfo } })
+                        }}
+                    />
+                </Button>
+            }
         </div>
 
     return (
@@ -89,7 +101,7 @@ const QuestionRow = ({ question }: { question: IQuestion }) => {
             {inAdding && state.mode === Mode.AddingQuestion ? (
                 <AddQuestion question={question} inLine={true} />
             )
-                : ( (inEditing && state.mode === Mode.EditingQuestion) ||
+                : ((inEditing && state.mode === Mode.EditingQuestion) ||
                     (inViewing && state.mode === Mode.ViewingQuestion)) ? (
                     <>
                         {/* <div class="d-lg-none">hide on lg and wider screens</div> */}

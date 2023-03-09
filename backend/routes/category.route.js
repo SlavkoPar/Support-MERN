@@ -286,7 +286,8 @@ router
             {
               $project: {
                 title: 1,
-                //parentCategory: 1,
+                parentCategory: 1,
+                level: 1,
                 created: 1,
                 // createdBy: 1,
                 // modified: 1,

@@ -63,11 +63,19 @@ export interface ICategory {
 	inAdding?: boolean
 }
 
+export interface ICategoryInfo {
+	_id: Types.ObjectId,
+	level: number
+}
+
+
 export interface IParentInfo {
 	parentCategory: Types.ObjectId | null,
 	level: number,
 	inAdding?: boolean
 }
+
+
 
 export interface ICategoriesState {
 	mode: string | null,
@@ -187,7 +195,7 @@ export type CategoriesPayload = {
 	// questions
 
 	[ActionTypes.ADD_QUESTION]: {
-		category: ICategory;
+		categoryInfo: ICategoryInfo;
 	}
 
 	[ActionTypes.VIEW_QUESTION]: {

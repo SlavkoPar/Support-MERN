@@ -166,8 +166,8 @@ export const reducer = (state: ICategoriesState, action: CategoriesActions) => {
     }
 
     case ActionTypes.ADD_QUESTION: {
-      const { category } = action.payload;
-      const { _id, level } = category;
+      const { categoryInfo } = action.payload;
+      const { _id, level } = categoryInfo;
       const question: IQuestion = {
         ...initialQuestion,
         parentCategory: _id!,

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { Form, CloseButton } from "react-bootstrap";
 import { CreatedModifiedForm } from "common/CreateModifiedForm"
 import { FormButtons } from "common/FormButtons"
-import { FormMode, ActionTypes, ICategoryFormProps } from "categories/types";
+import { FormMode, ActionTypes, ICategoryFormProps, ICategory } from "categories/types";
 
 import { useCategoryDispatch } from "categories/Provider";
 
@@ -37,7 +37,7 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
       //   .integer("Invalid roll number")
       //   .required("Required"),
     }),
-    onSubmit: values => {
+    onSubmit: (values: ICategory) => {
       //alert(JSON.stringify(values, null, 2));
       console.log('CategoryForm.onSubmit', JSON.stringify(values, null, 2))
       submitForm(values)
@@ -54,7 +54,7 @@ const CategoryForm = ({ mode, initialValues, submitForm, children }: ICategoryFo
   }, [nameRef])
 
   return (
-    <div className="form-wrapper p-2" style={{ border: '1px solid navy', borderRadius: '5px' }}>
+    <div className="form-wrapper p-2">
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">

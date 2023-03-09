@@ -6,7 +6,7 @@ import { faEdit, faRemove, faCaretRight, faCaretDown, faPlus, faQuestion } from 
 import { ListGroup, Button, Badge } from "react-bootstrap";
 
 import { useGlobalState } from 'global/GlobalProvider'
-import { ActionTypes, Mode } from "categories/types";
+import { ActionTypes, ICategoryInfo, Mode } from "categories/types";
 import { useCategoryContext, useCategoryDispatch } from 'categories/Provider'
 import { useHover } from 'common/components/useHover';
 import { ICategory } from 'categories/types'
@@ -119,7 +119,8 @@ const CategoryRow = ({ category }: { category: ICategory }) => {
                 <Button variant='link' size="sm" className="ms-2 py-0 mx-1 text-secondary" title="Add Question" >
                     <FontAwesomeIcon icon={faPlus} size='lg'
                         onClick={() => {
-                            dispatch({ type: ActionTypes.ADD_QUESTION, payload: { category } })
+                            const categoryInfo: ICategoryInfo = { _id: category._id!, level: category.level}
+                            dispatch({ type: ActionTypes.ADD_QUESTION, payload: { categoryInfo } })
                             if (!isExpanded)
                                 setIsExpanded(true);
                         }}

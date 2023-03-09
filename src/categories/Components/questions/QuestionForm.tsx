@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { Form, CloseButton } from "react-bootstrap";
 import { CreatedModifiedForm } from "common/CreateModifiedForm"
 import { FormButtons } from "common/FormButtons"
-import { ActionTypes, FormMode, IQuestionFormProps } from "categories/types";
+import { ActionTypes, FormMode, IQuestion, IQuestionFormProps } from "categories/types";
 
 import { Select } from 'common/components/Select';
 import { sourceOptions } from 'common/sourceOptions'
@@ -41,7 +41,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
       //   .integer("Invalid roll number")
       //   .required("Required"),
     }),
-    onSubmit: values => {
+    onSubmit: (values: IQuestion) => {
       //alert(JSON.stringify(values, null, 2));
       console.log('QuestionForm.onSubmit', JSON.stringify(values, null, 2))
       submitForm(values)
@@ -60,7 +60,7 @@ const QuestionForm = ({ mode, initialValues, submitForm, children }: IQuestionFo
   const isDisabled = false; // !canEdit;
 
   return (
-    <div className="form-wrapper px-3 py-0 my-0 mb-1 w-100 " style={{ border: '1px solid navy', borderRadius: '5px' }}>
+    <div className="form-wrapper px-3 py-0 my-0 mb-1 w-100">
       <CloseButton onClick={closeForm} className="float-end" />
       <Form onSubmit={formik.handleSubmit}>
         <Form.Group controlId="title">
