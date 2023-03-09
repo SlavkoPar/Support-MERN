@@ -2723,13 +2723,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/ismobilejs@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@types/ismobilejs/-/ismobilejs-1.0.1.tgz#817a0a7fc2faad9494ac5f8b44d75d536c876ef6"
-  integrity sha512-QLMcgU2IHqwjWXIS8CSJSZDUu75qhq29K/xBIIcJbPZ9nqIrdAkFJ472zH/OkaiX/6L31chBBkU/pNoY+hY3og==
-  dependencies:
-    ismobilejs "*"
-
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.4.tgz#8467d4b3c087805d63580480890791277ce35c44"
@@ -6181,7 +6174,7 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-ismobilejs@*, ismobilejs@^1.1.1:
+ismobilejs@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ismobilejs/-/ismobilejs-1.1.1.tgz#c56ca0ae8e52b24ca0f22ba5ef3215a2ddbbaa0e"
   integrity sha512-VaFW53yt8QO61k2WJui0dHf4SlL8lxBofUuUmwBo0ljPk0Drz2TiuDW4jo3wDcv41qy/SxrJ+VAzJ/qYqsmzRw==
@@ -8234,7 +8227,7 @@ postcss@^7.0.35:
     picocolors "^0.2.1"
     source-map "^0.6.1"
 
-postcss@^8.0.9, postcss@^8.3.5, postcss@^8.4.19, postcss@^8.4.4:
+postcss@^8.0.9, postcss@^8.3.5, postcss@^8.4.16, postcss@^8.4.19, postcss@^8.4.4:
   version "8.4.21"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.21.tgz#c639b719a57efc3187b13a1d765675485f4134f4"
   integrity sha512-tP7u/Sn/dVxK2NnruI4H9BG+x+Wxz6oeZ1cJ8P6G/PZY0IKk4k/63TDsQf2kQq3+qoJeLm2kIBUNlZe3zgb4Zg==
@@ -9489,9 +9482,9 @@ terser-webpack-plugin@^5.1.3, terser-webpack-plugin@^5.2.5:
     terser "^5.16.5"
 
 terser@^5.0.0, terser@^5.10.0, terser@^5.16.5:
-  version "5.16.5"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-5.16.5.tgz#1c285ca0655f467f92af1bbab46ab72d1cb08e5a"
-  integrity sha512-qcwfg4+RZa3YvlFh0qjifnzBHjKGNbtDo9yivMqMFDy9Q6FSaQWSB/j1xKhsoUFJIqDOM3TsN6D5xbrMrFcHbg==
+  version "5.16.6"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.16.6.tgz#f6c7a14a378ee0630fbe3ac8d1f41b4681109533"
+  integrity sha512-IBZ+ZQIA9sMaXmRZCUMDjNH0D5AQQfdn4WUjHL0+1lF4TP1IHRJbrhb6fNaXWikrYQTSkb7SLxkeXAiy1p7mbg==
   dependencies:
     "@jridgewell/source-map" "^0.3.2"
     acorn "^8.5.0"
