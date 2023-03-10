@@ -13,14 +13,8 @@ const initialState: IUsersState = {
   users: []
 }
 
-const UsersContext = createContext<IUsersContext>({
-  store: { ...initialState },
-  getUsers: ({ parentUser, level }: { parentUser: Types.ObjectId | null, level: number }) => { },
-  editUser: (_id: Types.ObjectId) => { },
-  updateUser: (user: IUser) => { },
-  deleteUser: (_id: Types.ObjectId) => { }
-});
 
+const UsersContext = createContext<IUsersContext>({} as any);
 const UserDispatchContext = createContext<Dispatch<any>>(() => null);
 
 type Props = {
