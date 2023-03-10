@@ -20,6 +20,7 @@
     "ismobilejs": "^1.1.1",
     "mongoose": "^6.9.0",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
     "react-scripts": "5.0.1",
@@ -31,10 +32,8 @@
   "devDependencies": {
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16"
-
   },
   "proxy": "http://localhost:5000",
-
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
