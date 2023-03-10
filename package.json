@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": "Slavko Parezanin",
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "config": "^3.3.7",
