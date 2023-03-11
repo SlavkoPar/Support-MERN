@@ -38,10 +38,10 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(cors());
-app.use('/users', userRoute)
-app.use('/categories', categoryRoute)
-app.use('/questions', questionRoute)
-app.use('/contacts', contactRoute);
+app.use('/api/users', userRoute)
+app.use('/api/categories', categoryRoute)
+app.use('/api/questions', questionRoute)
+app.use('/api/contacts', contactRoute);
 
 //* Serve static assets in production, must be at this location of this file
 if (process.env.NODE_ENV === 'production') {

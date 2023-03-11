@@ -25,7 +25,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
 
   const getUsers = useCallback(({ parentUser, level }: { parentUser: Types.ObjectId | null, level: number }) => {
-    const urlUsers = `${hostPort}/users/${parentUser}`
+    const urlUsers = `${hostPort}/api/users/${parentUser}`
     console.log('FETCHING --->>> getUsers', level, parentUser)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
@@ -42,7 +42,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   
   const editUser = useCallback((_id: Types.ObjectId) => {
-    const url = `${hostPort}/users/get-user/${_id}`
+    const url = `${hostPort}/api/users/get-user/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
@@ -60,7 +60,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const updateUser = useCallback((user: IUser) => {
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
-    const url = `${hostPort}/users/update-user/${user._id}`
+    const url = `${hostPort}/api/users/update-user/${user._id}`
     console.log(`UPDATING --->>> ${url}`)
     axios
       .put(url, user)
@@ -87,7 +87,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const deleteUser = (_id: Types.ObjectId) => {
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
-      .delete(`${hostPort}/users/delete-user/${_id}`)
+      .delete(`${hostPort}/api/users/delete-user/${_id}`)
       .then(res => {
         if (res.status === 200) {
           console.log("User successfully deleted");
@@ -102,7 +102,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   /*
   const refreshAddedUser = useCallback(_id => {
-    const url = `${hostPort}/users/get-user/${_id}`
+    const url = `${hostPort}/api/users/get-user/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     dispatch({ type: ActionTypes.SET_LOADING })
     axios

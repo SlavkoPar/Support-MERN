@@ -23,7 +23,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const getSubCategories = useCallback(({ parentCategory, level }: IParentInfo) => {
-    const urlCategories = `${hostPort}/categories/${parentCategory}`
+    const urlCategories = `${hostPort}/api/categories/${parentCategory}`
     console.log('FETCHING --->>> getSubCategories', level, parentCategory)
     //dispatch({ type: ActionTypes.SET_LOADING })
     axios
@@ -40,7 +40,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const createCategory = useCallback((category: ICategory) => {
     dispatch({ type: ActionTypes.SET_LOADING }) // TODO treba li ovo 
     axios
-      .post(`${hostPort}/categories/create-category`, category)
+      .post(`${hostPort}/api/categories/create-category`, category)
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Category successfully created')
@@ -71,7 +71,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
       ActionTypes.SET_CATEGORY |
       ActionTypes.SET_CATEGORY_IN_ADDING
   ) => {
-    const url = `${hostPort}/categories/get-category/${_id}`
+    const url = `${hostPort}/api/categories/get-category/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
@@ -96,7 +96,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const updateCategory = useCallback((category: ICategory) => {
     dispatch({ type: ActionTypes.SET_LOADING })
-    const url = `${hostPort}/categories/update-category/${category._id}`
+    const url = `${hostPort}/api/categories/update-category/${category._id}`
     console.log(`UPDATING --->>> ${url}`)
     axios
       .put(url, category)
@@ -123,7 +123,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const deleteCategory = (_id: Types.ObjectId) => {
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
-      .delete(`${hostPort}/categories/delete-category/${_id}`)
+      .delete(`${hostPort}/api/categories/delete-category/${_id}`)
       .then(res => {
         if (res.status === 200) {
           console.log("Category successfully deleted");
@@ -149,7 +149,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const createQuestion = useCallback((question: IQuestion) => {
     dispatch({ type: ActionTypes.SET_LOADING }) // TODO treba li ovo 
     axios
-      .post(`${hostPort}/questions/create-question`, question)
+      .post(`${hostPort}/api/questions/create-question`, question)
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('Question successfully created')
@@ -174,7 +174,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   
   const getQuestion = (_id: Types.ObjectId, type: ActionTypes.VIEW_QUESTION | ActionTypes.EDIT_QUESTION) => {
-    const url = `${hostPort}/questions/get-question/${_id}`
+    const url = `${hostPort}/api/questions/get-question/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
@@ -200,7 +200,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const updateQuestion = useCallback((question: IQuestion) => {
     dispatch({ type: ActionTypes.SET_LOADING })
-    const url = `${hostPort}/questions/update-question/${question._id}`
+    const url = `${hostPort}/api/questions/update-question/${question._id}`
     console.log(`UPDATING --->>> ${url}`)
     axios
       .put(url, question)
@@ -227,7 +227,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const deleteQuestion = (_id: Types.ObjectId) => {
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
-      .delete(`${hostPort}/questions/delete-question/${_id}`)
+      .delete(`${hostPort}/api/questions/delete-question/${_id}`)
       .then(res => {
         if (res.status === 200) {
           console.log("Question successfully deleted");
