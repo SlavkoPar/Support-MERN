@@ -53,7 +53,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 // PORT
-const port = process.env.REACT_APP_PORT || 4000;
+const port = process.env.REACT_APP_PORT || 5000;
 const server = app.listen(port, () => {
     console.log('Connected to port ' + port)
 })
