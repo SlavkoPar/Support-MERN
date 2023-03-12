@@ -32,10 +32,6 @@ interface Props {
   children: React.ReactNode
 }
 
-const configHost: string | undefined = process.env.REACT_APP_HOST;
-const configPort: string | undefined = process.env.REACT_APP_PORT;
-export const hostPort = `${configHost!}:${configPort!}`
-
 export const GlobalProvider: React.FC<Props> = ({ children }) => {
   const [globalState, dispatch] = useReducer(reducer, initialState);
 
@@ -54,7 +50,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
       }
     }
     axios
-      .post(`${hostPort}/api/users/register-user`, user)
+      .post(`api/users/register-user`, user)
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('User successfully registered')
@@ -84,7 +80,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
   const signInUser = useCallback((loginUser: ILoginUser) => {
     dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
     axios
-      .post(`${hostPort}/api/users/sign-in-user`, { ...loginUser, date: new Date() })
+      .post(`api/users/sign-in-user`, { ...loginUser, date: new Date() })
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('User successfully logged in')
@@ -112,6 +108,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
 
   const loadStateFromLocalStorage = useCallback(() => {
     dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
+    let ret = false;
     try {
       let globalState: IGlobalState | undefined;
       if ('localStorage' in window) {
@@ -121,6 +118,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
           console.log('parsed', parsed)
           globalState = parsed;
           //global = parseFromLocalStorage(parsed);
+          ret = true;
         }
       }
       if (globalState) {
@@ -143,6 +141,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
     catch (err) {
       console.error(err);
     }
+    return ret;
   }, [dispatch, signInUser]);
 
   return (

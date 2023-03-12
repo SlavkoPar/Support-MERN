@@ -1,8 +1,6 @@
 import { createContext, useContext, useReducer, useCallback, Dispatch } from 'react';
 import { Types } from 'mongoose';
 
-import { hostPort } from 'global/GlobalProvider'
-
 import { ActionTypes, FORM_MODES, IUser, IUsersState, IUsersContext } from './types';
 import { reducer } from 'users/reducer';
 import axios, { AxiosError } from "axios";
@@ -12,7 +10,6 @@ const initialState: IUsersState = {
   loading: false,
   users: []
 }
-
 
 const UsersContext = createContext<IUsersContext>({} as any);
 const UserDispatchContext = createContext<Dispatch<any>>(() => null);
@@ -25,7 +22,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
 
   const getUsers = useCallback(({ parentUser, level }: { parentUser: Types.ObjectId | null, level: number }) => {
-    const urlUsers = `${hostPort}/api/users/${parentUser}`
+    const urlUsers = `api/users/${parentUser}`
     console.log('FETCHING --->>> getUsers', level, parentUser)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
@@ -42,7 +39,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   
   const editUser = useCallback((_id: Types.ObjectId) => {
-    const url = `${hostPort}/api/users/get-user/${_id}`
+    const url = `api/users/get-user/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
@@ -60,7 +57,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const updateUser = useCallback((user: IUser) => {
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
-    const url = `${hostPort}/api/users/update-user/${user._id}`
+    const url = `api/users/update-user/${user._id}`
     console.log(`UPDATING --->>> ${url}`)
     axios
       .put(url, user)
@@ -87,7 +84,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const deleteUser = (_id: Types.ObjectId) => {
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
-      .delete(`${hostPort}/api/users/delete-user/${_id}`)
+      .delete(`api/users/delete-user/${_id}`)
       .then(res => {
         if (res.status === 200) {
           console.log("User successfully deleted");
@@ -102,7 +99,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   /*
   const refreshAddedUser = useCallback(_id => {
-    const url = `${hostPort}/api/users/get-user/${_id}`
+    const url = `api/users/get-user/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     dispatch({ type: ActionTypes.SET_LOADING })
     axios

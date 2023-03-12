@@ -41,7 +41,7 @@ export interface IGlobalState {
 
 export interface IGlobalContext {
 	globalState: IGlobalState,
-	loadStateFromLocalStorage: () => void,
+	loadStateFromLocalStorage: () => boolean,
 	registerUser: (loginUser: ILoginUser) => void,
 	signInUser: (loginUser: ILoginUser) => void
 }
