@@ -9,7 +9,7 @@ const ObjectId = mongoose.Types.ObjectId
 let userSchema = require("../models/User");
 
 // REGISTER User
-router.post("register-user", (req, res, next) => {
+router.post("/register-user", (req, res, next) => {
     const count = userSchema.count()
     if (count === 0)
         req.body.role = "OWNER" // first registered user is OWNER
@@ -50,7 +50,7 @@ router.post("register-user", (req, res, next) => {
 
 
 // REGISTER User
-router.post("sign-in-user", (req, res, next) => {
+router.post("/sign-in-user", (req, res, next) => {
     User.findOne({ userName: req.body.userName }, function (error, user) {
         if (error) {
             return next(error);
@@ -83,7 +83,7 @@ router.post("sign-in-user", (req, res, next) => {
 
 
 // CREATE User
-router.post("create-user", (req, res, next) => {
+router.post("/create-user", (req, res, next) => {
     // const { role } = req.body;
     // if (role === 'FIRST_REGISTERED_USER_IS_OWNER') {
     //     req.body.role = 'OWNER';
@@ -172,7 +172,7 @@ router.get("/", (req, res, next) => {
 
 // Get Single User
 router
-    .route(":id")
+    .route("/:id")
     .get((req, res, next) => {
         userSchema.aggregate([
             {
@@ -192,7 +192,7 @@ router
 
 // UPDATE User
 router
-    .route("update-user/:id")
+    .route("/update-user/:id")
     // Get Single User
     .get((req, res, next) => {
         userSchema.findById(
@@ -225,7 +225,7 @@ router
     });
 
 // Delete User
-router.delete("delete-user/:id",
+router.delete("/delete-user/:id",
     (req, res, next) => {
         userSchema.findByIdAndRemove(
             req.params.id, (error, data) => {

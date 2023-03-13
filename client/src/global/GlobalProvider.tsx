@@ -25,6 +25,14 @@ const initialState: IGlobalState = {
   loading: false
 }
 
+const config = {
+  dataType: "json",
+  headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+  }
+};
+
 const GlobalContext = createContext<IGlobalContext>({} as any);
 const GlobalDispatchContext = createContext<Dispatch<any>>(() => null);
 
@@ -50,7 +58,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
       }
     }
     axios
-      .post(`api/users/register-user`, user)
+      .post(`api/users/register-user`, user, config)
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('User successfully registered:', data)
@@ -81,7 +89,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
     console.log({loginUser})
     dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
     axios
-      .post(`api/users/sign-in-user`, { ...loginUser, date: new Date() })
+      .post(`api/users/sign-in-user`, { ...loginUser, date: new Date() }, config)
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('User successfully logged in')
