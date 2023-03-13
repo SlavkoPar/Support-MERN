@@ -92,7 +92,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
       .post(`api/users/sign-in-user`, { ...loginUser, date: new Date() }, config)
       .then(({ status, data }) => {
         if (status === 200) {
-          console.log('User successfully logged in')
+          console.log('User successfully logged in', data)
           dispatch({ type: GlobalActionTypes.AUTHENTICATE, payload: { user: data } })
         }
         else {
