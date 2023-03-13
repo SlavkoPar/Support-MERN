@@ -53,8 +53,8 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
       .post(`api/users/register-user`, user)
       .then(({ status, data }) => {
         if (status === 200) {
-          console.log('User successfully registered')
-          dispatch({ type: GlobalActionTypes.AUTHENTICATE, payload: { user } })
+          console.log('User successfully registered:', data)
+          dispatch({ type: GlobalActionTypes.AUTHENTICATE, payload: { user: data } })
         }
         else {
           console.log('Status is not 200', status)
@@ -78,6 +78,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
 
 
   const signInUser = useCallback((loginUser: ILoginUser) => {
+    console.log({loginUser})
     dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
     axios
       .post(`api/users/sign-in-user`, { ...loginUser, date: new Date() })
