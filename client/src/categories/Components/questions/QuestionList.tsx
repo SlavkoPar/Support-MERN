@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ListGroup } from "react-bootstrap";
 import QuestionRow from "./QuestionRow";
-import { ICategory, IQuestion, IParentInfo, Mode } from "categories/types";
+import { IQuestion, IParentInfo, Mode } from "categories/types";
 import { useCategoryContext } from "categories/Provider";
 
 const QuestionList = ({ parentCategory, level }: IParentInfo) => {
