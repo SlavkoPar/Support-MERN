@@ -35,14 +35,9 @@ mongoose.Promise = global.Promise;
 
 const app = express();
 
-//*MIDDLEWARE
-//  replaced body parser
-app.use(express.json({ extended: false }));
+app.use(express.json()); //Used to parse JSON bodies
+app.use(express.urlencoded()); //Parse URL-encoded bodies
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
 app.use(cors());
 app.use('/api/users', userRoute)
 app.use('/api/categories', categoryRoute)
