@@ -35,7 +35,7 @@ mongoose.Promise = global.Promise;
 const app = express();
 
 app.use(express.json({ extended: false })); //Used to parse JSON bodies
-app.use(express.urlencoded()); //Parse URL-encoded bodies
+app.use(express.urlencoded({extended: true})); //Parse URL-encoded bodies
 app.use(cors());
 
 app.use('/api/users', userRoute)

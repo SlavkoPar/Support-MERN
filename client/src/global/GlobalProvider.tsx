@@ -100,7 +100,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
 
   const signInUser = useCallback((loginUser: ILoginUser) => {
     console.log({loginUser})
-    dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
+    // dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} })
     axios
       .post(`${hostPort}/api/users/sign-in-user`, { ...loginUser, date: new Date() })
       .then(({ status, data }) => {

@@ -20,13 +20,9 @@ function App() {
 
   const { loadStateFromLocalStorage } = useGlobalContext();
 
-  // let navigate = useNavigate();
-  // useEffect(() => {
-  //   const loaded = loadStateFromLocalStorage();
-  //   if (!loaded) {
-  //     navigate('/register')
-  //   };
-  // }, [loadStateFromLocalStorage, navigate])
+  useEffect(() => {
+    loadStateFromLocalStorage();
+  }, [loadStateFromLocalStorage])
 
   return (
     <Router>
