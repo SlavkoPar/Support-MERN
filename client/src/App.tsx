@@ -14,6 +14,7 @@ import RegisterForm from 'global/RegisterForm';
 import LoginForm from 'global/LoginForm';
 import Landing from 'Landing';
 import About from 'About';
+import Test from 'Test';
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/register" element={<RegisterForm />} />
                 <Route path="/sign-in" element={<LoginForm />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/test" element={<Test />} />
               </Routes>
             </div>
           </Col>

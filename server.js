@@ -12,7 +12,7 @@ const questionRoute = require('./routes/question.route')
 const contactRoute = require('./routes/contact')
 
 // Configure mongoDB Database
-// mongoose.set('useNewUrlParser', true);
+//mongoose.set('useNewUrlParser', true);
 // mongoose.set('useFindAndModify', false);
 // mongoose.set('useCreateIndex', true);
 // mongoose.set('useUnifiedTopology', true);
@@ -33,6 +33,7 @@ mongoose.Promise = global.Promise;
 // )
 
 const app = express();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -42,6 +43,12 @@ app.use('/api/users', userRoute)
 app.use('/api/categories', categoryRoute)
 app.use('/api/questions', questionRoute)
 app.use('/api/contacts', contactRoute);
+
+// TEST ROUTE
+app.use('/api/test', (req, res)=>{
+    console.log("/test request called");
+    res.send('Welcome to GeeksforGeeks');
+})
 
 //* Serve static assets in production, must be at this location of this file
 if (process.env.NODE_ENV === 'production') {

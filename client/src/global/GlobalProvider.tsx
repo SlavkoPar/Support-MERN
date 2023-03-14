@@ -38,6 +38,23 @@ export const hostPort = `${configHost!}:${configPort!}`
 export const GlobalProvider: React.FC<Props> = ({ children }) => {
   const [globalState, dispatch] = useReducer(reducer, initialState);
 
+  const test = useCallback(() => {
+    const url = `${hostPort}/api/test`;
+    axios
+      .post(url)
+      .then(({ status }) => {
+        if (status === 200) {
+          console.log('test successfull:', status)
+        }
+        else {
+          console.log('Status is not 200', status)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const registerUser = useCallback((loginUser: ILoginUser) => {
     dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
     const user: IUser = {
@@ -150,7 +167,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
   }, [dispatch, signInUser]);
 
   return (
-    <GlobalContext.Provider value={{ globalState, loadStateFromLocalStorage, registerUser, signInUser }}>
+    <GlobalContext.Provider value={{ globalState, test, loadStateFromLocalStorage, registerUser, signInUser }}>
       <GlobalDispatchContext.Provider value={dispatch}>
         {children}
       </GlobalDispatchContext.Provider>

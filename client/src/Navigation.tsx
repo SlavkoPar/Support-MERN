@@ -127,6 +127,10 @@ export function Navigation(props: INavigation) {
                 </NavLink>
               }
 
+              <NavLink to="/test" className="nav-link">
+                  Test
+                </NavLink>
+
               {isAuthenticated &&
                 <NavDropdown
                   title={<><FontAwesomeIcon icon={faUser} />{' '}{userName}</>}

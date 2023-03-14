@@ -43,7 +43,8 @@ export interface IGlobalContext {
 	globalState: IGlobalState,
 	loadStateFromLocalStorage: () => boolean,
 	registerUser: (loginUser: ILoginUser) => void,
-	signInUser: (loginUser: ILoginUser) => void
+	signInUser: (loginUser: ILoginUser) => void,
+	test: () => void
 }
 
 export enum GlobalActionTypes {
