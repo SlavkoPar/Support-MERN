@@ -35,6 +35,10 @@ mongoose.Promise = global.Promise;
 
 const app = express();
 
+//*MIDDLEWARE
+//  replaced body parser
+app.use(express.json({ extended: false }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
