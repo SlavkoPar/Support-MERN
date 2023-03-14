@@ -83,13 +83,13 @@ router.post("/sign-in-user", (req, res, next) => {
 
 
 // CREATE User
-router.post("/create-user", (req, res, next) => {
+router.post("/create-user", async (req, res, next) => {
     // const { role } = req.body;
     // if (role === 'FIRST_REGISTERED_USER_IS_OWNER') {
     //     req.body.role = 'OWNER';
     //     // TODO set CreatedBy = _id for OWNER
     // }
-    userSchema.create(req.body, (error, data) => {
+    await userSchema.create(req.body, (error, data) => {
         if (error) {
             return next(error);
         } else {
@@ -160,8 +160,8 @@ const pipeline = [
 ]
 
 // READ Users
-router.get("/", (req, res, next) => {
-    userSchema.find((error, data) => {
+router.get("/", async (req, res, next) => {
+    await userSchema.find((error, data) => {
         if (error) {
             return next(error);
         } else {
@@ -173,8 +173,8 @@ router.get("/", (req, res, next) => {
 // Get Single User
 router
     .route("/:id")
-    .get((req, res, next) => {
-        userSchema.aggregate([
+    .get(async (req, res, next) => {
+        await userSchema.aggregate([
             {
                 $match: {
                     _id: ObjectId(req.params.id),
@@ -194,8 +194,8 @@ router
 router
     .route("/update-user/:id")
     // Get Single User
-    .get((req, res, next) => {
-        userSchema.findById(
+    .get(async (req, res, next) => {
+        await userSchema.findById(
             req.params.id, (error, data) => {
                 if (error) {
                     return next(error);
@@ -206,8 +206,8 @@ router
     })
 
     // Update User Data
-    .put((req, res, next) => {
-        userSchema.findByIdAndUpdate(
+    .put(async (req, res, next) => {
+        await userSchema.findByIdAndUpdate(
             req.params.id,
             {
                 $set: req.body,
@@ -225,9 +225,8 @@ router
     });
 
 // Delete User
-router.delete("/delete-user/:id",
-    (req, res, next) => {
-        userSchema.findByIdAndRemove(
+router.delete("/delete-user/:id", async (req, res, next) => {
+        await userSchema.findByIdAndRemove(
             req.params.id, (error, data) => {
                 if (error) {
                     return next(error);

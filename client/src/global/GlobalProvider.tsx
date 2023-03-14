@@ -25,20 +25,15 @@ const initialState: IGlobalState = {
   loading: false
 }
 
-const config = {
-  dataType: "json",
-  headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-  }
-};
-
 const GlobalContext = createContext<IGlobalContext>({} as any);
 const GlobalDispatchContext = createContext<Dispatch<any>>(() => null);
 
 interface Props {
   children: React.ReactNode
 }
+const configHost: string | undefined = process.env.REACT_APP_HOST;
+const configPort: string | undefined = process.env.REACT_APP_PORT;
+export const hostPort = `${configHost!}:${configPort!}`
 
 export const GlobalProvider: React.FC<Props> = ({ children }) => {
   const [globalState, dispatch] = useReducer(reducer, initialState);
@@ -57,8 +52,9 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
         }
       }
     }
+    const url = `${hostPort}/api/users/register-user`;
     axios
-      .post(`api/users/register-user`, user, config)
+      .post(url, user)
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('User successfully registered:', data)
@@ -89,7 +85,7 @@ export const GlobalProvider: React.FC<Props> = ({ children }) => {
     console.log({loginUser})
     dispatch({ type: GlobalActionTypes.SET_LOADING, payload: {} }) // TODO treba li ovo 
     axios
-      .post(`api/users/sign-in-user`, { ...loginUser, date: new Date() }, config)
+      .post(`${hostPort}/api/users/sign-in-user`, { ...loginUser, date: new Date() })
       .then(({ status, data }) => {
         if (status === 200) {
           console.log('User successfully logged in', data)

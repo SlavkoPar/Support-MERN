@@ -5,6 +5,8 @@ import { ActionTypes, FORM_MODES, IUser, IUsersState, IUsersContext } from './ty
 import { reducer } from 'users/reducer';
 import axios, { AxiosError } from "axios";
 
+import { hostPort } from 'global/GlobalProvider'
+
 const initialState: IUsersState = {
   mode: FORM_MODES.NULL,
   loading: false,
@@ -22,11 +24,11 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
 
   const getUsers = useCallback(({ parentUser, level }: { parentUser: Types.ObjectId | null, level: number }) => {
-    const urlUsers = `api/users/${parentUser}`
+    const url = `${hostPort}/api/users/${parentUser}`
     console.log('FETCHING --->>> getUsers', level, parentUser)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
-      .get(urlUsers)
+      .get(url)
       .then(({ data }) => {
         console.log(data)
         dispatch({ type: ActionTypes.SET_USERS, payload: { users: data } });
@@ -39,7 +41,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   
   const editUser = useCallback((_id: Types.ObjectId) => {
-    const url = `api/users/get-user/${_id}`
+    const url = `${hostPort}/api/users/get-user/${_id}`
     console.log(`FETCHING --->>> ${url}`)
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
     axios
@@ -57,7 +59,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
 
   const updateUser = useCallback((user: IUser) => {
     dispatch({ type: ActionTypes.SET_LOADING, payload: {} })
-    const url = `api/users/update-user/${user._id}`
+    const url = `${hostPort}/api/users/update-user/${user._id}`
     console.log(`UPDATING --->>> ${url}`)
     axios
       .put(url, user)
@@ -84,7 +86,7 @@ export const Provider: React.FC<Props> = ({ children }) => {
   const deleteUser = (_id: Types.ObjectId) => {
     // dispatch({ type: ActionTypes.SET_LOADING })
     axios
-      .delete(`api/users/delete-user/${_id}`)
+      .delete(`${hostPort}/api/users/delete-user/${_id}`)
       .then(res => {
         if (res.status === 200) {
           console.log("User successfully deleted");
