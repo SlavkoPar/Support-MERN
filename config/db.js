@@ -13,9 +13,8 @@ const mongoose=require('mongoose');
  //const db = process.env.MY_MONGO_URI;
  //console.log('process.env.MY_MONGO_URI', db)
 
-const connectDB =async(db)=>{
+const connectDB = async(db)=>{
     try {
-
         await mongoose.connect(db);
         console.log('MongoDB is Connected...')
     } catch (err) {

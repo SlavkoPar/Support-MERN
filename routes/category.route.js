@@ -179,7 +179,7 @@ const arrPipeline = [
 // });
 
 // Get Categories
-router.get('/', async (req, res, next) => {
+router.get('/', (req, res, next) => {
   categorySchema.aggregate(arrPipeline, (error, data) => {
     if (error) {
       return next(error);
@@ -191,7 +191,7 @@ router.get('/', async (req, res, next) => {
 
 
 // Get child Categories
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', (req, res, next) => {
   categorySchema.aggregate([
     {
       $match: {

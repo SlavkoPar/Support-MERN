@@ -148,7 +148,7 @@ const pipeline = [
 // });
 
 // Get Questions
-router.get('/', async (req, res, next) => {
+router.get('/', (req, res, next) => {
   questionSchema.aggregate(pipeline, (error, data) => {
     if (error) {
       return next(error);
@@ -159,7 +159,7 @@ router.get('/', async (req, res, next) => {
 })
 
 // Get Questions
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', (req, res, next) => {
   questionSchema.aggregate([
     {
       $match: {
