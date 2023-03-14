@@ -28,27 +28,28 @@ function App() {
   // }, [loadStateFromLocalStorage, navigate])
 
   return (
-
-    <Container fluid className="App">
-      <header className="App-header">
-        <Navigation />
-      </header>
-      <Row>
-        <Col md={12}>
-          <div className="wrapper">
-            <Routes>
-              <Route path="/" element={<About />} />
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/landing" element={<Landing />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/register" element={<RegisterForm />} />
-              <Route path="/sign-in" element={<LoginForm />} />
-              <Route path="/about" element={<About />} />
-            </Routes>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+    <Router>
+      <Container fluid className="App">
+        <header className="App-header">
+          <Navigation />
+        </header>
+        <Row>
+          <Col md={12}>
+            <div className="wrapper">
+              <Routes>
+                <Route path="/" element={<About />} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/landing" element={<Landing />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/register" element={<RegisterForm />} />
+                <Route path="/sign-in" element={<LoginForm />} />
+                <Route path="/about" element={<About />} />
+              </Routes>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </Router>
   );
 }
 

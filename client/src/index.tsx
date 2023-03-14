@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from "react-router-dom";
 
 import 'normalize.scss'
 import 'index.css';
@@ -14,9 +13,7 @@ const root = ReactDOM.createRoot(
 root.render(
   // <React.StrictMode>
   <GlobalProvider>
-    <Router>
-      <App />
-    </Router>
+    <App />
   </GlobalProvider>
   // </React.StrictMode>
 );
